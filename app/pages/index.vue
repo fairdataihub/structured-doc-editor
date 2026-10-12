@@ -1,22 +1,31 @@
 <script setup lang="ts">
-// The start of the flow: where people will upload their DMP. Extraction isn't connected yet, so
-// the drop zone shows the design but is switched off, and the sample plan opens instead.
+// Home: one deployment shows two DMP prototypes side by side. /d is this editor (a Nuxt page);
+// /x is a teammate's single static page in public/x/, so it's linked with a full page load.
 
-useSeoMeta({ title: "Start" });
+useSeoMeta({ title: "Home" });
 
-const notice = ref("");
-
-// A file dropped anywhere on the page would otherwise open in the browser and leave the app.
-function onDrop() {
-  notice.value =
-    "PDF upload is coming soon. For now, open the sample plan to try the editor.";
-}
+const PROTOTYPES = [
+  {
+    path: "/d",
+    href: "/d",
+    name: "DMP Bridge",
+    blurb:
+      "Edit the plan on its pages: one fixed style, automatic numbering, drag to reorder and colors for checking the structure. Exports JSON.",
+  },
+  {
+    path: "/x",
+    href: "/x/index.html",
+    name: "DMP import: Review structure",
+    blurb:
+      "Upload a PDF, review the structure the extraction found, and export JSON.",
+  },
+];
 </script>
 
 <template>
-  <div class="start" @dragover.prevent @drop.prevent="onDrop">
+  <div class="start">
     <header class="top">
-      <AppBrand />
+      <span class="home-name">Structured Document Editor</span>
 
       <span class="flex-1" />
 
@@ -24,55 +33,31 @@ function onDrop() {
     </header>
 
     <main class="start-main">
-      <ol class="start-steps" aria-label="How it works">
-        <li aria-current="step"><span>1</span>Upload your plan</li>
-
-        <li><span>2</span>Check the structure</li>
-
-        <li><span>3</span>Export JSON</li>
-      </ol>
-
-      <h1 class="start-title">Start with your Data Management Plan</h1>
+      <h1 class="start-title">Two DMP prototypes</h1>
 
       <p class="start-lead">
-        Upload your plan and we’ll lay it out as sections, questions and
-        answers, ready to edit and export.
+        Both start from the same extracted Data Management Plan. Pick one to
+        try.
       </p>
 
-      <section class="drop" aria-disabled="true" aria-labelledby="drop-title">
-        <span class="drop-badge">Coming soon</span>
-
-        <span class="drop-icon" aria-hidden="true">PDF</span>
-
-        <p id="drop-title" class="drop-title">Drag your plan here</p>
-
-        <UButton
-          color="neutral"
-          variant="outline"
-          icon="i-lucide-upload"
-          disabled
-          >Choose a PDF</UButton
+      <nav class="home-list" aria-label="Prototypes">
+        <a
+          v-for="p in PROTOTYPES"
+          :key="p.path"
+          :href="p.href"
+          class="home-card"
         >
+          <span class="home-path">{{ p.path }}</span>
 
-        <p class="drop-note">
-          PDF upload and extraction aren’t connected in this demo yet.
-        </p>
-      </section>
+          <span class="home-body">
+            <span class="home-card-name">{{ p.name }}</span>
 
-      <p class="start-notice" role="status">{{ notice }}</p>
+            <span class="home-blurb">{{ p.blurb }}</span>
+          </span>
 
-      <UButton
-        to="/plans/sample"
-        size="lg"
-        trailing-icon="i-lucide-arrow-right"
-        class="start-cta"
-        >Open the sample plan</UButton
-      >
-
-      <p class="start-small">
-        An NIH Data Management and Sharing Plan with 6 sections. Your changes
-        are saved in this browser.
-      </p>
+          <UIcon name="i-lucide-arrow-right" class="home-arrow size-4" />
+        </a>
+      </nav>
     </main>
   </div>
 </template>

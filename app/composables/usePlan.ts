@@ -25,9 +25,6 @@ const blank = (): PlanState => ({
   v: PLAN_VERSION,
   file: "",
   blocks: [],
-  issues: [],
-  refs: [],
-  autofix: { status: "none", items: [] },
   counts: { sections: 0, questions: 0 },
 });
 
@@ -43,6 +40,8 @@ const ui = reactive({
 });
 const sel = ref<string | null>(null);
 const ready = ref(false);
+/** The welcome panel at the bottom: opens on the first visit, and from the file menu. */
+const welcomeOpen = ref(false);
 const extraction = shallowRef<ExtractionJson | null>(null);
 const meta = reactive({ fileName: "" });
 
@@ -130,13 +129,7 @@ function where(id: string): string {
 }
 
 /* ---------------- history ---------------- */
-const snap = () =>
-  JSON.stringify({
-    blocks: state.blocks,
-    issues: state.issues,
-    autofix: state.autofix,
-    refs: state.refs,
-  });
+const snap = () => JSON.stringify({ blocks: state.blocks });
 function pushHistory() {
   history.push(snap());
   if (history.length > 200) history.shift();
@@ -207,8 +200,24 @@ function load(opts: {
   } catch {
     // Storage can be blocked or hold old data: start from the extraction.
   }
-  Object.assign(state, saved ?? importExtraction(opts.json, opts.fileName));
+  // A saved plan keeps its blocks; anything else it carries from older versions is dropped.
+  Object.assign(
+    state,
+    saved
+      ? {
+          ...blank(),
+          file: saved.file,
+          blocks: saved.blocks,
+          counts: saved.counts,
+        }
+      : importExtraction(opts.json, opts.fileName),
+  );
+  welcomeOpen.value = !ui.introSeen;
   ready.value = true;
+}
+function closeWelcome() {
+  welcomeOpen.value = false;
+  ui.introSeen = true;
 }
 function startOver() {
   if (!extraction.value) return;
@@ -221,7 +230,7 @@ function startOver() {
 let saveTimer: ReturnType<typeof setTimeout> | undefined;
 const saveStatus = ref("Saved in this browser");
 watch(
-  () => [state.blocks, state.issues, state.autofix, state.refs],
+  () => state.blocks,
   () => {
     if (!ready.value) return;
     saveStatus.value = "Saving…";
@@ -287,7 +296,9 @@ function setType(id: string, type: BlockType) {
       ? "Now a section heading. Everything below it, up to the next section, belongs to it."
       : type === "question"
         ? `Now a question in ${where(id).split(" · ")[0]}.`
-        : `Now ${type === "list" ? "a list item" : "an answer"}.`,
+        : type === "description"
+          ? "Now a section description."
+          : "Now an answer.",
   );
 }
 function toggleNumbered(id: string) {
@@ -296,10 +307,6 @@ function toggleNumbered(id: string) {
   endTyping();
   pushHistory();
   b.numbered = b.numbered === false;
-  for (const is of state.issues) {
-    if (is.kind === "unnumbered" && is.blockId === id)
-      is.status = b.numbered ? "fixed" : "kept";
-  }
   toast(
     b.numbered
       ? `Numbered: ${numbering.value.pre[id] ?? ""}`
@@ -455,14 +462,14 @@ function duplicate(id: string) {
 }
 function addBlock(
   id: string,
-  type: "answer" | "list" | "question" | "section",
+  type: "description" | "answer" | "question" | "section",
 ) {
   const b = byId(id);
   if (!b) return;
   const i = idx(id);
   const own = structure.value.owner[id];
   let at: number;
-  if (type === "answer" || type === "list") at = i + 1;
+  if (type === "description" || type === "answer") at = i + 1;
   else if (type === "question")
     at =
       b.type === "section"
@@ -476,7 +483,7 @@ function addBlock(
   endTyping();
   pushHistory();
   const added: Block[] =
-    type === "answer" || type === "list"
+    type === "description" || type === "answer"
       ? [{ id: uid(), type, html: "" }]
       : [
           { id: uid(), type, html: "", numbered: true },
@@ -502,18 +509,6 @@ function addSectionAtEnd() {
 function splitBlock(id: string, beforeHtml: string, afterHtml: string) {
   const b = byId(id);
   if (!b) return;
-  if (
-    b.type === "list" &&
-    !stripHtml(beforeHtml).trim() &&
-    !stripHtml(afterHtml).trim()
-  ) {
-    endTyping();
-    pushHistory();
-    b.type = "answer";
-    focusBlock(id, "start");
-
-    return;
-  }
   endTyping();
   pushHistory();
   b.html = beforeHtml;
@@ -524,7 +519,7 @@ function splitBlock(id: string, beforeHtml: string, afterHtml: string) {
   select(added.id);
   focusBlock(added.id, "start");
 }
-/** Backspace at the start of a block: delete it if empty, or join it to the text above. */
+/** Backspace at the start of a block: delete it if empty, or join it to the block above when both are the same type. */
 function mergeBack(id: string): boolean {
   const i = idx(id);
   const b = state.blocks[i];
@@ -539,7 +534,7 @@ function mergeBack(id: string): boolean {
 
     return true;
   }
-  if (isTextBlock(b) && isTextBlock(prev)) {
+  if (isTextBlock(b) && prev.type === b.type) {
     endTyping();
     pushHistory();
     const offset = stripHtml(prev.html).length;
@@ -564,6 +559,8 @@ export function usePlan() {
     ui,
     sel,
     ready,
+    welcomeOpen,
+    closeWelcome,
     meta,
     extraction,
     structure,

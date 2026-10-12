@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DMP import — Review structure</title>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+<style>
+  :root { font-family: Inter, system-ui, sans-serif; color: #203044; background: #eef1f5; font-size: 15px; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  button, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 1px solid #c8d0db; border-radius: 6px; background: #fff; padding: 7px 12px; }
+  button:hover { background: #eef3f9; }
+  button:disabled { opacity: .4; cursor: default; background: #fff; }
+  button.primary { background: #244f91; color: #fff; border-color: #244f91; }
+  button.primary:hover { background: #1d4079; }
+
+  .app { display: flex; flex-direction: column; height: 100vh; }
+
+  /* Top bar */
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 10px 20px; background: #fff; border-bottom: 1px solid #dbe1e9; }
+  .brand { font-size: 20px; font-weight: 750; letter-spacing: -1px; color: inherit; text-decoration: none; }
+  .brand span { color: #3665a5; }
+  .steps { display: flex; gap: 20px; font-size: 13px; color: #657385; margin-left: 16px; }
+  .steps > * { border: 0; background: none; padding: 0; border-radius: 0; font-size: 13px; color: inherit; }
+  .steps [aria-current="step"] { color: #244f91; font-weight: 700; }
+  .steps button:not(:disabled) { cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: #c8d0db; }
+  .steps button:not(:disabled):hover { color: #244f91; background: none; }
+  .steps button:disabled { opacity: 1; }
+  [hidden] { display: none !important; }
+
+  /* Step 1: upload */
+  .upload { flex: 1; display: grid; place-items: center; padding: 32px 16px; }
+  .drop { width: min(560px, 100%); text-align: center; background: #fff; border: 2px dashed #b8cbea; border-radius: 12px;
+          padding: 48px 32px; transition: border-color .15s, background .15s; }
+  .drop.over { border-color: #3665a5; background: #f5f8fd; }
+  .drop h1 { font-size: 22px; letter-spacing: -.3px; margin: 14px 0 6px; }
+  .drop p { margin: 6px 0; color: #5b697a; }
+  .drop .primary { padding: 10px 22px; font-size: 15px; margin: 8px 0 4px; }
+  .drop-icon { display: inline-grid; place-items: center; width: 56px; height: 68px; border-radius: 6px 18px 6px 6px;
+               background: #dbe7fb; color: #244f91; font-weight: 800; font-size: 14px; letter-spacing: .5px; }
+  .drop .note { font-size: 13px; color: #8a97a8; margin-top: 18px; }
+  .drop .error { color: #b42318; font-weight: 600; min-height: 1.4em; }
+  button.linkish { border: 0; background: none; padding: 2px 4px; color: #244f91; text-decoration: underline;
+                   text-underline-offset: 3px; font-size: 13px; }
+  button.linkish:hover { background: none; color: #1d4079; }
+  .spinner { width: 36px; height: 36px; margin: 6px auto 16px; border-radius: 50%; border: 4px solid #dbe7fb;
+             border-top-color: #3665a5; animation: spin .9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } }
+  .actions { margin-left: auto; display: flex; gap: 8px; }
+  .actions button { white-space: nowrap; }
+
+  /* Three panels */
+  .workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 190px minmax(0, 1fr) minmax(400px, 36%); }
+  @media (max-width: 1000px) {
+    .app { height: auto; }
+    .workspace { grid-template-columns: 1fr; }
+    .panel.left { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; border-right: 0; border-bottom: 1px solid #dbe1e9; }
+    .panel.left h2, .panel.left .hint { width: 100%; margin-bottom: 0; }
+    .panel.left .add { width: auto; margin: 0; }
+    .panel.right { order: 3; border-left: 0; border-top: 1px solid #dbe1e9; }
+    .canvas { padding: 16px; }
+    .paper { padding: 24px 20px 40px; }
+  }
+  .panel { background: #fff; overflow: auto; padding: 16px 14px; }
+  .panel.left { border-right: 1px solid #dbe1e9; }
+  .panel.right { border-left: 1px solid #dbe1e9; display: flex; flex-direction: column; }
+  /* PDF tab: the uploaded file fills the panel */
+  .pdf-view { flex: 1; min-height: 0; display: flex; }
+  .pdf-view iframe { flex: 1; width: 100%; border: 1px solid #dbe1e9; border-radius: 6px; background: #f6f7f9; }
+  @media (max-width: 1000px) { .pdf-view { height: 80vh; flex: none; } }
+  .panel h2 { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: #68788b; margin: 0 0 10px; }
+  .panel p.hint { font-size: 13px; color: #68788b; margin: 0 0 12px; line-height: 1.45; }
+
+  /* Left: add blocks */
+  .add { display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left; margin-bottom: 8px; padding: 10px; }
+  .add .icon { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: 13px; flex: none; }
+  .add strong { display: block; font-size: 14px; }
+  .add small { display: block; color: #68788b; font-size: 12px; margin-top: 2px; }
+  .icon.i-sec { background: #dbe7fb; color: #244f91; }
+  .icon.i-q { background: #fdecc8; color: #8a5200; }
+
+  /* Center: the plan itself */
+  .canvas { overflow: auto; padding: 16px 20px; }
+  .paper { margin: 0; background: #fff; border: 1px solid #d5dde7; border-radius: 8px;
+           padding: 28px 28px 48px; box-shadow: 0 1px 3px rgba(32, 48, 68, .06); }
+  .paper textarea { display: block; width: 100%; border: 0; background: transparent; resize: none; overflow: hidden;
+                    padding: 2px 4px; border-radius: 4px; line-height: 1.55; }
+  .paper textarea:focus { outline: none; background: #f5f8fc; }
+  .paper textarea::placeholder { color: #a3aebb; font-style: italic; font-weight: 400; }
+  .t-title { font-size: 24px; font-weight: 750; text-align: center; letter-spacing: -.3px; }
+  .t-section { font-size: 18px; font-weight: 700; }
+  .t-q { font-weight: 650; }
+  .t-a { color: #34465a; }
+
+  /* Each block type has its own colour: title = purple, section = blue, question = amber */
+  .blk { position: relative; border-radius: 6px; }
+  .blk:focus-within textarea:focus { background: #fff; }
+  .plan-blk { padding: 6px; margin-bottom: 20px; border: 1px dashed transparent; }
+  .plan-blk:hover { border-color: #cbbcf0; }
+  .plan-blk.selected { border: 1px solid #7c4ddb; box-shadow: 0 0 0 3px rgba(124, 77, 219, .15); }
+  .sec { padding: 12px 12px 8px; margin-top: 22px; background: #f5f8fd; border: 1px solid #c7d7f0; border-left: 4px solid #3665a5; }
+  .sec:hover { border-color: #9fbbe6; border-left-color: #3665a5; }
+  .sec.selected { border-color: #3665a5; box-shadow: 0 0 0 3px rgba(54, 101, 165, .18); }
+  /* Questions cycle through three colours (1st/4th… amber, 2nd/5th… green, 3rd/6th… pink) */
+  .qc0 { --c: #d48a00; --ink: #8a5200; --bg: #fffaf0; --bd: #f0d9a8; --ring: rgba(212, 138, 0, .18); --soft: #fdecc8; }
+  .qc1 { --c: #179266; --ink: #0d6446; --bg: #f2fbf7; --bd: #b5e3cf; --ring: rgba(23, 146, 102, .18); --soft: #d3f2e4; }
+  .qc2 { --c: #c2417a; --ink: #8e2555; --bg: #fdf4f8; --bd: #f1c2d6; --ring: rgba(194, 65, 122, .18); --soft: #f9dcea; }
+  .q { padding: 8px 10px; margin: 10px 0; background: var(--bg); border: 1px solid var(--bd); border-left: 4px solid var(--c); }
+  .q:hover { border-color: var(--c); }
+  .q.selected { border-color: var(--c); box-shadow: 0 0 0 3px var(--ring); }
+  .qlist { min-height: 40px; padding-left: 6px; }
+  .qlist:empty::after { content: 'No questions yet. Select this section and click “Question” on the left, or drag one here.';
+                        display: block; padding: 12px; border: 1px dashed #c8d0db; border-radius: 6px; color: #8a97a8; font-size: 13px; }
+
+  /* Block header: always visible, like the earlier card layout */
+  .head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+  .head .kind { font-size: 11px; letter-spacing: 1.2px; font-weight: 750; text-transform: uppercase; }
+  .sec > .head .kind { color: #244f91; }
+  .q > .head .kind { color: var(--ink); }
+  .head .meta { font-size: 12px; color: #68788b; }
+  .head .spacer { flex: 1; }
+  .head button { padding: 2px 8px; font-size: 13px; border-radius: 5px; }
+  .head .toggle { border: 0; background: transparent; width: 24px; height: 24px; padding: 0; font-size: 12px; color: #5b697a; }
+  .head .toggle:hover { background: rgba(32, 48, 68, .08); }
+  .head .toggle span { display: inline-block; transition: transform .15s; }
+  .collapsed > .head .toggle span { transform: rotate(-90deg); }
+  .handle { display: inline-grid; place-items: center; width: 26px; height: 26px; border: 1px solid var(--bd); border-radius: 5px;
+            background: #fff; color: var(--c); font-size: 16px; line-height: 1; cursor: grab; user-select: none; }
+  .handle:hover { background: var(--soft); border-color: var(--c); }
+  .handle:active { cursor: grabbing; }
+  .sec-handle { --c: #3665a5; --bd: #b8cbea; --soft: #dbe7fb; }
+  /* The type label ("SECTION 1 ▾") opens the Change-type menu */
+  .head button.kind { border: 1px solid transparent; background: transparent; padding: 2px 6px; margin-left: -2px;
+                      font-size: 11px; border-radius: 5px; }
+  .head button.kind:hover, .head button.kind[aria-expanded="true"] { background: #fff; border-color: #c8d0db; }
+  .head button.kind .caret { margin-left: 4px; font-size: 10px; opacity: .6; }
+  .type-menu { position: fixed; z-index: 20; width: 300px; background: #fff; border: 1px solid #c8d0db; border-radius: 8px;
+               box-shadow: 0 8px 24px rgba(32, 48, 68, .16); padding: 6px; }
+  .type-menu .menu-title { font-size: 12px; color: #68788b; padding: 4px 8px 6px; }
+  .type-menu button, .type-menu .current { display: block; width: 100%; text-align: left; border: 0; border-radius: 6px;
+                                           padding: 8px; background: transparent; }
+  .type-menu button:hover, .type-menu button:focus-visible { background: #eef3f9; outline: none; }
+  .type-menu strong { display: block; font-size: 14px; }
+  .type-menu small { display: block; font-size: 12px; color: #5b697a; margin-top: 2px; line-height: 1.4; }
+  .type-menu .current { color: #8a97a8; font-size: 13px; }
+  .toast { position: fixed; z-index: 30; left: 50%; bottom: 24px; transform: translateX(-50%); display: flex; align-items: center;
+           gap: 14px; max-width: calc(100vw - 32px); padding: 10px 12px 10px 16px; border-radius: 8px;
+           background: #203044; color: #fff; font-size: 14px; box-shadow: 0 8px 24px rgba(32, 48, 68, .25); }
+  .toast[hidden] { display: none; }
+  .toast button { background: transparent; color: #9cc0ff; border: 0; font-weight: 700; padding: 4px 8px; }
+  .toast button:hover { background: rgba(255, 255, 255, .1); }
+  /* Briefly marks the blocks a type change created or moved */
+  @keyframes flash { from { box-shadow: 0 0 0 4px rgba(255, 190, 0, .6); } to { box-shadow: 0 0 0 4px rgba(255, 190, 0, 0); } }
+  .flash { animation: flash 1.8s ease-out; }
+  /* A section without a title or a question without text (e.g. after changing its type) */
+  .head .warn { display: none; font-size: 11px; font-weight: 650; color: #b42318; background: #fef3f2;
+                border: 1px solid #fecdca; border-radius: 9px; padding: 0 7px; line-height: 18px; }
+  .missing > .head .warn { display: inline; }
+  .head .kind, .head .warn { white-space: nowrap; }
+  .sec.missing > .t-section, .q.missing > .t-q { background: #fff7f6; box-shadow: inset 0 0 0 1px #f3a59b; }
+  .sec.collapsed > .sec-body { display: none; }
+  .q.collapsed > .t-a { display: none; }
+  .sec.collapsed { padding-bottom: 10px; }
+  .sortable-ghost { opacity: .35; }
+  /* A block card dragged from the left panel, shown as a drop marker */
+  #paper .add { display: block; height: 6px; padding: 0; margin: 6px 0; overflow: hidden; border: 0; border-radius: 3px; background: #3665a5; opacity: 1; }
+  #paper .add[data-add="question"] { background: #d48a00; }
+  #paper .add * { display: none; }
+  .tree .tree-qs { min-height: 6px; }
+  .tree-head { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+  /* Right panel: Structure / JSON tabs */
+  .tabs { display: flex; gap: 2px; margin-right: auto; padding: 2px; border-radius: 7px; background: #eef1f5; }
+  .tabs button { border: 0; background: transparent; padding: 4px 12px; border-radius: 5px; font-size: 12px; font-weight: 650;
+                 letter-spacing: .4px; color: #5b697a; }
+  .tabs button:hover { background: rgba(255, 255, 255, .6); }
+  .tabs button[aria-selected="true"] { background: #fff; color: #244f91; box-shadow: 0 1px 2px rgba(32, 48, 68, .14); }
+  button.mini { padding: 2px 8px; font-size: 12px; border-radius: 5px; }
+  .tree-row { display: flex; align-items: flex-start; }
+  .tree-row > button[data-kind] { flex: 1; min-width: 0; }
+  .tree .tree-toggle { flex: none; width: 20px; height: 22px; padding: 0; border: 0; background: transparent;
+                       font-size: 10px; color: #68788b; border-radius: 4px; }
+  .tree .tree-toggle:hover { background: #eef3f9; }
+  .tree .tree-toggle span { display: inline-block; transition: transform .15s; }
+  .tree .folded .tree-toggle span { transform: rotate(-90deg); }
+  .tree .folded > .tree-qs { display: none; }
+  .tree .fold-count { flex: none; margin: 3px 4px 0; padding: 0 6px; font-size: 11px; line-height: 18px; border-radius: 9px;
+                      background: #edf1f6; color: #5b697a; }
+  .tree button[data-kind="section"], .tree button[data-kind="question"] { cursor: grab; }
+
+  /* Right: structure tree */
+  .tree ul { list-style: none; margin: 0; padding: 0; }
+  .tree .tree-qs { padding-left: 14px; margin-left: 9px; border-left: 1px solid #e3e8ef; }
+  .tree button { display: flex; align-items: flex-start; gap: 6px; width: 100%; text-align: left; border: 0; background: transparent;
+                 padding: 3px 6px; border-radius: 4px; font-size: 12px; line-height: 1.4; }
+  .tree button:hover { background: #eef3f9; }
+  .tree button.selected { background: #e8effa; font-weight: 700; }
+  .tree .dot { flex: none; width: 8px; height: 8px; border-radius: 2px; }
+  .tree [data-kind="section"] { color: #244f91; font-weight: 600; }
+  .tree [data-kind="section"] .dot { background: #3665a5; }
+  .tree [data-kind="question"] { color: #34465a; }
+  .tree [data-kind="question"] .dot { background: var(--c); border-radius: 50%; }
+  .tree .num { flex: none; font-size: 11px; font-weight: 700; color: #68788b; min-width: 26px; }
+  .tree [data-kind="section"] .num { color: #3665a5; }
+  .tree [data-kind="question"] .num { color: var(--ink); }
+  .tree .txt { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .tree .dot { margin-top: 5px; }
+  .tree .txt.empty { color: #a3aebb; font-style: italic; }
+
+  /* Right: live JSON layout */
+  .json { font: 10.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; color: #34465a; }
+  .json .row { display: flex; align-items: flex-start; gap: 2px; white-space: nowrap; border-radius: 3px; }
+  .json .row .val { overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .json .fold { flex: none; width: 13px; height: 16px; padding: 0; border: 0; background: transparent; color: #68788b;
+                font-size: 9px; border-radius: 3px; }
+  .json .fold:hover { background: #e3e8ef; }
+  .json .fold span { display: inline-block; transition: transform .15s; }
+  .json .folded > .row .fold span { transform: rotate(-90deg); }
+  .json .pad { flex: none; width: 13px; }
+  .json .key { color: #244f91; }
+  .json .str { color: #0d6446; }
+  .json .num { color: #b45309; }
+  .json .punc { color: #8a97a8; }
+  .json .summary { color: #8a97a8; font-style: italic; margin-left: 4px; overflow: hidden; text-overflow: ellipsis; }
+  .json .children { margin-left: 6px; padding-left: 6px; border-left: 1px dotted #d5dde7; }
+  .json .folded > .children, .json .folded > .close { display: none; }
+  /* Objects that map to a block in the canvas */
+  .json .grp[data-kind] > .row:first-child { cursor: pointer; }
+  .json .grp[data-kind] > .row:first-child:hover { background: #eef3f9; }
+  .json .grp.sel { background: #e8effa; border-radius: 4px; box-shadow: inset 2px 0 0 #3665a5; }
+  .json .grp.sel.q-grp { background: var(--soft); box-shadow: inset 2px 0 0 var(--c); }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <a class="brand" href="/" title="Home">DMP<span>Tool</span></a>
+    <nav class="steps" aria-label="Import steps">
+      <button id="step-upload" title="Upload a different PDF">1 · Upload PDF</button><span id="step-review">2 · Review structure</span><span>3 · Export JSON</span>
+    </nav>
+    <div class="actions" id="review-actions">
+      <button id="fold-all">Collapse all</button>
+      <button id="undo" disabled>Undo</button>
+      <button id="reset" title="Go back to the structure as it was imported">Reset</button>
+      <button id="export" class="primary">Export JSON</button>
+    </div>
+  </header>
+
+  <main class="upload" id="upload-view" aria-label="Upload PDF">
+    <div class="drop" id="drop">
+      <div id="drop-pick">
+        <div class="drop-icon" aria-hidden="true">PDF</div>
+        <h1>Upload your Data Management Plan</h1>
+        <p>Drag the PDF here, or</p>
+        <button class="primary" id="choose-pdf">Choose PDF</button>
+        <input type="file" id="pdf-file" accept="application/pdf,.pdf" hidden>
+        <p><button class="linkish" id="use-sample">or try it with the sample PDF</button></p>
+        <p class="error" id="drop-error" role="alert"></p>
+        <p class="note">We find the title, sections, questions and answers in your plan. On the next page you check them and fix anything that's wrong.</p>
+      </div>
+      <div id="drop-busy" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <p><strong id="busy-name"></strong></p>
+        <p role="status">Extracting the structure…</p>
+        <p class="note">Demo: extraction isn't connected yet, so the sample plan is loaded whatever PDF you choose.</p>
+      </div>
+    </div>
+  </main>
+
+  <div class="workspace" id="review-view" hidden>
+    <aside class="panel left" aria-label="Add blocks">
+      <h2>Add block</h2>
+      <p class="hint">Click to add below the selected item, or drag into the plan.</p>
+      <div id="palette">
+      <button class="add" data-add="section">
+        <span class="icon i-sec">S</span>
+        <span><strong>Section</strong><small>A new section after the selected one</small></span>
+      </button>
+      <button class="add" data-add="question">
+        <span class="icon i-q">Q</span>
+        <span><strong>Question</strong><small>A question + answer in the selected section</small></span>
+      </button>
+      </div>
+    </aside>
+
+    <main class="canvas" aria-label="Plan">
+      <article class="paper" id="paper"></article>
+    </main>
+
+    <aside class="panel right" aria-label="Outline">
+      <div class="tree-head">
+        <div class="tabs" role="tablist" aria-label="Show the plan as">
+          <button role="tab" id="tab-structure" data-view="structure" aria-controls="tree">Structure</button>
+          <button role="tab" id="tab-json" data-view="json" aria-controls="tree">JSON</button>
+          <button role="tab" id="tab-pdf" data-view="pdf" aria-controls="pdf-view">PDF</button>
+        </div>
+        <button id="copy-json" class="mini" hidden>Copy</button>
+        <button id="tree-fold-all" class="mini">Collapse</button>
+      </div>
+      <div class="tree" id="tree" role="tabpanel"></div>
+      <div class="pdf-view" id="pdf-view" role="tabpanel" aria-labelledby="tab-pdf" hidden>
+        <iframe id="pdf-frame" aria-label="Uploaded PDF"></iframe>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div id="type-menu" class="type-menu" role="menu" hidden></div>
+<div id="toast" class="toast" hidden><span class="msg"></span><button id="toast-undo">Undo</button></div>
+<div id="announce" class="sr-only" aria-live="polite"></div>
+
+<script>
+const SAMPLE = {"narrative": {"download_url": "", "template": {"title": "DATA MANAGEMENT AND SHARING PLAN", "description": "", "version": "v1", "section": [{"title": "Element 1: Data Type:", "description": "", "order": 1, "question": [{"text": "A. Types and amount of scientific data expected to be generated in the project:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "This secondary data analysis project will analyze deidentified data from 48,218 participants from eight studies and the publicly available NHANES cohorts (wrist NHANES 2011-2014; hip/counts-NHANES 2003-2006). The studies include (i) the RISE Study, (ii) the SOL-VIDA Study, (iii) the iWATCH Study, (iv) the MOCA Study, (v) the PHASE Study, (vi) the AusDiab Study, (vii) the ACT Study, and (viii) the WHISH accelerometer sub- study.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "B. Scientific data that will be preserved and shared, and the rationale for doing so:", "order": 2, "answer": {"json": {"type": "textArea", "answer": "As this is a secondary data analysis project, we will only be able to publicly share in the UC San Diego Library Repository sitting behavior metrics or analysis that were created in this project from the following UCSD- based study datasets: (i) The RISE study (ii) The iWATCH study (iii) NHANES cohorts Sufficient data from those datasets will be preserved to enable sharing to validate and replicate research findings described in the Aims with those datasets only. Please see Element 5 for data access information about other studies.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "C. Metadata, other relevant data, and associated documentation:", "order": 3, "answer": {"json": {"type": "textArea", "answer": "In addition to the data described above, code and models will be included in the repository and in on our project’s GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled “Deep Postures”.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 2: Related Tools, Software and/or Code:", "description": "", "order": 2, "question": [{"text": "Element 2: Related Tools, Software and/or Code:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "Data will be analyzed with custom code by our statistical and computer science team. ActiGraph data will be processed and analyzed using ActiLife software which requires a paid license. All custom code and models will also be shared in the data repository and on our project’s GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled “Deep Postures”.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 3: Standards:", "description": "", "order": 3, "question": [{"text": "Element 3: Standards:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "The following data will be created as a result of this project: Objective sedentary behavior metrics – no existing standards", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 4: Data Preservation, Access, and Associated Timelines:", "description": "", "order": 4, "question": [{"text": "A. Repository where scientific data and metadata will be archived:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "De-identified data will be uploaded to the University of California San Diego Library repository.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "B. How scientific data will be findable and identifiable:", "order": 2, "answer": {"json": {"type": "textArea", "answer": "Data will be findable via publications and on our project’s GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled “Deep Postures”.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "C. When and how long the scientific data will be made available:", "order": 3, "answer": {"json": {"type": "textArea", "answer": "The research community will have access to data when the main outcome manuscript has been published. $2,500 in years 2-5 of the project has been budgeted for preparing the data that is able to be stored in the repository (the RISE study, the iWATCH study, and NHANES) and for data storage on the University of California San Diego Library repository. We anticipate data being available for the foreseeable future (minimum of at least 5 years) after the study has been completed. The University of California San Diego Library repository does not currently have a limit on how long data can be stored.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 5: Access, Distribution, or Reuse Considerations:", "description": "", "order": 5, "question": [{"text": "A. Factors affecting subsequent access, distribution, or reuse of scientific data:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "The following studies have independent data use agreement & approved paper proposal processes for use of their data that are specific to each institution that collected the data: (i) the SOL-VIDA Study, (ii) the MOCA Study, (iii) the PHASE Study, (iv) the AusDiab Study, (v) the ACT Study, and (vi) the WHISH accelerometer sub-study such as data use agreements or approved publication proposals. We will be securing the appropriate approvals from each institution to use their data for purposes of this study including publications, but are unable to publicly share their data in our study data repository Researchers who wish to use data from those studies will need to follow those studies data use protocols to inquire: about using their data (i) the SOL-VIDA Study – Data requests may be made by following instructions on the Hispanic Community Health Study/ of Latinos dbGap page. (ii) the MOCA Study – Data requests may be made by following MOCA Study policies (iii) the PHASE Study – Data requests may be made by following PHASE Study policies (iv) the AusDiab Study – Data may be requested by following AusDiab policies available from the AusDiab study website, hosted by the Baker Heart & Diabetes Institute. (v) the ACT Study - Data are managed and stored in the ACT Data Repository and sharing requests may be made according to the policies and procedures available on the “Work With Us” page of the Adult Changes in Thought Study website. (vi) the WHISH accelerometer sub-study – Data are managed by the Women’s Health Initiative Coordinating Center. Requests may be made according to policies and procedures available on the “Working with WHI Data” page on the WHI study website.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "B. Whether access to scientific data will be controlled:", "order": 2, "answer": {"json": {"type": "textArea", "answer": "The final dataset of data from the RISE study, the iWATCH study, and NHANES cohorts will be de-identified. It will be deposited into the UC San Diego Library Data repository along with study protocols, code, and models for public use. De-identified data will be available after the main outcome papers are published.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "Protections for privacy, rights, and confidentiality of human research participants:", "order": 3, "answer": {"json": {"type": "textArea", "answer": "All data used in this study was de-identified prior to use.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 6: Oversight of Data Management and Sharing:", "description": "", "order": 6, "question": [{"text": "Element 6: Oversight of Data Management and Sharing:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "The PI and Trial & IRB Coordinator will provide updates and changes to the plan in the annual RPPR. The PI, Trial & IRB Coordinator, and Statistician/Data Manager will meet monthly in all years of the project to ensure that the datasets, protocols, and codes are being prepared for sharing into the data repository once the main outcome manuscript has been published. The Statistician/Data Manager will work closely with the University of California San Diego Library repository manager to ensure that the datasets, protocols, and code are correctly stored and available for sharing.", "meta": {"schemaVersion": "1.0"}}}}]}]}}};
+
+let uid = 0;
+const id = () => ++uid;
+
+// ---------- data ----------
+const plan = {};
+let sections = [];
+// The extracted JSON and the structure as imported (for Reset)
+let source, original;
+
+function load(data) {
+  source = data;
+  const tpl = data.narrative.template;
+  Object.assign(plan, { title: tpl.title, description: tpl.description, version: tpl.version });
+  sections = tpl.section
+    .slice().sort((a, b) => a.order - b.order)
+    .map(s => ({
+      id: id(),
+      title: s.title,
+      description: s.description,
+      questions: s.question.slice().sort((a, b) => a.order - b.order)
+        .map((q, j) => ({ id: id(), text: q.text, answer: q.answer.json.answer, color: j % 3 }))
+    }));
+  original = structuredClone({ sections, plan });
+}
+
+// What is selected: { kind: 'plan' } | { kind: 'section', id } | { kind: 'question', id }
+let selected = { kind: 'plan' };
+// Ids of collapsed sections / questions (view state, not part of undo)
+const collapsed = new Set();
+// Sections folded in the structure tree (separate from the canvas)
+const treeCollapsed = new Set();
+// Folded objects in the JSON tab, keyed by a stable id (e.g. "s:3" = section 3's object)
+const jsonCollapsed = new Set();
+// "meta" objects start folded; this remembers the ones the user opened
+const metaOpened = new Set();
+// Right panel tab: 'structure' or 'json' (remembered in this browser)
+let view = 'structure';
+try { if (localStorage.getItem('dmp-view') === 'json') view = 'json'; } catch {}
+
+const history = [];
+function checkpoint() { history.push(structuredClone({ sections, plan })); $('#undo').disabled = false; $('#toast').hidden = true; }
+function undo() {
+  const prev = history.pop();
+  if (!prev) return;
+  sections = prev.sections;
+  Object.assign(plan, prev.plan);
+  $('#undo').disabled = !history.length;
+  if (!exists(selected)) selected = { kind: 'plan' };
+  render();
+  announce('Change undone');
+}
+
+// Back to the imported structure (can be undone)
+function reset() {
+  if (!confirm('Discard all changes and go back to the imported structure? You can undo this.')) return;
+  checkpoint();
+  const o = structuredClone(original);
+  sections = o.sections;
+  Object.assign(plan, o.plan);
+  selected = { kind: 'plan' };
+  collapsed.clear();
+  render();
+  announce('Reset to the imported structure');
+}
+
+function toJson() {
+  return {
+    narrative: {
+      download_url: source.narrative.download_url ?? '',
+      template: {
+        title: plan.title,
+        description: plan.description,
+        version: plan.version,
+        section: sections.map((s, si) => ({
+          title: s.title,
+          description: s.description,
+          order: si + 1,
+          question: s.questions.map((q, qi) => ({
+            text: q.text,
+            order: qi + 1,
+            answer: { json: { type: 'textArea', answer: q.answer, meta: { schemaVersion: '1.0' } } }
+          }))
+        }))
+      }
+    }
+  };
+}
+
+// ---------- helpers ----------
+const $ = sel => document.querySelector(sel);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function locate(qid) {
+  for (const [si, s] of sections.entries()) {
+    const j = s.questions.findIndex(q => q.id == qid);
+    if (j >= 0) return { s, si, j, q: s.questions[j] };
+  }
+}
+const sectionIndex = sid => sections.findIndex(s => s.id == sid);
+const exists = sel => sel.kind === 'plan' || (sel.kind === 'section' ? sectionIndex(sel.id) >= 0 : !!locate(sel.id));
+const isSel = (kind, id) => selected.kind === kind && selected.id == id;
+const typeButton = label => `<button class="kind" data-act="type" aria-haspopup="menu" aria-expanded="false"
+    title="Change type" aria-label="${label}, change type">${label}<span class="caret" aria-hidden="true">▾</span></button>`;
+function announce(msg) { $('#announce').textContent = ''; setTimeout(() => ($('#announce').textContent = msg), 50); }
+function grow(ta) { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
+
+// ---------- render: canvas ----------
+function render() {
+  const nS = sections.length;
+  const toggle = (bid, what) => `<button class="toggle" data-act="toggle" aria-expanded="${!collapsed.has(bid)}"
+      aria-label="${collapsed.has(bid) ? 'Expand' : 'Collapse'} ${what}"><span>▼</span></button>`;
+  $('#paper').innerHTML = `
+    <div class="blk plan-blk ${selected.kind === 'plan' ? 'selected' : ''}" data-kind="plan">
+      <textarea class="t-title" data-field="title" rows="1" aria-label="Plan title">${esc(plan.title)}</textarea>
+    </div>
+    <div id="sections">${sections.map((s, i) => `
+    <section class="blk sec ${isSel('section', s.id) ? 'selected' : ''} ${collapsed.has(s.id) ? 'collapsed' : ''} ${s.title.trim() ? '' : 'missing'}" data-kind="section" data-id="${s.id}" id="b-section-${s.id}">
+      <div class="head">
+        <span class="handle sec-handle" title="Drag to move section" aria-hidden="true">⠿</span>
+        ${toggle(s.id, `section ${i + 1}`)}
+        ${typeButton(`Section ${i + 1}`)}
+        <span class="warn">Needs a title</span>
+        <span class="meta">${s.questions.length} question${s.questions.length === 1 ? '' : 's'}</span>
+        <span class="spacer"></span>
+        <button data-act="up" aria-label="Move section ${i + 1} up" ${i === 0 ? 'disabled' : ''}>↑</button>
+        <button data-act="down" aria-label="Move section ${i + 1} down" ${i === nS - 1 ? 'disabled' : ''}>↓</button>
+        <button data-act="delete" aria-label="Delete section ${i + 1}">✕</button>
+      </div>
+      <textarea class="t-section" data-field="title" rows="1" aria-label="Section ${i + 1} title" placeholder="Section title">${esc(s.title)}</textarea>
+      <div class="sec-body">
+      <div class="qlist" data-sid="${s.id}">${s.questions.map((q, j) => `
+        <div class="blk q qc${q.color} ${isSel('question', q.id) ? 'selected' : ''} ${collapsed.has(q.id) ? 'collapsed' : ''} ${q.text.trim() ? '' : 'missing'}" data-kind="question" data-id="${q.id}" id="b-question-${q.id}">
+          <div class="head">
+            <span class="handle" title="Drag to move" aria-hidden="true">⠿</span>
+            ${toggle(q.id, `question ${i + 1}.${j + 1}`)}
+            ${typeButton(`Question ${i + 1}.${j + 1}`)}
+            <span class="warn">Needs question text</span>
+            <span class="spacer"></span>
+            <button data-act="up" aria-label="Move question ${i + 1}.${j + 1} up" ${i === 0 && j === 0 ? 'disabled' : ''}>↑</button>
+            <button data-act="down" aria-label="Move question ${i + 1}.${j + 1} down" ${i === nS - 1 && j === s.questions.length - 1 ? 'disabled' : ''}>↓</button>
+            <button data-act="delete" aria-label="Delete question ${i + 1}.${j + 1}">✕</button>
+          </div>
+          <textarea class="t-q" data-field="text" rows="1" aria-label="Question ${i + 1}.${j + 1}" placeholder="Question">${esc(q.text)}</textarea>
+          <textarea class="t-a" data-field="answer" rows="1" aria-label="Answer to question ${i + 1}.${j + 1}" placeholder="Answer">${esc(q.answer)}</textarea>
+        </div>`).join('')}</div>
+      </div>
+    </section>`).join('')}</div>`;
+
+  document.querySelectorAll('#paper textarea').forEach(grow);
+  // Sections reorder by their handle, and accept new sections dragged from the left panel
+  Sortable.create($('#sections'), {
+    group: { name: 'sections', pull: false, put: (to, from, el) => el.dataset.add === 'section' },
+    handle: '.sec-handle',
+    animation: 150,
+    onStart: checkpoint,
+    onEnd: syncSectionsFromDom,
+    onAdd: e => dropFromPalette('section', e.newIndex)
+  });
+  // Question lists accept questions from any section and new questions from the left panel
+  document.querySelectorAll('.qlist').forEach(list => Sortable.create(list, {
+    group: { name: 'questions', put: (to, from, el) => !el.dataset.add || el.dataset.add === 'question' },
+    handle: '.handle',
+    animation: 150,
+    onStart: checkpoint,
+    onEnd: syncFromDom,
+    onAdd: e => { if (e.item.dataset.add) dropFromPalette('question', e.newIndex, Number(list.dataset.sid)); }
+  }));
+  renderTree();
+  updateButtons();
+}
+
+// ---------- render: right panel ----------
+function renderTree() {
+  if (view === 'pdf') return;  // the PDF tab doesn't change with the plan
+  $('#tree').className = view === 'json' ? 'json' : 'tree';
+  view === 'json' ? renderJson() : renderStructure();
+  updateFoldButtons();
+}
+
+function renderStructure() {
+  const node = (kind, nodeId, num, full, cls = '') => `
+    <button class="${isSel(kind, nodeId) ? 'selected' : ''} ${cls}" data-kind="${kind}" data-id="${nodeId}"
+            title="${esc(full.trim() || 'Untitled')}">
+      <span class="dot" aria-hidden="true"></span><span class="num">${num}</span>
+      <span class="txt ${full.trim() ? '' : 'empty'}">${esc(full.trim() || 'Untitled')}</span>
+    </button>`;
+  $('#tree').innerHTML = `
+      <ul id="tree-sections">${sections.map((s, i) => `
+        <li data-sid="${s.id}" class="${treeCollapsed.has(s.id) ? 'folded' : ''}">
+          <div class="tree-row">
+            <button class="tree-toggle" data-fold="${s.id}" aria-expanded="${!treeCollapsed.has(s.id)}"
+                    aria-label="${treeCollapsed.has(s.id) ? 'Expand' : 'Collapse'} section ${i + 1} in tree"><span>▼</span></button>
+            ${node('section', s.id, `S${i + 1}`, s.title)}
+            ${treeCollapsed.has(s.id) ? `<span class="fold-count">${s.questions.length}</span>` : ''}
+          </div>
+          <ul class="tree-qs" data-sid="${s.id}">${s.questions.map((q, j) => `<li data-qid="${q.id}">${node('question', q.id, `${i + 1}.${j + 1}`, q.text, `qc${q.color}`)}</li>`).join('')}</ul>
+        </li>`).join('')}
+      </ul>`;
+
+  // Drag in the tree: sections reorder, questions move within or across sections
+  Sortable.create($('#tree-sections'), {
+    group: 'tree-sections', handle: 'button[data-kind="section"]', animation: 150,
+    onStart: checkpoint, onEnd: syncFromTree
+  });
+  document.querySelectorAll('.tree-qs').forEach(ul => Sortable.create(ul, {
+    group: 'tree-questions', handle: 'button[data-kind="question"]', animation: 150,
+    onStart: checkpoint, onEnd: syncFromTree
+  }));
+}
+
+// ---------- render: JSON layout ----------
+// Stable key for each object/array in the JSON, so folding survives edits and moves
+function jsonKey(p) {
+  if (p.length === 0) return 'root';
+  if (p[2] === 'section' && p.length >= 3) {
+    if (p.length === 3) return 'sections';
+    const s = sections[p[3]];
+    if (p.length === 4) return `s:${s.id}`;
+    if (p.length === 5) return `qs:${s.id}`;
+    const q = s.questions[p[5]];
+    return ({ 6: 'q', 7: 'a', 8: 'aj', 9: 'm' })[p.length] + ':' + q.id;
+  }
+  return p.join('.');
+}
+// Which canvas block an object corresponds to (if any)
+function jsonLink(p) {
+  if (p.length === 2 && p[1] === 'template') return { kind: 'plan' };
+  if (p[2] !== 'section') return null;
+  if (p.length === 4) return { kind: 'section', id: sections[p[3]].id };
+  if (p.length === 6) return { kind: 'question', id: sections[p[3]].questions[p[5]].id, color: sections[p[3]].questions[p[5]].color };
+  return null;
+}
+const isFolded = key => key.startsWith('m:') ? !metaOpened.has(key) : jsonCollapsed.has(key);
+
+function renderJson() {
+  const str = v => `<span class="str">${esc(JSON.stringify(v))}</span>`;
+  const prim = v => typeof v === 'string' ? str(v) : `<span class="num">${esc(String(v))}</span>`;
+  const preview = v => typeof v === 'string' && v.length > 60 ? v.slice(0, 60) + '…' : v;
+
+  function walk(key, val, path, comma) {
+    const k = key === null ? '' : `<span class="key">${esc(JSON.stringify(key))}</span><span class="punc">:&nbsp;</span>`;
+    const c = comma ? '<span class="punc">,</span>' : '';
+    if (val === null || typeof val !== 'object') {
+      return `<div class="row" ${typeof val === 'string' ? `title="${esc(val)}"` : ''}><span class="pad"></span>${k}<span class="val">${prim(val)}${c}</span></div>`;
+    }
+    const isArr = Array.isArray(val);
+    const entries = isArr ? val.map((v, i) => [i, v]) : Object.entries(val);
+    const jk = jsonKey(path), folded = isFolded(jk), link = jsonLink(path);
+    const [open, close] = isArr ? ['[', ']'] : ['{', '}'];
+    const sum = isArr ? `${entries.length} item${entries.length === 1 ? '' : 's'}`
+      : val.title !== undefined ? JSON.stringify(preview(val.title))
+      : val.text !== undefined ? JSON.stringify(preview(val.text))
+      : `${entries.length} key${entries.length === 1 ? '' : 's'}`;
+    const sel = link && link.kind !== 'plan' && isSel(link.kind, link.id);
+    const attrs = link ? `data-kind="${link.kind}" ${link.id ? `data-id="${link.id}"` : ''}` : '';
+    return `<div class="grp ${folded ? 'folded' : ''} ${sel ? 'sel' : ''} ${link?.kind === 'question' ? `q-grp qc${link.color}` : ''}" ${attrs}>
+      <div class="row"><button class="fold" data-fold="${jk}" aria-expanded="${!folded}" aria-label="${folded ? 'Expand' : 'Collapse'} ${esc(String(key ?? 'root'))}"><span>▼</span></button>${k}<span class="punc">${open}</span>${folded ? `<span class="punc">&nbsp;…&nbsp;${close}${comma ? ',' : ''}</span><span class="summary">${esc(sum)}</span>` : ''}</div>
+      <div class="children">${entries.map(([ck, cv], i) => walk(isArr ? null : ck, cv, [...path, ck], i < entries.length - 1)).join('')}</div>
+      <div class="row close"><span class="pad"></span><span class="punc">${close}${c}</span></div>
+    </div>`;
+  }
+
+  $('#tree').innerHTML = walk(null, toJson(), [], false);
+}
+
+function syncFromTree(e) {
+  if (e.from === e.to && e.oldIndex === e.newIndex) { history.pop(); $('#undo').disabled = !history.length; return; }
+  const byId = new Map(sections.map(s => [String(s.id), s]));
+  const qs = new Map(sections.flatMap(s => s.questions).map(q => [String(q.id), q]));
+  sections = [...document.querySelectorAll('#tree-sections > li')].map(li => {
+    const s = byId.get(li.dataset.sid);
+    s.questions = [...li.querySelectorAll('.tree-qs > li')].map(q => qs.get(q.dataset.qid));
+    return s;
+  });
+  const btn = e.item.querySelector('button[data-kind]');
+  selected = { kind: btn.dataset.kind, id: Number(btn.dataset.id) };
+  render();
+  select(selected, { scroll: true });
+  announce(`${btn.dataset.kind === 'section' ? 'Section' : 'Question'} moved`);
+}
+
+function updateButtons() {
+  document.querySelectorAll('#palette [data-add="question"]').forEach(b => (b.disabled = sections.length === 0));
+}
+
+// Change selection without re-rendering (keeps focus and caret)
+function select(sel, { scroll = false, focus = false } = {}) {
+  selected = sel;
+  const sid = sel.kind === 'section' ? sel.id : sel.kind === 'question' ? locate(sel.id)?.s.id : null;
+  if (scroll && sel.kind === 'question' && collapsed.has(sid)) { collapsed.delete(sid); render(); }
+  document.querySelectorAll('#paper .blk.selected').forEach(el => el.classList.remove('selected'));
+  const el = sel.kind === 'plan' ? $('#paper .plan-blk') : document.getElementById(`b-${sel.kind}-${sel.id}`);
+  el?.classList.add('selected');
+  renderTree();
+  if (view === 'json') $('#tree .grp.sel')?.scrollIntoView({ block: 'nearest' });
+  if (scroll) el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (focus) el?.querySelector('textarea')?.focus({ preventScroll: true });
+}
+
+// ---------- structure changes ----------
+function syncSectionsFromDom(e) {
+  if (e.oldIndex === e.newIndex) { history.pop(); $('#undo').disabled = !history.length; return; }
+  const byId = new Map(sections.map(s => [String(s.id), s]));
+  sections = [...document.querySelectorAll('#sections > .sec')].map(el => byId.get(el.dataset.id));
+  selected = { kind: 'section', id: Number(e.item.dataset.id) };
+  render();
+  announce(`Section moved to position ${e.newIndex + 1}`);
+}
+
+function syncFromDom(e) {
+  if (e.from === e.to && e.oldIndex === e.newIndex) { history.pop(); $('#undo').disabled = !history.length; return; }
+  const all = new Map(sections.flatMap(s => s.questions).map(q => [String(q.id), q]));
+  document.querySelectorAll('.qlist').forEach(list => {
+    sections[sectionIndex(list.dataset.sid)].questions = [...list.querySelectorAll('.q')].map(el => all.get(el.dataset.id));
+  });
+  selected = { kind: 'question', id: Number(e.item.dataset.id) };
+  render();
+  const at = locate(selected.id);
+  announce(`Question moved to section ${at.si + 1}, position ${at.j + 1}`);
+}
+
+function moveQuestion(qid, dir) {
+  const { s, si, j } = locate(qid);
+  checkpoint();
+  const [q] = s.questions.splice(j, 1);
+  const t = j + dir;
+  if (t >= 0 && t <= s.questions.length) s.questions.splice(t, 0, q);
+  else if (dir < 0 && si > 0) sections[si - 1].questions.push(q);
+  else if (dir > 0 && si < sections.length - 1) sections[si + 1].questions.unshift(q);
+  else s.questions.splice(j, 0, q);
+  render();
+  const at = locate(qid);
+  announce(`Question moved to section ${at.si + 1}, position ${at.j + 1}`);
+}
+
+function moveSection(sid, dir) {
+  const i = sectionIndex(sid), t = i + dir;
+  if (t < 0 || t >= sections.length) return;
+  checkpoint();
+  [sections[i], sections[t]] = [sections[t], sections[i]];
+  render();
+  announce(`Section moved to position ${t + 1}`);
+}
+
+// A block card was dropped from the left panel at a position in the canvas
+function dropFromPalette(kind, index, sid) {
+  if (kind === 'section') {
+    const s = { id: id(), title: '', description: '', questions: [] };
+    sections.splice(index, 0, s);
+    selected = { kind: 'section', id: s.id };
+  } else {
+    const list = sections[sectionIndex(sid)].questions;
+    const q = newQuestion(list[index - 1], list[index]);
+    list.splice(index, 0, q);
+    selected = { kind: 'question', id: q.id };
+  }
+  render();
+  select(selected, { focus: true });
+  announce(`${kind === 'section' ? 'Section' : 'Question'} added`);
+}
+
+function addSection() {
+  checkpoint();
+  const s = { id: id(), title: '', description: '', questions: [] };
+  let at = sections.length;
+  if (selected.kind === 'section') at = sectionIndex(selected.id) + 1;
+  if (selected.kind === 'question') at = locate(selected.id).si + 1;
+  if (selected.kind === 'plan') at = 0;
+  sections.splice(at, 0, s);
+  selected = { kind: 'section', id: s.id };
+  render();
+  select(selected, { scroll: true, focus: true });
+  announce(`Section added at position ${at + 1}`);
+}
+
+// New questions get a colour different from the questions directly above and below
+function newQuestion(above, below) {
+  const start = above ? above.color + 1 : 0;
+  const color = [0, 1, 2].map(k => (start + k) % 3).find(c => c !== above?.color && c !== below?.color);
+  return { id: id(), text: '', answer: '', color };
+}
+
+function addQuestion() {
+  if (!sections.length) return;
+  checkpoint();
+  let s = sections[sections.length - 1], at = s.questions.length;
+  if (selected.kind === 'section') { s = sections[sectionIndex(selected.id)]; at = s.questions.length; }
+  if (selected.kind === 'question') { const l = locate(selected.id); s = l.s; at = l.j + 1; }
+  const q = newQuestion(s.questions[at - 1], s.questions[at]);
+  s.questions.splice(at, 0, q);
+  selected = { kind: 'question', id: q.id };
+  render();
+  select(selected, { scroll: true, focus: true });
+  announce('Question added');
+}
+
+// Fix a wrong label. The text stays as it is; only its place in the structure changes.
+function changeType(kind, bid, to) {
+  if (kind === to) return;
+  checkpoint();
+  let focusSel;
+  if (kind === 'question') {
+    // Question → Section: its text becomes the title of a new section right after this one,
+    // and the questions below it move into that section. An answer stays, under an empty question.
+    const { s, si, j } = locate(bid);
+    const [q, ...below] = s.questions.splice(j);
+    const ns = { id: id(), title: q.text, description: '', questions: [...below] };
+    if (q.answer.trim()) { q.text = ''; ns.questions.unshift(q); }
+    sections.splice(si + 1, 0, ns);
+    selected = focusSel = { kind: 'section', id: ns.id };
+    render();
+    flash(`b-section-${ns.id}`);
+    notify(`Question ${si + 1}.${j + 1} is now Section ${si + 2}` +
+      (below.length ? ` · ${below.length} question${below.length === 1 ? '' : 's'} below it moved along` : ''));
+  } else {
+    // Section → Question: its title becomes the first question of the section,
+    // and the section is left without a title until the user writes one
+    const i = sectionIndex(bid), s = sections[i];
+    const q = { ...newQuestion(undefined, s.questions[0]), text: s.title };
+    s.questions.unshift(q);
+    s.title = '';
+    collapsed.delete(s.id);
+    selected = { kind: 'question', id: q.id };
+    focusSel = { kind: 'section', id: s.id };
+    render();
+    flash(`b-question-${q.id}`);
+    notify(`Section ${i + 1}'s title is now Question ${i + 1}.1 · type a new section title`);
+  }
+  // Land on the block that needs attention: the new section, or the section that lost its title
+  select(focusSel, { scroll: true, focus: true });
+}
+
+// What a type change will do, in plain words (shown in the menu before the user picks)
+function typeEffect(kind, bid) {
+  const cut = t => t.trim() ? `“${t.trim().length > 50 ? t.trim().slice(0, 50) + '…' : t.trim()}”` : 'This empty question';
+  if (kind === 'question') {
+    const { s, si, j, q } = locate(bid), n = s.questions.length - j - 1, a = si + 1;
+    const moved = n === 0 ? '' : n === 1 ? ` Question ${a}.${j + 2} moves into it.` : ` Questions ${a}.${j + 2}–${a}.${s.questions.length} move into it.`;
+    return `${cut(q.text)} becomes the title of a new Section ${a + 1}.${moved}` +
+      (q.answer.trim() ? ' Its answer stays, under an empty question for you to fill in.' : '');
+  }
+  const i = sectionIndex(bid) + 1;
+  return `The section title becomes Question ${i}.1 and the other questions move down. Section ${i} will then need a new title.`;
+}
+
+// ---------- change-type menu ----------
+const typeNames = { section: 'Section', question: 'Question' };
+let menuFor = null;
+function openTypeMenu(btn, kind, bid) {
+  closeTypeMenu();
+  const menu = $('#type-menu');
+  menu.innerHTML = `<div class="menu-title">Change this ${kind} to…</div>` + Object.keys(typeNames).map(t => t === kind
+    ? `<div class="current">${typeNames[t]} (current)</div>`
+    : `<button role="menuitem" data-to="${t}"><strong>${typeNames[t]}</strong><small>${esc(typeEffect(kind, bid))}</small></button>`).join('');
+  menu.hidden = false;
+  const r = btn.getBoundingClientRect();
+  menu.style.left = Math.max(8, Math.min(r.left, innerWidth - menu.offsetWidth - 8)) + 'px';
+  menu.style.top = (r.bottom + 4 + menu.offsetHeight > innerHeight ? r.top - 4 - menu.offsetHeight : r.bottom + 4) + 'px';
+  menuFor = { btn, kind, bid };
+  btn.setAttribute('aria-expanded', 'true');
+  menu.querySelector('button')?.focus();
+}
+function closeTypeMenu({ refocus = false } = {}) {
+  if (!menuFor) return;
+  $('#type-menu').hidden = true;
+  menuFor.btn.setAttribute('aria-expanded', 'false');
+  if (refocus) menuFor.btn.focus();
+  menuFor = null;
+}
+$('#type-menu').addEventListener('click', e => {
+  const item = e.target.closest('[data-to]');
+  if (!item || !menuFor) return;
+  const { kind, bid } = menuFor;
+  closeTypeMenu();
+  changeType(kind, bid, item.dataset.to);
+});
+document.addEventListener('mousedown', e => { if (menuFor && !e.target.closest('#type-menu, button.kind')) closeTypeMenu(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTypeMenu({ refocus: true }); });
+document.addEventListener('scroll', () => closeTypeMenu(), true);
+
+// ---------- feedback ----------
+let toastTimer;
+function notify(msg) {
+  announce(msg);
+  $('#toast .msg').textContent = msg;
+  $('#toast').hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => ($('#toast').hidden = true), 8000);
+}
+function flash(elId) {
+  const el = document.getElementById(elId);
+  el?.classList.remove('flash');
+  void el?.offsetWidth;
+  el?.classList.add('flash');
+}
+$('#toast-undo').addEventListener('click', () => { $('#toast').hidden = true; undo(); });
+
+function remove(kind, rid) {
+  if (kind === 'section') {
+    const i = sectionIndex(rid), s = sections[i];
+    if (s.questions.length && !confirm(`Delete “${s.title || 'Untitled section'}” and its ${s.questions.length} question(s)?`)) return;
+    checkpoint();
+    sections.splice(i, 1);
+  } else {
+    checkpoint();
+    const { s, j } = locate(rid);
+    s.questions.splice(j, 1);
+  }
+  selected = { kind: 'plan' };
+  render();
+  announce(`${kind === 'section' ? 'Section' : 'Question'} deleted`);
+}
+
+// ---------- events ----------
+const paper = $('#paper');
+
+// Typing updates the data; titles also refresh the tree
+paper.addEventListener('input', e => {
+  const field = e.target.dataset.field;
+  if (!field) return;
+  const blk = e.target.closest('.blk');
+  const target = blk.dataset.kind === 'plan' ? plan
+    : blk.dataset.kind === 'section' ? sections[sectionIndex(blk.dataset.id)]
+    : locate(blk.dataset.id).q;
+  target[field] = e.target.value;
+  if (field === 'title' || field === 'text') blk.classList.toggle('missing', blk.dataset.kind !== 'plan' && !e.target.value.trim());
+  grow(e.target);
+  if (view === 'json' || (field !== 'answer' && field !== 'description')) renderTree();
+});
+
+// Clicking or tabbing into a block selects it (innermost block wins)
+paper.addEventListener('focusin', e => {
+  const blk = e.target.closest('.blk');
+  if (blk) select({ kind: blk.dataset.kind, id: blk.dataset.id && Number(blk.dataset.id) });
+});
+paper.addEventListener('click', e => {
+  const btn = e.target.closest('.head button');
+  const blk = e.target.closest('.blk');
+  if (!blk) return;
+  const kind = blk.dataset.kind, bid = Number(blk.dataset.id);
+  if (!btn) return select({ kind, id: kind === 'plan' ? undefined : bid });
+  const act = btn.dataset.act;
+  if (act === 'toggle') {
+    collapsed.has(bid) ? collapsed.delete(bid) : collapsed.add(bid);
+    render();
+    document.querySelector(`#b-${kind}-${bid} [data-act="toggle"]`)?.focus();
+    return;
+  }
+  if (act === 'type') return menuFor?.btn === btn ? closeTypeMenu() : openTypeMenu(btn, kind, bid);
+  if (act === 'delete') return remove(kind, bid);
+  const dir = act === 'up' ? -1 : 1;
+  selected = { kind, id: bid };
+  kind === 'section' ? moveSection(bid, dir) : moveQuestion(bid, dir);
+  document.querySelector(`#b-${kind}-${bid} [data-act="${act}"]:not(:disabled)`)?.focus();
+});
+
+const toggleIn = (set, k) => (set.has(k) ? set.delete(k) : set.add(k));
+$('#tree').addEventListener('click', e => {
+  const fold = e.target.closest('[data-fold]');
+  if (fold) {
+    const k = fold.dataset.fold;
+    if (view === 'structure') toggleIn(treeCollapsed, Number(k));
+    else toggleIn(k.startsWith('m:') ? metaOpened : jsonCollapsed, k);
+    renderTree();
+    document.querySelector(`#tree [data-fold="${k}"]`)?.focus();
+    return;
+  }
+  let target;
+  if (view === 'structure') target = e.target.closest('button[data-kind]');
+  else {
+    // Clicking the opening line of a section/question object jumps to it in the canvas
+    const row = e.target.closest('.row');
+    target = row?.parentElement;
+    if (target?.firstElementChild !== row) target = null;
+  }
+  if (!target?.dataset.kind) return;
+  select({ kind: target.dataset.kind, id: target.dataset.id && Number(target.dataset.id) }, { scroll: true, focus: true });
+});
+
+// Structure / JSON / PDF tabs (arrow keys move between them)
+const VIEWS = ['structure', 'json', 'pdf'];
+function setView(v, { focus = false } = {}) {
+  view = VIEWS.includes(v) ? v : 'structure';
+  try { localStorage.setItem('dmp-view', view); } catch {}
+  document.querySelectorAll('.tabs [role="tab"]').forEach(t => {
+    const on = t.dataset.view === view;
+    t.setAttribute('aria-selected', on);
+    t.tabIndex = on ? 0 : -1;
+    if (on && view !== 'pdf') $('#tree').setAttribute('aria-labelledby', t.id);
+    if (on && focus) t.focus();
+  });
+  $('#tree').hidden = view === 'pdf';
+  $('#pdf-view').hidden = view !== 'pdf';
+  $('#copy-json').hidden = view !== 'json';
+  $('#tree-fold-all').hidden = view === 'pdf';
+  if (view === 'pdf') showPdf();
+  renderTree();
+}
+$('.tabs').addEventListener('click', e => { const t = e.target.closest('[role="tab"]'); if (t) setView(t.dataset.view); });
+$('.tabs').addEventListener('keydown', e => {
+  const step = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+  if (!step) return;
+  setView(VIEWS[(VIEWS.indexOf(view) + step + VIEWS.length) % VIEWS.length], { focus: true });
+});
+$('#copy-json').addEventListener('click', async () => {
+  await navigator.clipboard.writeText(JSON.stringify(toJson(), null, 2));
+  $('#copy-json').textContent = 'Copied';
+  setTimeout(() => ($('#copy-json').textContent = 'Copy'), 1200);
+});
+
+// Delegated: Sortable leaves a copy of the dragged card behind, so don't bind to the card itself
+$('#palette').addEventListener('click', e => {
+  const btn = e.target.closest('[data-add]');
+  if (!btn || btn.disabled) return;
+  btn.dataset.add === 'section' ? addSection() : addQuestion();
+});
+Sortable.create($('#palette'), {
+  group: { name: 'palette', pull: 'clone', put: false },
+  sort: false,
+  filter: ':disabled',
+  onStart: checkpoint,
+  onEnd: e => { if (e.to === e.from) { history.pop(); $('#undo').disabled = !history.length; } }
+});
+$('#undo').addEventListener('click', undo);
+$('#reset').addEventListener('click', reset);
+// "Collapse" while anything is open, "Expand" once everything is folded
+const allFolded = set => sections.length > 0 && sections.every(s => set.has(s.id));
+function updateFoldButtons() {
+  $('#fold-all').textContent = allFolded(collapsed) ? 'Expand all' : 'Collapse all';
+  $('#tree-fold-all').textContent = panelAllFolded() ? 'Expand' : 'Collapse';
+}
+$('#fold-all').addEventListener('click', () => {
+  if (allFolded(collapsed)) collapsed.clear();
+  else sections.forEach(s => collapsed.add(s.id));
+  render();
+});
+// The panel's Collapse/Expand folds sections in whichever tab is open
+const panelAllFolded = () => view === 'json'
+  ? sections.length > 0 && sections.every(s => jsonCollapsed.has(`s:${s.id}`))
+  : allFolded(treeCollapsed);
+$('#tree-fold-all').addEventListener('click', () => {
+  const set = view === 'json' ? jsonCollapsed : treeCollapsed;
+  if (panelAllFolded()) set.clear();
+  else sections.forEach(s => set.add(view === 'json' ? `s:${s.id}` : s.id));
+  renderTree();
+});
+$('#export').addEventListener('click', () => {
+  const noTitle = sections.filter(s => !s.title.trim()).length;
+  const noText = sections.flatMap(s => s.questions).filter(q => !q.text.trim()).length;
+  const gaps = [noTitle && `${noTitle} section(s) without a title`, noText && `${noText} question(s) without text`].filter(Boolean);
+  if (gaps.length && !confirm(`There are ${gaps.join(' and ')}. Export anyway?`)) return;
+  const blob = new Blob([JSON.stringify(toJson(), null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'dmp-structure.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+window.addEventListener('resize', () => document.querySelectorAll('#paper textarea').forEach(grow));
+
+// ---------- step 1: upload ----------
+let pdfUrl;
+// Load the PDF only once its tab is visible: a viewer that starts in a hidden (0-size) frame
+// sizes the pages for that and shows them tiny. FitH asks for "fit to width" where supported.
+function showPdf() {
+  const frame = $('#pdf-frame');
+  if (pdfUrl && !frame.getAttribute('src')) frame.src = pdfUrl + '#view=FitH';
+}
+function showStep(step) {
+  const review = step === 'review';
+  $('#upload-view').hidden = review;
+  $('#review-view').hidden = !review;
+  $('#review-actions').hidden = !review;
+  $('#step-upload').disabled = !review;
+  for (const [el, on] of [[$('#step-upload'), !review], [$('#step-review'), review]]) {
+    on ? el.setAttribute('aria-current', 'step') : el.removeAttribute('aria-current');
+  }
+  if (!review) {
+    $('#drop-pick').hidden = false;
+    $('#drop-busy').hidden = true;
+    $('#drop-error').textContent = '';
+  }
+}
+
+function takePdf(file) {
+  if (!file) return;
+  if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) {
+    $('#drop-error').textContent = `“${file.name}” isn't a PDF. Please choose a .pdf file.`;
+    return;
+  }
+  $('#drop-error').textContent = '';
+  $('#drop-pick').hidden = true;
+  $('#drop-busy').hidden = false;
+  $('#busy-name').textContent = file.name;
+  if (pdfUrl) URL.revokeObjectURL(pdfUrl);
+  pdfUrl = URL.createObjectURL(file);
+  $('#pdf-frame').removeAttribute('src');
+  // Demo: no extraction service yet, so every PDF loads the bundled sample plan
+  setTimeout(() => {
+    load(SAMPLE);
+    history.length = 0;
+    $('#undo').disabled = true;
+    selected = { kind: 'plan' };
+    collapsed.clear();
+    showStep('review');
+    render();
+    setView(view);
+    announce(`Extracted ${sections.length} sections from ${file.name}. Check them and fix anything that's wrong.`);
+  }, 1800);
+}
+
+$('#choose-pdf').addEventListener('click', () => $('#pdf-file').click());
+$('#pdf-file').addEventListener('change', e => { takePdf(e.target.files[0]); e.target.value = ''; });
+const drop = $('#drop');
+drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
+drop.addEventListener('dragleave', e => { if (!drop.contains(e.relatedTarget)) drop.classList.remove('over'); });
+drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); takePdf(e.dataTransfer.files[0]); });
+$('#use-sample').addEventListener('click', async () => {
+  try {
+    const res = await fetch('sample1.pdf');
+    if (!res.ok) throw new Error(res.status);
+    takePdf(new File([await res.blob()], 'sample1.pdf', { type: 'application/pdf' }));
+  } catch {
+    $('#drop-error').textContent = 'Couldn’t open sample1.pdf from here. Choose it with “Choose PDF” instead.';
+  }
+});
+$('#step-upload').addEventListener('click', () => {
+  if (!confirm('Upload a different PDF? Changes to this plan will be lost.')) return;
+  closeTypeMenu();
+  $('#toast').hidden = true;
+  showStep('upload');
+});
+
+showStep('upload');
+</script>
+</body>
+</html>

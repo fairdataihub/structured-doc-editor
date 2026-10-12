@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import type { MenuItem } from "~/composables/useBlockMenus";
 
-// One block on the page: the margin controls (add, drag/menu), the generated number,
-// the Tiptap text, and a review flag in the right margin when something needs a look.
+// One block on the page: the margin controls (add, drag/menu), the generated number and
+// the Tiptap text.
 
 const props = defineProps<{
   block: Block;
   prefix?: string;
   selected: boolean;
-  issueOn: boolean;
-  flaggedIssue?: string;
 }>();
 const emit = defineEmits<{ grab: [e: PointerEvent, id: string] }>();
 
 const plan = usePlan();
-const review = useReview();
 const menus = useBlockMenus();
 
 const menuOpen = ref(false);
@@ -42,7 +39,7 @@ function onPrefixDown(e: PointerEvent) {
   if (props.block.type === "section") emit("grab", e, props.block.id);
 }
 function onBlockDown(e: PointerEvent) {
-  if (!(e.target as HTMLElement).closest(".tx, .gut, .flag"))
+  if (!(e.target as HTMLElement).closest(".tx, .gut"))
     plan.select(props.block.id);
 }
 </script>
@@ -50,7 +47,7 @@ function onBlockDown(e: PointerEvent) {
 <template>
   <div
     class="b"
-    :class="[`b-${block.type}`, { sel: selected, 'issue-on': issueOn }]"
+    :class="[`b-${block.type}`, { sel: selected }]"
     :data-id="block.id"
     :data-type="block.type"
     @pointerdown="onBlockDown"
@@ -124,17 +121,5 @@ function onBlockDown(e: PointerEvent) {
     >
 
     <EditorBlockText :key="`${block.id}-${block.type}`" :block="block" />
-
-    <button
-      v-if="flaggedIssue"
-      type="button"
-      class="flag"
-      tabindex="-1"
-      aria-label="Needs a look"
-      title="Needs a look"
-      @click="review.show('issue', flaggedIssue)"
-    >
-      !
-    </button>
   </div>
 </template>

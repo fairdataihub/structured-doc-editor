@@ -5,6 +5,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   // The editor (Tiptap) is browser-only, so the app renders on the client.
   ssr: false,
+  // One deployment, two prototypes: this editor at /d and a teammate's static page at /x
+  // (public/x/index.html); the home page (/) links to both. /x and /x/ go to /x/index.html so the
+  // page's relative links (sample1.pdf, …) resolve inside /x/. Redirecting /x to /x/ would loop:
+  // route rules match /x and /x/ alike.
+  routeRules: {
+    "/x": { redirect: "/x/index.html" },
+  },
 
   modules: ["@nuxt/ui", "@nuxt/eslint"],
   runtimeConfig: {

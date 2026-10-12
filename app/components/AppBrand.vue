@@ -1,6 +1,6 @@
 <template>
-  <!-- The app's name and mark. It always leads back to the start page. -->
-  <NuxtLink to="/" class="brand" aria-label="DMP Bridge, start page">
+  <!-- The app's name and mark. It leads home (/), where both prototypes are linked. -->
+  <NuxtLink to="/" class="brand" aria-label="DMP Bridge, home">
     <svg
       width="22"
       height="22"

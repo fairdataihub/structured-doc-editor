@@ -25,7 +25,6 @@
   --accent-line: #a3b3f0;
   --warn: #8a5300;
   --warn-bg: #fff1d2;
-  --warn-dot: #e0960f;
   --ok: #1c7045;
   --ok-bg: #dbf0e3;
   --chip-section: #d3e7fa;
@@ -38,12 +37,10 @@
   --t-section: #bfddf7;
   --t-question: #fff2a8;
   --t-answer: #cdebc5;
-  --t-list: #f5cfe3;
+  --t-description: #f5cfe3;
   --p-hover: rgb(46 78 207 / 0.05);
   --p-sel: rgb(46 78 207 / 0.075);
   --p-sel-line: rgb(46 78 207 / 0.5);
-  --p-warn: rgb(224 150 15 / 0.15);
-  --p-warn-line: #e0960f;
   --p-flash: rgb(46 78 207 / 0.2);
   --p-renum: #ffe7a3;
   --p-ctl: #8a8f99;
@@ -68,7 +65,6 @@
   --accent-line: #4c5daa;
   --warn: #f3bd5c;
   --warn-bg: #3a2b0e;
-  --warn-dot: #f0a93a;
   --ok: #6bd39e;
   --ok-bg: #12301f;
   --chip-section: #1c344b;
@@ -125,8 +121,8 @@ body {
 .sw.t-answer {
   background: var(--t-answer);
 }
-.sw.t-list {
-  background: var(--t-list);
+.sw.t-description {
+  background: var(--t-description);
 }
 
 /* ---------- layout ---------- */
@@ -227,12 +223,6 @@ body {
     0 0 0 3pt var(--p-sel),
     0 0 0 calc(3pt + 1px) var(--p-sel-line);
 }
-.sheet .b.issue-on {
-  background-color: var(--p-warn);
-  box-shadow:
-    0 0 0 3pt var(--p-warn),
-    0 0 0 calc(3pt + 1.5px) var(--p-warn-line);
-}
 .sheet .b.dragging {
   opacity: 0.28;
 }
@@ -300,9 +290,9 @@ body {
   background-color: var(--t-answer) !important;
   box-shadow: 0 0 0 2pt var(--t-answer);
 }
-.structure .b-list {
-  background-color: var(--t-list) !important;
-  box-shadow: 0 0 0 2pt var(--t-list);
+.structure .b-description {
+  background-color: var(--t-description) !important;
+  box-shadow: 0 0 0 2pt var(--t-description);
 }
 .structure .b.sel {
   box-shadow:
@@ -354,23 +344,6 @@ body {
   width: 20px;
   height: 22px;
   pointer-events: none;
-}
-.flag {
-  position: absolute;
-  left: 100%;
-  top: -1px;
-  margin-left: 12px;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 0;
-  background: var(--p-warn-line);
-  color: #ffffff;
-  font: 700 12px/20px var(--font-sans);
-  padding: 0;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
 }
 
 /* ---------- drag feedback (page) ---------- */
@@ -717,13 +690,6 @@ body.is-dragging .dock {
 .lvl1.sel .lbl {
   color: var(--ink);
 }
-.idot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--warn-dot);
-  flex: none;
-}
 .ol-row .more {
   opacity: 0;
 }
@@ -881,25 +847,11 @@ body.is-dragging .dock {
   color: var(--ok);
   background: var(--ok-bg);
 }
-.dk-count {
-  font: 500 12px var(--font-mono);
-  color: var(--muted);
-  margin-left: 4px;
-  white-space: nowrap;
-}
 .dk-title {
   font-size: 16px;
   font-weight: 650;
   margin: 4px 0 2px;
   text-wrap: balance;
-}
-.dk-where {
-  font-size: 12.5px;
-  color: var(--muted);
-  margin: 0 0 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 .dk-body {
   margin: 0 0 8px;
@@ -1058,32 +1010,6 @@ body.is-dragging .dock {
   color: var(--muted);
   line-height: 1.4;
 }
-.compliance {
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 12px 14px;
-  background: var(--raised);
-  display: grid;
-  gap: 7px;
-  font-size: 12.5px;
-}
-.compliance .row {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-}
-.compliance .ok {
-  color: var(--ok);
-}
-.compliance .bad {
-  color: var(--warn);
-}
-.compliance .src {
-  font-size: 11.5px;
-  color: var(--faint);
-  margin-top: 2px;
-}
-
 /* ---------- export ---------- */
 .chip {
   font: 500 11.5px var(--font-mono);
@@ -1092,15 +1018,19 @@ body.is-dragging .dock {
   background: var(--hover);
   color: var(--muted);
 }
+/* The JSON preview in the Export dialog scrolls inside itself, so the dialog never does: long
+   lines wrap (no sideways growth) and the height follows the window, leaving room for the rest. */
 pre.json {
-  max-height: 240px;
-  overflow: auto;
+  max-height: clamp(120px, calc(100dvh - 460px), 400px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--desk);
   border-radius: 8px;
   padding: 12px;
   font: 11.5px/1.5 var(--font-mono);
   margin: 0;
-  white-space: pre;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   color: var(--ink);
 }
 
@@ -1287,6 +1217,68 @@ pre.json {
   color: var(--muted);
 }
 
+/* ---------- home page (/) ---------- */
+.home-name {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  padding: 0 4px;
+}
+.home-list {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+.home-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--raised);
+  color: inherit;
+  text-decoration: none;
+}
+.home-card:hover {
+  border-color: var(--accent-line);
+}
+.home-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.home-path {
+  flex: none;
+  font: 600 13px/1 var(--font-mono);
+  padding: 8px 9px;
+  border-radius: 7px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.home-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+.home-card-name {
+  font-weight: 600;
+  font-size: 14.5px;
+}
+.home-blurb {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.home-arrow {
+  flex: none;
+  color: var(--faint);
+}
+.home-card:hover .home-arrow {
+  color: var(--accent);
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 1280px) {
   .side {
@@ -1324,8 +1316,7 @@ pre.json {
   .side {
     width: 100%;
   }
-  .gut,
-  .flag {
+  .gut {
     display: none;
   }
   .canvas {

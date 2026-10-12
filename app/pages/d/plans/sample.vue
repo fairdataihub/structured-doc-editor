@@ -3,8 +3,8 @@ import { useEventListener } from "@vueuse/core";
 
 useSeoMeta({ title: "Editor" });
 
-// The editor, opened on the sample plan (/plans/sample). PDF upload isn't connected yet, so the
-// start page (/) sends everyone here. Loads the sample's LLM extraction; nothing is compared with
+// The editor, opened on the sample plan (/d/plans/sample). PDF upload isn't connected yet, so the
+// start page (/d) sends everyone here. Loads the sample's LLM extraction; nothing is compared with
 // the original PDF: people edit the plan and check its structure themselves.
 const SAMPLE = {
   fileName: "sample1.pdf",
@@ -12,7 +12,6 @@ const SAMPLE = {
 };
 
 const plan = usePlan();
-const review = useReview();
 const toast = useToast();
 const { ready, ui, sel, announcement } = plan;
 const error = ref("");
@@ -25,7 +24,6 @@ onMounted(async () => {
       fileName: SAMPLE.fileName,
       notify: toast,
     });
-    if (!ui.introSeen) review.show("intro");
   } catch (e) {
     error.value = `Couldn't load the sample: ${(e as Error).message}`;
   }
@@ -58,15 +56,17 @@ useEventListener(document, "keydown", (e: KeyboardEvent) => {
     plan.nudge(sel.value, e.key === "ArrowUp" ? -1 : 1);
   } else if (mod && e.altKey && sel.value) {
     const t = (
-      { Digit1: "section", Digit2: "question", Digit0: "answer" } as const
+      {
+        Digit1: "section",
+        Digit2: "question",
+        Digit3: "description",
+        Digit0: "answer",
+      } as const
     )[e.code as "Digit1"];
     if (t) {
       e.preventDefault();
       plan.setType(sel.value, t);
     }
-  } else if (mod && e.shiftKey && e.code === "Digit8" && sel.value) {
-    e.preventDefault();
-    plan.setType(sel.value, "list");
   } else if (e.key === "Escape" && ui.outlineOpen) {
     ui.outlineOpen = false;
   }
@@ -95,7 +95,7 @@ useEventListener(document, "keydown", (e: KeyboardEvent) => {
           {{ error || "Loading sample1…" }}
         </div>
 
-        <EditorReviewDock />
+        <EditorWelcome />
       </main>
 
       <EditorSidePanel v-if="ready" />

@@ -2,7 +2,6 @@
 // Export: JSON in the extraction's shape, with the edits, so whatever reads it today keeps working.
 
 const plan = usePlan();
-const review = useReview();
 const { state, numbering, structure, exportOpen, meta } = plan;
 
 const message = ref("");
@@ -11,7 +10,6 @@ const json = computed(() =>
     ? JSON.stringify(toExtractionJson(state, numbering.value), null, 2)
     : "",
 );
-const issues = computed(() => review.openIssues.value.length);
 const fileName = computed(
   () => (meta.fileName || "plan").replace(/\.pdf$/i, "") + "-edited.json",
 );
@@ -61,25 +59,6 @@ watch(exportOpen, (open) => {
             questions</span
           >
         </div>
-
-        <UAlert
-          v-if="issues"
-          color="warning"
-          variant="soft"
-          icon="i-lucide-circle-alert"
-          :title="`${issues} item${issues > 1 ? 's' : ''} still need${issues > 1 ? '' : 's'} a look. You can export anyway.`"
-          :actions="[
-            {
-              label: 'Review them',
-              color: 'warning',
-              variant: 'outline',
-              onClick: () => {
-                exportOpen = false;
-                review.start();
-              },
-            },
-          ]"
-        />
 
         <div class="flex flex-wrap items-center gap-2">
           <UButton

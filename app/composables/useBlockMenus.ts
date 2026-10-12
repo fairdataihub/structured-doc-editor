@@ -7,14 +7,13 @@ export type MenuItem = DropdownMenuItem & { swatch?: BlockType };
 
 const KEYS: Partial<Record<BlockType, string[]>> = {
   section: ["meta", "alt", "1"],
+  description: ["meta", "alt", "3"],
   question: ["meta", "alt", "2"],
   answer: ["meta", "alt", "0"],
-  list: ["meta", "shift", "8"],
 };
 
 export function useBlockMenus() {
   const plan = usePlan();
-  const review = useReview();
 
   function styleItems(id: string): MenuItem[][] {
     const b = plan.byId(id);
@@ -23,15 +22,15 @@ export function useBlockMenus() {
     return [
       [
         { type: "label", label: "Style" },
-        ...(["section", "question", "answer", "list"] as const).map<MenuItem>(
-          (t) => ({
-            label: TYPE_LABEL[t],
-            swatch: t,
-            kbds: KEYS[t],
-            active: b.type === t,
-            onSelect: () => plan.setType(id, t),
-          }),
-        ),
+        ...(
+          ["section", "description", "question", "answer"] as const
+        ).map<MenuItem>((t) => ({
+          label: TYPE_LABEL[t],
+          swatch: t,
+          kbds: KEYS[t],
+          active: b.type === t,
+          onSelect: () => plan.setType(id, t),
+        })),
       ],
     ];
   }
@@ -126,13 +125,6 @@ export function useBlockMenus() {
         icon: "i-lucide-copy",
         onSelect: () => plan.duplicate(id),
       });
-    const flagged = review.flagged.value[id];
-    if (flagged)
-      extra.push({
-        label: "Review this",
-        icon: "i-lucide-circle-alert",
-        onSelect: () => review.show("issue", flagged),
-      });
     if (extra.length) groups.push(extra);
     if (b.type !== "title") {
       groups.push([
@@ -157,13 +149,13 @@ export function useBlockMenus() {
     return [
       [
         { type: "label", label: "Add below" },
-        ...(["answer", "list", "question", "section"] as const).map<MenuItem>(
-          (t) => ({
-            label: TYPE_LABEL[t],
-            swatch: t,
-            onSelect: () => plan.addBlock(id, t),
-          }),
-        ),
+        ...(
+          ["answer", "description", "question", "section"] as const
+        ).map<MenuItem>((t) => ({
+          label: TYPE_LABEL[t],
+          swatch: t,
+          onSelect: () => plan.addBlock(id, t),
+        })),
       ],
     ];
   }

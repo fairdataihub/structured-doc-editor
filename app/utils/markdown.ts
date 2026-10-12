@@ -1,10 +1,10 @@
 // LLM extractions often come back with markdown: **bold**, _italic_, # headings, - bullets,
 // [links](…), `code`, <u>underline</u>. The plan has one fixed style, so the syntax is removed
-// and only the words are kept. Bulleted and numbered lines in an answer become list blocks.
+// and only the words are kept. Bulleted lines keep a "•" so a list still reads as one.
 
 interface Line {
   text: string;
-  /** "-", "*" or "+" bullet: the marker is dropped (lists print "•" instead). */
+  /** "-", "*" or "+" bullet: the marker becomes "•". */
   bullet?: boolean;
   /** Bullet or numbered line. A number ("1.") is part of the words and stays. */
   item?: boolean;
@@ -122,14 +122,13 @@ export function stripMarkdown(s: string): string {
 }
 
 /**
- * An answer as plain-text blocks. Blank lines separate answers; each bulleted or numbered line
- * starts a list block. Other line breaks inside an answer are kept as line breaks.
+ * Text as plain paragraphs: blank lines separate paragraphs, other line breaks are kept. Bulleted
+ * lines become "• …" lines and numbered lines keep their number; a heading stands on its own.
  */
-export function markdownBlocks(
-  s: string,
-): { type: "answer" | "list"; text: string }[] {
-  const out: { type: "answer" | "list"; text: string }[] = [];
-  let open = false;
+export function markdownParagraphs(s: string): string[] {
+  const out: string[] = [];
+  let open = false; // the last paragraph takes more lines
+  let item = false; // the last line is a list item: a plain line under it continues it
   for (const raw of lines(s)) {
     if (!raw.trim()) {
       open = false;
@@ -137,17 +136,13 @@ export function markdownBlocks(
     }
     const l = readLine(raw);
     if (!l?.text) continue;
-    const last = out.at(-1);
-    if (l.item) {
-      out.push({ type: "list", text: l.bullet ? `• ${l.text}` : l.text });
-    } else if (open && last) {
-      // A line under a list item continues it; a line under an answer is a line break.
-      last.text += last.type === "list" ? ` ${l.text}` : `\n${l.text}`;
-    } else {
-      out.push({ type: "answer", text: l.text });
-    }
-    // A heading inside an answer stands on its own line.
+    const text = l.bullet ? `• ${l.text}` : l.text;
+    const continues: boolean = open && !l.heading && item && !l.item;
+    if (open && !l.heading)
+      out[out.length - 1] += continues ? ` ${text}` : `\n${text}`;
+    else out.push(text);
     open = !l.heading;
+    item = !!l.item || continues;
   }
 
   return out;

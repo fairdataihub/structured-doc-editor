@@ -25,6 +25,5 @@ logs
 !.env.example
 
 
-# Python
-.venv
-__pycache__
+# Vercel CLI and local Vercel builds
+.vercel

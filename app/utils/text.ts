@@ -2,9 +2,9 @@
 export const TYPE_LABEL: Record<BlockType, string> = {
   title: "Title",
   section: "Section",
+  description: "Section description",
   question: "Question",
   answer: "Answer",
-  list: "List",
 };
 
 let scratch: HTMLDivElement | null = null;
@@ -37,8 +37,8 @@ export const plainOf = (b: Pick<Block, "html">) =>
   stripHtml(b.html).replace(/\s+/g, " ").trim();
 export const labelOf = (b: Block) =>
   plainOf(b).replace(/:\s*$/, "") || TYPE_LABEL[b.type];
-/** Answers and lists: the blocks that hold a question's response. */
+/** Running text (section descriptions and answers), as opposed to the title and headings. */
 export const isTextBlock = (b?: Block | null) =>
-  !!b && (b.type === "answer" || b.type === "list");
+  !!b && (b.type === "description" || b.type === "answer");
 export const isHeadingBlock = (b?: Block | null) =>
   !!b && (b.type === "section" || b.type === "question");

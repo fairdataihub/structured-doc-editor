@@ -2,21 +2,8 @@
 import type { DropdownMenuItem } from "@nuxt/ui";
 
 const plan = usePlan();
-const review = useReview();
-const { ui, meta, saveStatus, exportOpen } = plan;
+const { ui, meta, saveStatus, exportOpen, welcomeOpen } = plan;
 const config = useRuntimeConfig();
-
-const count = computed(() => review.openIssues.value.length);
-
-function toggleReview() {
-  if (review.dock.mode) {
-    review.close();
-  } else if (!ui.introSeen) {
-    review.show("intro");
-  } else {
-    review.start();
-  }
-}
 
 function toggleStyles() {
   ui.side = ui.side === "styles" ? null : "styles";
@@ -33,14 +20,14 @@ const fileItems: DropdownMenuItem[][] = [
     {
       label: "Show the intro again",
       icon: "i-lucide-info",
-      onSelect: () => review.show("intro"),
+      onSelect: () => (welcomeOpen.value = true),
     },
   ],
   [
     {
       label: "Back to the start page",
       icon: "i-lucide-arrow-left",
-      to: "/",
+      to: "/d",
     },
   ],
 ];
@@ -71,15 +58,6 @@ const fileItems: DropdownMenuItem[][] = [
     </UDropdownMenu>
 
     <span class="flex-1" />
-
-    <UButton
-      :color="count ? 'warning' : 'success'"
-      variant="soft"
-      :icon="count ? 'i-lucide-circle-alert' : 'i-lucide-circle-check'"
-      @click="toggleReview"
-    >
-      {{ count ? `${count} to check` : "All checked" }}
-    </UButton>
 
     <UButton
       v-if="config.public.showStylesPanel"

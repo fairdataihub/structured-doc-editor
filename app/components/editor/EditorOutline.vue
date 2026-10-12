@@ -7,7 +7,6 @@ import type { MenuItem } from "~/composables/useBlockMenus";
 // block order by usePlan().applyOutline(), so numbering and the page update from the model.
 
 const plan = usePlan();
-const review = useReview();
 const menus = useBlockMenus();
 const { ui, sel, inview, numbering, structure, renumbered, flashed } = plan;
 
@@ -52,24 +51,6 @@ const selectedRow = computed(() => {
 
   return o.sec;
 });
-const dotFor = (ids: string[]) => ids.some((id) => review.flagged.value[id]);
-const secIds = (secId: string) => {
-  const s = structure.value.secs.find((x) => x.b.id === secId);
-  if (!s) return [secId];
-  const own = [s.b.id, ...s.intro.map((b) => b.id)];
-
-  return ui.collapsed[secId]
-    ? [...own, ...s.qs.flatMap((q) => [q.b.id, ...q.body.map((b) => b.id)])]
-    : own;
-};
-const qIds = (qId: string) => {
-  const q = structure.value.secs
-    .flatMap((s) => s.qs)
-    .find((x) => x.b.id === qId);
-
-  return q ? [q.b.id, ...q.body.map((b) => b.id)] : [qId];
-};
-
 function onStart(kind: "section" | "question") {
   dragKind.value = kind;
   plan.endTyping();
@@ -255,12 +236,6 @@ watch(selectedRow, (id) =>
               plan.byId(s.id) ? labelOf(plan.byId(s.id)!) : ""
             }}</span>
 
-            <span
-              v-if="dotFor(secIds(s.id))"
-              class="idot"
-              title="Needs a look"
-            />
-
             <UDropdownMenu
               :items="menus.blockItems(s.id)"
               :content="{ align: 'start' }"
@@ -326,12 +301,6 @@ watch(selectedRow, (id) =>
               <span class="lbl">{{
                 plan.byId(q.id) ? labelOf(plan.byId(q.id)!) : ""
               }}</span>
-
-              <span
-                v-if="dotFor(qIds(q.id))"
-                class="idot"
-                title="Needs a look"
-              />
 
               <UDropdownMenu
                 :items="menus.blockItems(q.id)"

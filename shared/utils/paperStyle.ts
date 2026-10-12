@@ -12,9 +12,9 @@ export const PAPER_STYLE = {
     title: "13 pt bold · all caps · centred · rule below",
     section:
       "12 pt bold · “Element 1:” · 14 pt above · stays with the next block",
+    description: "11 pt · dark grey · 1.25 line spacing · 6 pt after",
     question: "11 pt bold · “1.” · hanging indent",
     answer: "11 pt · 1.25 line spacing · 6 pt after",
-    list: "11 pt · 0.25 in indent",
   } satisfies Record<BlockType, string>,
 } as const;
 

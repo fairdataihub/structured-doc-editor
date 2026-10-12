@@ -1,6 +1,8 @@
 // Types for the editor's plan and the extraction JSON it imports and exports.
 
-export type BlockType = "title" | "section" | "question" | "answer" | "list";
+/** The plan's structure: title, section, section description, question, answer. */
+export type BlockType =
+  "title" | "section" | "description" | "question" | "answer";
 
 /** One block of the plan. The editor keeps the plan as a flat list of blocks, like paragraphs in Word. */
 export interface Block {
@@ -12,32 +14,10 @@ export interface Block {
   numbered?: boolean;
 }
 
-/** A question the extraction left without a number, among numbered ones. */
-export interface Issue {
-  id: string;
-  kind: "unnumbered";
-  blockId: string;
-  status: "open" | "fixed" | "kept";
-}
-
-export interface CrossRef {
-  id: string;
-  secId: string;
-  secLabel: string;
-  text: string;
-  dismissed: string | null;
-}
-
 export interface PlanState {
   v: number;
   file: string;
   blocks: Block[];
-  issues: Issue[];
-  refs: CrossRef[];
-  autofix: {
-    status: "open" | "kept" | "undone" | "none";
-    items: { secId: string; text: string }[];
-  };
   counts: { sections: number; questions: number };
 }
 

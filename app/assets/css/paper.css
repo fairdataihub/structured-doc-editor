@@ -24,6 +24,7 @@
 .paper {
   --paper: #ffffff;
   --paper-ink: #121212;
+  --paper-soft: #4a4a4a;
   --paper-muted: #6b6b6b;
   --paper-rule: #9c9c9c;
   --pf: Arimo, "Liberation Sans", Arial, sans-serif;
@@ -102,6 +103,10 @@
   margin-top: 14pt;
   margin-bottom: 4pt;
 }
+.b-description {
+  color: var(--paper-soft);
+  margin-bottom: 6pt;
+}
 .b-question {
   font-weight: 700;
   display: flex;
@@ -113,13 +118,6 @@
 }
 .b-answer {
   margin-bottom: 6pt;
-}
-.b-list {
-  padding-left: 0.25in;
-  margin-bottom: 1pt;
-}
-.b-list + .b-answer {
-  margin-top: 6pt;
 }
 .flow > .b:first-child {
   margin-top: 0 !important;

@@ -4,15 +4,23 @@
 // Hide this panel from researchers with NUXT_PUBLIC_SHOW_STYLES_PANEL=false.
 
 const plan = usePlan();
-const { state, pageCount } = plan;
-const ORDER: BlockType[] = ["title", "section", "question", "answer", "list"];
+const { state } = plan;
+const ORDER: BlockType[] = [
+  "title",
+  "section",
+  "description",
+  "question",
+  "answer",
+];
+// Shown when the plan has no block of that type yet.
 const FALLBACK: Record<BlockType, string> = {
   title: "Data Management and Sharing Plan",
   section: "Data Type:",
+  description:
+    "Describe the scientific data to be managed, preserved, and shared.",
   question: "Types and amount of scientific data",
   answer:
     "This secondary data analysis project will analyze deidentified data from 48,218 participants.",
-  list: "(i) The RISE study",
 };
 
 const counts = computed(() => {
@@ -87,41 +95,6 @@ function showUses(type: BlockType) {
         Page: {{ PAPER_STYLE.paper.label }}, {{ PAPER_STYLE.margin }} in
         margins, “Page 1 of 2” footer.
       </p>
-    </div>
-
-    <div class="compliance" aria-label="NIH format check">
-      <div class="eyebrow">NIH format check</div>
-
-      <div class="row">
-        <UIcon name="i-lucide-check" class="ok size-4" /><span
-          >{{ PAPER_STYLE.font }} ({{ PAPER_STYLE.fontNote }}) at 11 pt: 11 pt
-          or larger</span
-        >
-      </div>
-
-      <div class="row">
-        <UIcon name="i-lucide-check" class="ok size-4" /><span
-          >{{ PAPER_STYLE.margin }} in margins: at least 0.5 in</span
-        >
-      </div>
-
-      <div class="row">
-        <UIcon
-          :name="pageCount <= 2 ? 'i-lucide-check' : 'i-lucide-circle-alert'"
-          :class="pageCount <= 2 ? 'ok' : 'bad'"
-          class="size-4"
-        />
-
-        <span
-          >{{ pageCount }} page{{ pageCount > 1 ? "s" : ""
-          }}{{ pageCount <= 2 ? ": within" : ": over" }} the recommended 2
-          pages</span
-        >
-      </div>
-
-      <div class="src">
-        From NIH guidance on attachment format and DMS Plan length.
-      </div>
     </div>
   </div>
 </template>

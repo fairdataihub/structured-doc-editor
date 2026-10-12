@@ -2,7 +2,13 @@
 const plan = usePlan();
 const menus = useBlockMenus();
 const { ui, sel, canUndo, canRedo, pageCount, scale } = plan;
-const LEGEND: BlockType[] = ["title", "section", "question", "answer", "list"];
+const LEGEND: BlockType[] = [
+  "title",
+  "section",
+  "description",
+  "question",
+  "answer",
+];
 
 const block = computed(() => plan.byId(sel.value));
 const styleItems = computed(() =>

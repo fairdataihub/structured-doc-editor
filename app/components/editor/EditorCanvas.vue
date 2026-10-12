@@ -8,7 +8,6 @@ import type { DragKind, Slot } from "~/composables/usePlan";
 // pages reflow, because blocks are positioned on one sheet rather than moved between pages.
 
 const plan = usePlan();
-const review = useReview();
 const { state, ui, sel, numbering, scale } = plan;
 
 const GAP = 30;
@@ -105,7 +104,7 @@ function scrollTo(id: string, frac: number | "nearest") {
   const cr = c.getBoundingClientRect();
   const r = el.getBoundingClientRect();
   if (frac === "nearest") {
-    const dockH = review.dock.mode ? 260 : 40;
+    const dockH = plan.welcomeOpen.value ? 260 : 40;
     if (r.top >= cr.top + 40 && r.bottom <= cr.bottom - dockH) return;
     frac = 0.3;
   }
@@ -506,8 +505,6 @@ onBeforeUnmount(cleanup);
           :block="b"
           :prefix="numbering.pre[b.id]"
           :selected="sel === b.id"
-          :issue-on="review.highlighted.value.has(b.id)"
-          :flagged-issue="review.flagged.value[b.id]"
           :class="{
             dragging: draggingIds.has(b.id),
             'sec-hl': hoverIds.has(b.id),
