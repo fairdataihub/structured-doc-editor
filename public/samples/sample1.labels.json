@@ -1,0 +1,146 @@
+{
+  "source": "sample1.pdf",
+  "note": "Option B labels: which line ranges of sample1.lines.json are the title, sections, questions and answers. Written by hand for sample1 to stand in for the LLM's output. Keys match the extraction JSON (s<section>q<question>, 'a' = its answer).",
+  "elements": [
+    {
+      "key": "title",
+      "type": "title",
+      "lines": [1, 1]
+    },
+    {
+      "key": "s0",
+      "type": "section",
+      "lines": [2, 2]
+    },
+    {
+      "key": "s0q0",
+      "type": "question",
+      "lines": [3, 3]
+    },
+    {
+      "key": "s0q0a",
+      "type": "answer",
+      "lines": [4, 8]
+    },
+    {
+      "key": "s0q1",
+      "type": "question",
+      "lines": [9, 9]
+    },
+    {
+      "key": "s0q1a",
+      "type": "answer",
+      "lines": [10, 18]
+    },
+    {
+      "key": "s0q2",
+      "type": "question",
+      "lines": [19, 19]
+    },
+    {
+      "key": "s0q2a",
+      "type": "answer",
+      "lines": [20, 22]
+    },
+    {
+      "key": "s1",
+      "type": "section",
+      "lines": [23, 23]
+    },
+    {
+      "key": "s1q0a",
+      "type": "answer",
+      "lines": [24, 27]
+    },
+    {
+      "key": "s2",
+      "type": "section",
+      "lines": [28, 28]
+    },
+    {
+      "key": "s2q0a",
+      "type": "answer",
+      "lines": [29, 30]
+    },
+    {
+      "key": "s3",
+      "type": "section",
+      "lines": [31, 31]
+    },
+    {
+      "key": "s3q0",
+      "type": "question",
+      "lines": [32, 32]
+    },
+    {
+      "key": "s3q0a",
+      "type": "answer",
+      "lines": [33, 33]
+    },
+    {
+      "key": "s3q1",
+      "type": "question",
+      "lines": [34, 34]
+    },
+    {
+      "key": "s3q1a",
+      "type": "answer",
+      "lines": [35, 36]
+    },
+    {
+      "key": "s3q2",
+      "type": "question",
+      "lines": [37, 37]
+    },
+    {
+      "key": "s3q2a",
+      "type": "answer",
+      "lines": [38, 43]
+    },
+    {
+      "key": "s4",
+      "type": "section",
+      "lines": [44, 44]
+    },
+    {
+      "key": "s4q0",
+      "type": "question",
+      "lines": [45, 45]
+    },
+    {
+      "key": "s4q0a",
+      "type": "answer",
+      "lines": [46, 65]
+    },
+    {
+      "key": "s4q1",
+      "type": "question",
+      "lines": [66, 66]
+    },
+    {
+      "key": "s4q1a",
+      "type": "answer",
+      "lines": [67, 69]
+    },
+    {
+      "key": "s4q2",
+      "type": "question",
+      "lines": [70, 70]
+    },
+    {
+      "key": "s4q2a",
+      "type": "answer",
+      "lines": [71, 71]
+    },
+    {
+      "key": "s5",
+      "type": "section",
+      "lines": [72, 72]
+    },
+    {
+      "key": "s5q0a",
+      "type": "answer",
+      "lines": [73, 78]
+    }
+  ]
+}

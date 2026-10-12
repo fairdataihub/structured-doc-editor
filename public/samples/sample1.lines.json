@@ -1,0 +1,1119 @@
+{
+  "source": "sample1.pdf",
+  "pages": [
+    {
+      "width": 612.0,
+      "height": 792.0
+    },
+    {
+      "width": 612.0,
+      "height": 792.0
+    }
+  ],
+  "lines": [
+    {
+      "n": 1,
+      "page": 0,
+      "bbox": [202.2, 53.2, 427.4, 64.3],
+      "text": "DATA MANAGEMENT AND SHARING PLAN",
+      "spans": [
+        {
+          "text": "DATA MANAGEMENT AND SHARING PLAN",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "page": 0,
+      "bbox": [51.6, 81.9, 164.8, 93.0],
+      "text": "Element 1: Data Type:",
+      "spans": [
+        {
+          "text": "Element 1: Data Type:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "page": 0,
+      "bbox": [51.6, 107.2, 466.9, 118.3],
+      "text": "A. Types and amount of scientific data expected to be generated in the project:",
+      "spans": [
+        {
+          "text": "A. Types and amount of scientific data expected to be generated in the project:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "page": 0,
+      "bbox": [51.6, 119.4, 576.1, 130.4],
+      "text": "This secondary data analysis project will analyze deidentified data from 48,218 participants from eight studies",
+      "spans": [
+        {
+          "text": "This secondary data analysis project will analyze deidentified data from 48,218 participants from eight studies",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "page": 0,
+      "bbox": [51.6, 132.1, 576.0, 143.1],
+      "text": "and the publicly available NHANES cohorts (wrist NHANES 2011-2014; hip/counts-NHANES 2003-2006).",
+      "spans": [
+        {
+          "text": "and the publicly available NHANES cohorts (wrist NHANES 2011-2014; hip/counts-NHANES 2003-2006).",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "page": 0,
+      "bbox": [51.6, 144.7, 576.0, 155.7],
+      "text": "The studies include (i) the RISE Study, (ii) the SOL-VIDA Study, (iii) the iWATCH Study, (iv) the MOCA Study,",
+      "spans": [
+        {
+          "text": "The studies include (i) the RISE Study, (ii) the SOL-VIDA Study, (iii) the iWATCH Study, (iv) the MOCA Study,",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "page": 0,
+      "bbox": [51.6, 157.4, 576.0, 168.5],
+      "text": "(v) the PHASE Study, (vi) the AusDiab Study, (vii) the ACT Study, and (viii) the WHISH accelerometer sub-",
+      "spans": [
+        {
+          "text": "(v) the PHASE Study, (vi) the AusDiab Study, (vii) the ACT Study, and (viii) the WHISH accelerometer sub-",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 8,
+      "page": 0,
+      "bbox": [51.6, 170.0, 80.9, 181.1],
+      "text": "study.",
+      "spans": [
+        {
+          "text": "study.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 9,
+      "page": 0,
+      "bbox": [51.6, 194.6, 485.0, 205.6],
+      "text": "B. Scientific data that will be preserved and shared, and the rationale for doing so:",
+      "spans": [
+        {
+          "text": "B. Scientific data that will be preserved and shared, and the rationale for doing so:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "page": 0,
+      "bbox": [51.6, 206.9, 576.1, 217.9],
+      "text": "As this is a secondary data analysis project, we will only be able to publicly share in the UC San Diego Library",
+      "spans": [
+        {
+          "text": "As this is a secondary data analysis project, we will only be able to publicly share in the UC San Diego Library",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "page": 0,
+      "bbox": [51.6, 219.5, 576.1, 230.5],
+      "text": "Repository sitting behavior metrics or analysis that were created in this project from the following UCSD-",
+      "spans": [
+        {
+          "text": "Repository sitting behavior metrics or analysis that were created in this project from the following UCSD-",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 12,
+      "page": 0,
+      "bbox": [51.6, 232.2, 158.7, 243.2],
+      "text": "based study datasets:",
+      "spans": [
+        {
+          "text": "based study datasets:",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 13,
+      "page": 0,
+      "bbox": [51.6, 257.4, 141.6, 268.4],
+      "text": "(i) The RISE study",
+      "spans": [
+        {
+          "text": "(i) The RISE study",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 14,
+      "page": 0,
+      "bbox": [51.6, 270.1, 161.2, 281.1],
+      "text": "(ii) The iWATCH study",
+      "spans": [
+        {
+          "text": "(ii) The iWATCH study",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 15,
+      "page": 0,
+      "bbox": [51.6, 282.7, 154.4, 293.7],
+      "text": "(iii) NHANES cohorts",
+      "spans": [
+        {
+          "text": "(iii) NHANES cohorts",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 16,
+      "page": 0,
+      "bbox": [51.6, 308.0, 576.3, 319.0],
+      "text": "Sufficient data from those datasets will be preserved to enable sharing to validate and replicate research",
+      "spans": [
+        {
+          "text": "Sufficient data from those datasets will be preserved to enable sharing to validate and replicate research",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 17,
+      "page": 0,
+      "bbox": [51.6, 320.6, 576.1, 331.6],
+      "text": "findings described in the Aims with those datasets only. Please see Element 5 for data access information",
+      "spans": [
+        {
+          "text": "findings described in the Aims with those datasets only. ",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        },
+        {
+          "text": "Please see Element 5 for data access information",
+          "bold": false,
+          "italic": true,
+          "underline": true
+        }
+      ]
+    },
+    {
+      "n": 18,
+      "page": 0,
+      "bbox": [51.6, 333.3, 148.2, 344.4],
+      "text": "about other studies.",
+      "spans": [
+        {
+          "text": "about other studies.",
+          "bold": false,
+          "italic": true,
+          "underline": true
+        }
+      ]
+    },
+    {
+      "n": 19,
+      "page": 0,
+      "bbox": [51.6, 359.1, 392.1, 370.1],
+      "text": "C. Metadata, other relevant data, and associated documentation:",
+      "spans": [
+        {
+          "text": "C. Metadata, other relevant data, and associated documentation:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 20,
+      "page": 0,
+      "bbox": [51.6, 371.3, 576.1, 382.3],
+      "text": "In addition to the data described above, code and models will be included in the repository and in on our",
+      "spans": [
+        {
+          "text": "In addition to the data described above, code and models will be included in the repository and in on our",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 21,
+      "page": 0,
+      "bbox": [51.6, 383.9, 576.0, 394.9],
+      "text": "project’s GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled “Deep",
+      "spans": [
+        {
+          "text": "project’s GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled “Deep",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 22,
+      "page": 0,
+      "bbox": [51.6, 396.6, 101.8, 407.6],
+      "text": "Postures”.",
+      "spans": [
+        {
+          "text": "Postures”.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 23,
+      "page": 0,
+      "bbox": [51.6, 422.3, 303.5, 433.4],
+      "text": "Element 2: Related Tools, Software and/or Code:",
+      "spans": [
+        {
+          "text": "Element 2: Related Tools, Software and/or Code:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 24,
+      "page": 0,
+      "bbox": [51.6, 434.5, 576.0, 445.5],
+      "text": "Data will be analyzed with custom code by our statistical and computer science team. ActiGraph data will be",
+      "spans": [
+        {
+          "text": "Data will be analyzed with custom code by our statistical and computer science team. ActiGraph data will be",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 25,
+      "page": 0,
+      "bbox": [51.6, 447.1, 576.1, 458.1],
+      "text": "processed and analyzed using ActiLife software which requires a paid license. All custom code and models",
+      "spans": [
+        {
+          "text": "processed and analyzed using ActiLife software which requires a paid license. All custom code and models",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 26,
+      "page": 0,
+      "bbox": [51.6, 459.8, 576.1, 470.8],
+      "text": "will also be shared in the data repository and on our project’s GitHub website, hosted as part of the UCSD",
+      "spans": [
+        {
+          "text": "will also be shared in the data repository and on our project’s GitHub website, hosted as part of the UCSD",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 27,
+      "page": 0,
+      "bbox": [51.6, 472.4, 360.4, 483.4],
+      "text": "Advance Data Analytics Lab GitHub and titled “Deep Postures”.",
+      "spans": [
+        {
+          "text": "Advance Data Analytics Lab GitHub and titled “Deep Postures”.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 28,
+      "page": 0,
+      "bbox": [51.6, 498.2, 166.6, 509.2],
+      "text": "Element 3: Standards:",
+      "spans": [
+        {
+          "text": "Element 3: Standards:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 29,
+      "page": 0,
+      "bbox": [51.6, 523.0, 339.5, 534.1],
+      "text": "The following data will be created as a result of this project:",
+      "spans": [
+        {
+          "text": "The following data will be created as a result of this project:",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 30,
+      "page": 0,
+      "bbox": [51.6, 548.3, 348.9, 559.4],
+      "text": "Objective sedentary behavior metrics – no existing standards",
+      "spans": [
+        {
+          "text": "Objective sedentary behavior metrics – ",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        },
+        {
+          "text": "no existing standards",
+          "bold": false,
+          "italic": true,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 31,
+      "page": 0,
+      "bbox": [51.6, 585.1, 390.2, 596.1],
+      "text": "Element 4: Data Preservation, Access, and Associated Timelines:",
+      "spans": [
+        {
+          "text": "Element 4: Data Preservation, Access, and Associated Timelines:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 32,
+      "page": 0,
+      "bbox": [51.6, 610.3, 400.7, 621.3],
+      "text": "A. Repository where scientific data and metadata will be archived:",
+      "spans": [
+        {
+          "text": "A. Repository where scientific data and metadata will be archived:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 33,
+      "page": 0,
+      "bbox": [51.6, 622.5, 509.0, 633.6],
+      "text": "De-identified data will be uploaded to the University of California San Diego Library repository.",
+      "spans": [
+        {
+          "text": "De-identified data will be uploaded to the University of California San Diego Library repository.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 34,
+      "page": 0,
+      "bbox": [51.6, 655.8, 338.2, 666.8],
+      "text": "B. How scientific data will be findable and identifiable:",
+      "spans": [
+        {
+          "text": "B. How scientific data will be findable and identifiable:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 35,
+      "page": 0,
+      "bbox": [51.6, 667.9, 576.3, 678.9],
+      "text": "Data will be findable via publications and on our project’s GitHub website, hosted as part of the UCSD",
+      "spans": [
+        {
+          "text": "Data will be findable via publications and on our project’s GitHub website, hosted as part of the UCSD",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 36,
+      "page": 0,
+      "bbox": [51.6, 680.6, 360.4, 691.7],
+      "text": "Advance Data Analytics Lab GitHub and titled “Deep Postures”.",
+      "spans": [
+        {
+          "text": "Advance Data Analytics Lab GitHub and titled “Deep Postures”.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 37,
+      "page": 0,
+      "bbox": [51.6, 706.4, 390.9, 717.4],
+      "text": "C. When and how long the scientific data will be made available:",
+      "spans": [
+        {
+          "text": "C. When and how long the scientific data will be made available:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 38,
+      "page": 0,
+      "bbox": [51.6, 718.5, 575.8, 729.6],
+      "text": "The research community will have access to data when the main outcome manuscript has been published.",
+      "spans": [
+        {
+          "text": "The research community will have access to data when the main outcome manuscript has been published.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 39,
+      "page": 0,
+      "bbox": [51.6, 731.1, 576.0, 742.2],
+      "text": "$2,500 in years 2-5 of the project has been budgeted for preparing the data that is able to be stored in the",
+      "spans": [
+        {
+          "text": "$2,500 in years 2-5 of the project has been budgeted for preparing the data that is able to be stored in the",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 40,
+      "page": 1,
+      "bbox": [51.6, 52.8, 575.9, 63.8],
+      "text": "repository (the RISE study, the iWATCH study, and NHANES) and for data storage on the University of",
+      "spans": [
+        {
+          "text": "repository (the RISE study, the iWATCH study, and NHANES) and for data storage on the University of",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 41,
+      "page": 1,
+      "bbox": [51.6, 65.4, 576.2, 76.4],
+      "text": "California San Diego Library repository. We anticipate data being available for the foreseeable future",
+      "spans": [
+        {
+          "text": "California San Diego Library repository. We anticipate data being available for the foreseeable future",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 42,
+      "page": 1,
+      "bbox": [51.6, 78.0, 576.0, 89.0],
+      "text": "(minimum of at least 5 years) after the study has been completed. The University of California San Diego",
+      "spans": [
+        {
+          "text": "(minimum of at least 5 years) after the study has been completed. The University of California San Diego",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 43,
+      "page": 1,
+      "bbox": [51.6, 90.7, 445.4, 101.7],
+      "text": "Library repository does not currently have a limit on how long data can be stored.",
+      "spans": [
+        {
+          "text": "Library repository does not currently have a limit on how long data can be stored.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 44,
+      "page": 1,
+      "bbox": [51.6, 116.5, 353.7, 127.5],
+      "text": "Element 5: Access, Distribution, or Reuse Considerations:",
+      "spans": [
+        {
+          "text": "Element 5: Access, Distribution, or Reuse Considerations:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 45,
+      "page": 1,
+      "bbox": [51.6, 141.8, 471.5, 152.8],
+      "text": "A. Factors affecting subsequent access, distribution, or reuse of scientific data:",
+      "spans": [
+        {
+          "text": "A. Factors affecting subsequent access, distribution, or reuse of scientific data:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 46,
+      "page": 1,
+      "bbox": [51.6, 166.5, 571.6, 177.6],
+      "text": "The following studies have independent data use agreement & approved paper proposal processes for use",
+      "spans": [
+        {
+          "text": "The following studies have independent data use agreement & approved paper proposal processes for use",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 47,
+      "page": 1,
+      "bbox": [51.6, 179.2, 545.8, 190.3],
+      "text": "of their data that are specific to each institution that collected the data: (i) the SOL-VIDA Study, (ii) the",
+      "spans": [
+        {
+          "text": "of their data that are specific to each institution that collected the data: (i) the SOL-VIDA Study, (ii) the",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 48,
+      "page": 1,
+      "bbox": [51.6, 191.8, 536.5, 202.9],
+      "text": "MOCA Study, (iii) the PHASE Study, (iv) the AusDiab Study, (v) the ACT Study, and (vi) the WHISH",
+      "spans": [
+        {
+          "text": "MOCA Study, (iii) the PHASE Study, (iv) the AusDiab Study, (v) the ACT Study, and (vi) the WHISH",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 49,
+      "page": 1,
+      "bbox": [51.7, 204.6, 547.2, 215.6],
+      "text": "accelerometer sub-study such as data use agreements or approved publication proposals. We will be",
+      "spans": [
+        {
+          "text": "accelerometer sub-study such as data use agreements or approved publication proposals. We will be",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 50,
+      "page": 1,
+      "bbox": [51.7, 217.2, 530.5, 228.2],
+      "text": "securing the appropriate approvals from each institution to use their data for purposes of this study",
+      "spans": [
+        {
+          "text": "securing the appropriate approvals from each institution to use their data for purposes of this study",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 51,
+      "page": 1,
+      "bbox": [51.7, 229.7, 565.4, 240.8],
+      "text": "including publications, but are unable to publicly share their data in our study data repository Researchers",
+      "spans": [
+        {
+          "text": "including publications, but are unable to publicly share their data in our study data repository Researchers",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 52,
+      "page": 1,
+      "bbox": [51.7, 242.5, 545.8, 253.5],
+      "text": "who wish to use data from those studies will need to follow those studies data use protocols to inquire",
+      "spans": [
+        {
+          "text": "who wish to use data from those studies will need to follow those studies data use protocols to inquire",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 53,
+      "page": 1,
+      "bbox": [51.7, 255.2, 160.5, 266.3],
+      "text": "about using their data:",
+      "spans": [
+        {
+          "text": "about using their data:",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 54,
+      "page": 1,
+      "bbox": [51.7, 281.9, 572.8, 293.0],
+      "text": "(i) the SOL-VIDA Study – Data requests may be made by following instructions on the Hispanic Community",
+      "spans": [
+        {
+          "text": "(i) the SOL-VIDA Study – Data requests may be made by following instructions on the Hispanic Community",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 55,
+      "page": 1,
+      "bbox": [51.7, 294.5, 266.4, 305.6],
+      "text": "Health Study/ Study of Latinos dbGap page.",
+      "spans": [
+        {
+          "text": "Health Study/ Study of Latinos dbGap page.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 56,
+      "page": 1,
+      "bbox": [51.7, 307.3, 467.2, 318.3],
+      "text": "(ii) the MOCA Study – Data requests may be made by following MOCA Study policies",
+      "spans": [
+        {
+          "text": "(ii) the MOCA Study – Data requests may be made by following MOCA Study policies",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 57,
+      "page": 1,
+      "bbox": [51.7, 319.9, 478.4, 330.9],
+      "text": "(iii) the PHASE Study – Data requests may be made by following PHASE Study policies",
+      "spans": [
+        {
+          "text": "(iii) the PHASE Study – Data requests may be made by following PHASE Study policies",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 58,
+      "page": 1,
+      "bbox": [51.7, 332.6, 567.1, 343.6],
+      "text": "(iv) the AusDiab Study – Data may be requested by following AusDiab policies available from the AusDiab",
+      "spans": [
+        {
+          "text": "(iv) the AusDiab Study – Data may be requested by following AusDiab policies available from the AusDiab",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 59,
+      "page": 1,
+      "bbox": [51.7, 345.2, 353.8, 356.2],
+      "text": "study website, hosted by the Baker Heart & Diabetes Institute.",
+      "spans": [
+        {
+          "text": "study website, hosted by the Baker Heart & Diabetes Institute.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 60,
+      "page": 1,
+      "bbox": [51.7, 357.8, 561.8, 368.8],
+      "text": "(v) the ACT Study - Data are managed and stored in the ACT Data Repository and sharing requests may",
+      "spans": [
+        {
+          "text": "(v) the ACT Study - Data are managed and stored in the ACT Data Repository and sharing requests may",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 61,
+      "page": 1,
+      "bbox": [51.7, 370.5, 539.1, 381.5],
+      "text": "be made according to the policies and procedures available on the “Work With Us” page of the Adult",
+      "spans": [
+        {
+          "text": "be made according to the policies and procedures available on the “Work With Us” page of the Adult",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 62,
+      "page": 1,
+      "bbox": [51.7, 383.1, 225.4, 394.1],
+      "text": "Changes in Thought Study website.",
+      "spans": [
+        {
+          "text": "Changes in Thought Study website.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 63,
+      "page": 1,
+      "bbox": [51.7, 395.8, 512.0, 406.8],
+      "text": "(vi) the WHISH accelerometer sub-study – Data are managed by the Women’s Health Initiative",
+      "spans": [
+        {
+          "text": "(vi) the WHISH accelerometer sub-study – Data are managed by the Women’s Health Initiative",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 64,
+      "page": 1,
+      "bbox": [51.7, 408.4, 534.8, 419.4],
+      "text": "Coordinating Center. Requests may be made according to policies and procedures available on the",
+      "spans": [
+        {
+          "text": "Coordinating Center. Requests may be made according to policies and procedures available on the",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 65,
+      "page": 1,
+      "bbox": [51.7, 421.0, 331.0, 432.0],
+      "text": "“Working with WHI Data” page on the WHI study website.",
+      "spans": [
+        {
+          "text": "“Working with WHI Data” page on the WHI study website.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 66,
+      "page": 1,
+      "bbox": [51.7, 446.8, 340.1, 457.8],
+      "text": "B. Whether access to scientific data will be controlled:",
+      "spans": [
+        {
+          "text": "B. Whether access to scientific data will be controlled:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 67,
+      "page": 1,
+      "bbox": [51.7, 459.0, 576.4, 470.1],
+      "text": "The final dataset of data from the RISE study, the iWATCH study, and NHANES cohorts will be de-identified. It",
+      "spans": [
+        {
+          "text": "The final dataset of data from the RISE study, the iWATCH study, and NHANES cohorts will be de-identified. It",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 68,
+      "page": 1,
+      "bbox": [51.7, 471.6, 576.3, 482.7],
+      "text": "will be deposited into the UC San Diego Library Data repository along with study protocols, code, and models",
+      "spans": [
+        {
+          "text": "will be deposited into the UC San Diego Library Data repository along with study protocols, code, and models",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 69,
+      "page": 1,
+      "bbox": [51.7, 484.3, 514.0, 495.4],
+      "text": "for public use. De-identified data will be available after the main outcome papers are published.",
+      "spans": [
+        {
+          "text": "for public use. De-identified data will be available after the main outcome papers are published.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 70,
+      "page": 1,
+      "bbox": [51.7, 510.0, 477.9, 521.0],
+      "text": "Protections for privacy, rights, and confidentiality of human research participants:",
+      "spans": [
+        {
+          "text": "Protections for privacy, rights, and confidentiality of human research participants:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 71,
+      "page": 1,
+      "bbox": [51.7, 522.3, 323.3, 533.3],
+      "text": "All data used in this study was de-identified prior to use.",
+      "spans": [
+        {
+          "text": "All data used in this study was de-identified prior to use.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 72,
+      "page": 1,
+      "bbox": [51.7, 548.0, 339.8, 559.0],
+      "text": "Element 6: Oversight of Data Management and Sharing:",
+      "spans": [
+        {
+          "text": "Element 6: Oversight of Data Management and Sharing:",
+          "bold": true,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 73,
+      "page": 1,
+      "bbox": [51.7, 572.8, 576.1, 583.8],
+      "text": "The PI and Trial & IRB Coordinator will provide updates and changes to the plan in the annual RPPR. The",
+      "spans": [
+        {
+          "text": "The PI and Trial & IRB Coordinator will provide updates and changes to the plan in the annual RPPR. The",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 74,
+      "page": 1,
+      "bbox": [51.7, 585.5, 576.2, 596.5],
+      "text": "PI, Trial & IRB Coordinator, and Statistician/Data Manager will meet monthly in all years of the project to",
+      "spans": [
+        {
+          "text": "PI, Trial & IRB Coordinator, and Statistician/Data Manager will meet monthly in all years of the project to",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 75,
+      "page": 1,
+      "bbox": [51.7, 598.1, 576.1, 609.1],
+      "text": "ensure that the datasets, protocols, and codes are being prepared for sharing into the data repository once",
+      "spans": [
+        {
+          "text": "ensure that the datasets, protocols, and codes are being prepared for sharing into the data repository once",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 76,
+      "page": 1,
+      "bbox": [51.7, 610.8, 576.2, 621.8],
+      "text": "the main outcome manuscript has been published. The Statistician/Data Manager will work closely with the",
+      "spans": [
+        {
+          "text": "the main outcome manuscript has been published. The Statistician/Data Manager will work closely with the",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 77,
+      "page": 1,
+      "bbox": [51.7, 623.4, 576.1, 634.4],
+      "text": "University of California San Diego Library repository manager to ensure that the datasets, protocols, and",
+      "spans": [
+        {
+          "text": "University of California San Diego Library repository manager to ensure that the datasets, protocols, and",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    },
+    {
+      "n": 78,
+      "page": 1,
+      "bbox": [51.7, 636.0, 298.7, 647.0],
+      "text": "code are correctly stored and available for sharing.",
+      "spans": [
+        {
+          "text": "code are correctly stored and available for sharing.",
+          "bold": false,
+          "italic": false,
+          "underline": false
+        }
+      ]
+    }
+  ]
+}

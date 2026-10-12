@@ -1,0 +1,126 @@
+/*
+ * Paper styles: the plan's pages in the editor (imported by main.css) and in the hidden measuring
+ * flow that decides where pages break. Everything that affects line breaks lives here.
+ * There is one fixed style (NIH standard): each block type has exactly one look, and text has
+ * no bold, italic or underline of its own. Headings are bold because their type is.
+ * The font files are static assets in public/fonts.
+ */
+
+@font-face {
+  font-family: "Arimo";
+  src: url("/fonts/arimo-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Arimo";
+  src: url("/fonts/arimo-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+.paper {
+  --paper: #ffffff;
+  --paper-ink: #121212;
+  --paper-muted: #6b6b6b;
+  --paper-rule: #9c9c9c;
+  --pf: Arimo, "Liberation Sans", Arial, sans-serif;
+  color: var(--paper-ink);
+  font-family: var(--pf);
+  font-size: 11pt;
+  line-height: 1.25;
+  /* Exact glyph widths on screen and in print, so lines wrap the same in both. */
+  text-rendering: geometricPrecision;
+  font-kerning: normal;
+}
+
+.page {
+  box-sizing: border-box;
+  width: var(--pw);
+  height: var(--ph);
+  padding: var(--pm);
+  background: var(--paper);
+  color: var(--paper-ink);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.flow {
+  flex: 1 1 auto;
+  min-height: 0;
+  position: relative;
+}
+.pg-foot {
+  position: absolute;
+  left: var(--pm);
+  right: var(--pm);
+  bottom: calc(var(--pm) * 0.42);
+  font-size: 8pt;
+  color: var(--paper-muted);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* Blocks. The editor's text area (Tiptap/ProseMirror) gets the same text rules as the measuring
+   flow and the PDF, because ProseMirror turns ligatures off and needs pre-wrap. */
+.b {
+  position: relative;
+  font-family: var(--pf);
+}
+.b .tx {
+  flex: 1 1 auto;
+  min-width: 2ch;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0;
+}
+.b .tx p {
+  margin: 0;
+}
+.b .pre {
+  flex: none;
+}
+.b-title {
+  font-weight: 700;
+  font-size: 13pt;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-align: center;
+  padding: 1pt 0 5pt;
+  border-bottom: 0.75pt solid var(--paper-rule);
+  margin-bottom: 14pt;
+}
+.b-section {
+  font-weight: 700;
+  font-size: 12pt;
+  display: flex;
+  gap: 0.3em;
+  margin-top: 14pt;
+  margin-bottom: 4pt;
+}
+.b-question {
+  font-weight: 700;
+  display: flex;
+  margin-top: 9pt;
+  margin-bottom: 1pt;
+}
+.b-question .pre {
+  width: 0.3in;
+}
+.b-answer {
+  margin-bottom: 6pt;
+}
+.b-list {
+  padding-left: 0.25in;
+  margin-bottom: 1pt;
+}
+.b-list + .b-answer {
+  margin-top: 6pt;
+}
+.flow > .b:first-child {
+  margin-top: 0 !important;
+}

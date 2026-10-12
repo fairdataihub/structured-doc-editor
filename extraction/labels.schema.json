@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DMP line labels (option B)",
+  "type": "object",
+  "required": ["elements"],
+  "properties": {
+    "source": { "type": "string" },
+    "elements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "type", "lines"],
+        "additionalProperties": false,
+        "properties": {
+          "key": { "type": "string", "pattern": "^(title|s\\d+(q\\d+a?)?)$" },
+          "type": { "enum": ["title", "section", "question", "answer"] },
+          "lines": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 1 },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        }
+      }
+    }
+  }
+}

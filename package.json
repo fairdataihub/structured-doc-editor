@@ -1,0 +1,51 @@
+{
+  "name": "dmp-prototype",
+  "license": "MIT",
+  "private": true,
+  "packageManager": "pnpm@12.10.1",
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "lint:js": "eslint .",
+    "lint:prettier": "prettier --check .",
+    "lint": "pnpm lint:js && pnpm lint:prettier",
+    "lint:fix": "prettier --write --list-different . && pnpm lint:js --fix",
+    "postinstall": "nuxt prepare",
+    "reset": "rimraf node_modules && rimraf .nuxt && rimraf .output && rimraf dist && pnpm install"
+  },
+  "dependencies": {
+    "@tiptap/core": "3.31.4",
+    "@tiptap/extensions": "3.31.4",
+    "@tiptap/pm": "3.31.4",
+    "@tiptap/starter-kit": "3.31.4",
+    "@tiptap/vue-3": "3.31.4",
+    "@vueuse/core": "15.0.0",
+    "vue-draggable-plus": "0.6.1"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "1.2.138",
+    "@nuxt/devtools": "4.0.0-alpha.4",
+    "@nuxt/eslint": "1.17.0",
+    "@nuxt/ui": "4.11.1",
+    "@nuxtjs/eslint-config-typescript": "12.1.0",
+    "@stylistic/eslint-plugin": "5.10.0",
+    "@typescript-eslint/parser": "8.70.0",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-perfectionist": "5.11.1",
+    "eslint-plugin-prettier": "5.5.6",
+    "eslint-plugin-unused-imports": "4.4.1",
+    "eslint-plugin-vue": "10.11.0",
+    "nuxt": "4.5.2",
+    "prettier": "3.9.8",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "rimraf": "6.1.3",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vue": "latest",
+    "zod": "4.6.5"
+  }
+}

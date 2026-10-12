@@ -1,0 +1,12 @@
+# setting the minimum release age to 5 days (7200 minutes) to ensure that releases are stable before being used in the workspace
+minimumReleaseAge: 7200
+blockExoticSubdeps: true
+minimumReleaseAgeStrict: true # tracked in https://github.com/pnpm/pnpm/issues/11238
+
+allowBuilds:
+  esbuild: true
+  msgpackr-extract: true
+  unrs-resolver: true
+  vue-demi: true
+  workerd: true
+  "@parcel/watcher": true
