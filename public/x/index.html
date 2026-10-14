@@ -20,7 +20,7 @@
 
   /* Top bar */
   header { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 10px 20px; background: #fff; border-bottom: 1px solid #dbe1e9; }
-  .brand { font-size: 20px; font-weight: 750; letter-spacing: -1px; }
+  .brand { font-size: 20px; font-weight: 750; letter-spacing: -1px; color: inherit; text-decoration: none; }
   .brand span { color: #3665a5; }
   .steps { display: flex; gap: 20px; font-size: 13px; color: #657385; margin-left: 16px; }
   .steps > * { border: 0; background: none; padding: 0; border-radius: 0; font-size: 13px; color: inherit; }
@@ -259,7 +259,7 @@
 <body>
 <div class="app">
   <header>
-    <div class="brand">DMP<span>Tool</span></div>
+    <a class="brand" href="/" title="Home">DMP<span>Tool</span></a>
     <nav class="steps" aria-label="Import steps">
       <button id="step-upload" title="Upload a different PDF">1 · Upload PDF</button><span id="step-review">2 · Review structure</span><span>3 · Export JSON</span>
     </nav>
