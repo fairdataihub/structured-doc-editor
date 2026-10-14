@@ -20,7 +20,7 @@
 
   /* Top bar */
   header { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 10px 20px; background: #fff; border-bottom: 1px solid #dbe1e9; }
-  .brand { font-size: 20px; font-weight: 750; letter-spacing: -1px; color: inherit; text-decoration: none; }
+  .brand { font-size: 20px; font-weight: 750; letter-spacing: -1px; }
   .brand span { color: #3665a5; }
   .steps { display: flex; gap: 20px; font-size: 13px; color: #657385; margin-left: 16px; }
   .steps > * { border: 0; background: none; padding: 0; border-radius: 0; font-size: 13px; color: inherit; }
@@ -41,6 +41,8 @@
   .drop-icon { display: inline-grid; place-items: center; width: 56px; height: 68px; border-radius: 6px 18px 6px 6px;
                background: #dbe7fb; color: #244f91; font-weight: 800; font-size: 14px; letter-spacing: .5px; }
   .drop .note { font-size: 13px; color: #8a97a8; margin-top: 18px; }
+  .drop #choose-pdf { margin-top: 6px; background: #eef1f5; color: #8a97a8; border-color: #dbe1e9; opacity: 1; cursor: not-allowed; }
+  .drop #choose-note { margin-top: 4px; font-size: 12px; }
   .drop .error { color: #b42318; font-weight: 600; min-height: 1.4em; }
   button.linkish { border: 0; background: none; padding: 2px 4px; color: #244f91; text-decoration: underline;
                    text-underline-offset: 3px; font-size: 13px; }
@@ -112,8 +114,10 @@
   /* Each block type has its own colour: title = purple, section = blue, question = amber */
   .blk { position: relative; border-radius: 6px; }
   .blk:focus-within textarea:focus { background: #fff; }
-  .plan-blk { padding: 6px; margin-bottom: 20px; border: 1px dashed transparent; }
-  .plan-blk:hover { border-color: #cbbcf0; }
+  .plan-blk { padding: 22px 6px 6px; margin-bottom: 20px; border: 1px solid #cbbcf0; }
+  .blk-label { position: absolute; top: 5px; left: 8px; font-size: 11px; letter-spacing: 1.2px; font-weight: 750;
+               text-transform: uppercase; color: #6a3fc4; }
+  .plan-blk:hover { border-color: #a98be6; }
   .plan-blk.selected { border: 1px solid #7c4ddb; box-shadow: 0 0 0 3px rgba(124, 77, 219, .15); }
   .sec { padding: 12px 12px 8px; margin-top: 22px; background: #f5f8fd; border: 1px solid #c7d7f0; }
   .sec:hover { border-color: #9fbbe6; }
@@ -253,13 +257,26 @@
   .json .row.linked:hover { background: #eef3f9; }
   .json .row.sel { background: #e8effa; box-shadow: inset 2px 0 0 #3665a5; }
 
+  /* Right: PDF review tab (Markdown preview), one fixed style per type */
+  .md { font-size: 13px; line-height: 1.6; color: #203044; }
+  .md-doc h1 { font-size: 19px; text-align: center; margin: 4px 0 18px; letter-spacing: -.2px; }
+  .md-doc h2 { font-size: 15.5px; margin: 20px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #e3e8ef;
+               text-transform: none; letter-spacing: normal; color: inherit; }
+  .md-doc h3 { font-size: 13.5px; margin: 14px 0 4px; }
+  .md-doc p { margin: 0 0 8px; }
+  .md-doc .md-description { color: #4a5b70; font-style: italic; }
+  .md-doc [data-kind] { cursor: pointer; border-radius: 4px; padding: 1px 6px; margin-left: -6px; margin-right: -6px; }
+  .md-doc [data-kind]:hover { background: #f3f6fa; }
+  .md-doc .sel, .md-doc .sel:hover { background: #e8effa; box-shadow: inset 2px 0 0 #3665a5; }
+  .md-doc .empty { color: #a3aebb; font-style: italic; font-weight: 400; }
+
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 </style>
 </head>
 <body>
 <div class="app">
   <header>
-    <a class="brand" href="/" title="Home">DMP<span>Tool</span></a>
+    <div class="brand">DMP <span>Bridge</span></div>
     <nav class="steps" aria-label="Import steps">
       <button id="step-upload" title="Upload a different PDF">1 · Upload PDF</button><span id="step-review">2 · Review structure</span><span>3 · Export JSON</span>
     </nav>
@@ -276,10 +293,9 @@
       <div id="drop-pick">
         <div class="drop-icon" aria-hidden="true">PDF</div>
         <h1>Upload your Data Management Plan</h1>
-        <p>Drag the PDF here, or</p>
-        <button class="primary" id="choose-pdf">Choose PDF</button>
-        <input type="file" id="pdf-file" accept="application/pdf,.pdf" hidden>
-        <p><button class="linkish" id="use-sample">or try it with the sample PDF</button></p>
+        <button class="primary" id="use-sample">Try with sample PDF</button>
+        <p><button id="choose-pdf" disabled aria-describedby="choose-note">Choose PDF</button></p>
+        <p class="note" id="choose-note">Uploading your own PDF isn't available in this demo yet.</p>
         <p class="error" id="drop-error" role="alert"></p>
         <p class="note">We find the title, sections, questions and answers in your plan. On the next page you check them and fix anything that's wrong.</p>
       </div>
@@ -287,7 +303,7 @@
         <div class="spinner" aria-hidden="true"></div>
         <p><strong id="busy-name"></strong></p>
         <p role="status">Extracting the structure…</p>
-        <p class="note">Demo: extraction isn't connected yet, so the sample plan is loaded whatever PDF you choose.</p>
+        <p class="note">Demo: extraction isn't connected yet, so the sample plan is loaded.</p>
       </div>
     </div>
   </main>
@@ -299,11 +315,11 @@
       <div id="palette">
       <button class="add no-drag" data-add="title">
         <span class="icon i-title">T</span>
-        <span><strong>Title</strong><small>The plan's title (one per plan)</small></span>
+        <span><strong>Title</strong><small>The DMP title (one per plan)</small></span>
       </button>
       <button class="add" data-add="section">
         <span class="icon i-sec">S</span>
-        <span><strong>Section title</strong><small>A new section after the selected one</small></span>
+        <span><strong>Section title</strong><small>A new DMP section after the selected one</small></span>
       </button>
       <button class="add" data-add="description">
         <span class="icon i-desc">D</span>
@@ -333,8 +349,9 @@
         <div class="tabs" role="tablist" aria-label="Show the plan as">
           <button role="tab" id="tab-structure" data-view="structure" aria-controls="tree">Structure</button>
           <button role="tab" id="tab-json" data-view="json" aria-controls="tree">JSON</button>
+          <button role="tab" id="tab-markdown" data-view="markdown" aria-controls="tree">PDF review</button>
         </div>
-        <button id="copy-json" class="mini" hidden>Copy</button>
+        <button id="copy-view" class="mini" hidden>Copy</button>
         <button id="tree-fold-all" class="mini">Collapse</button>
       </div>
       <div class="tree" id="tree" role="tabpanel"></div>
@@ -394,7 +411,7 @@ const jsonCollapsed = new Set();
 const metaOpened = new Set();
 // Right panel tab: 'structure' or 'json' (remembered in this browser)
 let view = 'structure';
-try { if (localStorage.getItem('dmp-view') === 'json') view = 'json'; } catch {}
+try { const v = localStorage.getItem('dmp-view'); if (v === 'json' || v === 'markdown') view = v; } catch {}
 // Right panel folded away (remembered in this browser)
 let panelClosed = false;
 try { panelClosed = localStorage.getItem('dmp-panel') === 'closed'; } catch {}
@@ -504,6 +521,7 @@ function render() {
       aria-label="${collapsed.has(bid) ? 'Expand' : 'Collapse'} ${what}"><span>▼</span></button>`;
   $('#paper').innerHTML = `
     <div class="blk plan-blk ${selected.kind === 'plan' ? 'selected' : ''}" data-kind="plan">
+      <span class="blk-label">Title</span>
       <textarea class="t-title" data-field="title" rows="1" aria-label="Plan title">${esc(plan.title)}</textarea>
     </div>
     <div id="sections">${sections.map((s, i) => {
@@ -570,8 +588,8 @@ function render() {
 
 // ---------- render: right panel ----------
 function renderTree() {
-  $('#tree').className = view === 'json' ? 'json' : 'tree';
-  view === 'json' ? renderJson() : renderStructure();
+  $('#tree').className = { structure: 'tree', json: 'json', markdown: 'md' }[view];
+  ({ structure: renderStructure, json: renderJson, markdown: renderMarkdown })[view]();
   updateFoldButtons();
 }
 
@@ -676,6 +694,37 @@ function renderJson() {
   $('#tree').innerHTML = walk(null, toJson(), [], false);
 }
 
+// ---------- render: PDF review (Markdown preview) ----------
+// The plan as Markdown: # title, ## sections, ### questions; descriptions and answers are paragraphs.
+// Numbers are left out, so it reads like the final document.
+function toMarkdown() {
+  const out = [];
+  if (plan.title.trim()) out.push(`# ${plan.title.trim()}`);
+  for (const s of sections) {
+    out.push(`## ${s.title.trim() || 'Untitled section'}`);
+    for (const it of s.items) {
+      if (!it.text.trim()) continue;
+      out.push(it.kind === 'question' ? `### ${it.text.trim().replace(/\s*\n\s*/g, ' ')}` : it.text.trim());
+    }
+  }
+  return out.join('\n\n') + '\n';
+}
+
+// The same document rendered, with one fixed style per type. Every part links back to its block.
+function renderMarkdown() {
+  const paras = t => t.trim().split(/\n{2,}/).map(x => `<p>${esc(x).replace(/\n/g, '<br>')}</p>`).join('');
+  const text = (t, empty) => esc(t.trim()) || `<span class="empty">${empty}</span>`;
+  const attrs = (kind, bid) => `class="${isSel(kind, bid) || (kind === 'plan' && selected.kind === 'plan') ? 'sel' : ''}" data-kind="${kind}" ${bid ? `data-id="${bid}"` : ''}`;
+  $('#tree').innerHTML = `<article class="md-doc">
+    <h1 ${attrs('plan')}>${text(plan.title, 'Untitled plan')}</h1>
+    ${sections.map(s => `
+      <h2 ${attrs('section', s.id)}>${text(s.title, 'Untitled section')}</h2>
+      ${s.items.filter(it => it.text.trim()).map(it => it.kind === 'question'
+        ? `<h3 ${attrs('item', it.id)}>${esc(it.text.trim())}</h3>`
+        : `<div ${attrs('item', it.id).replace('class="', `class="md-${it.kind} `)}>${paras(it.text)}</div>`).join('')}`).join('')}
+  </article>`;
+}
+
 function syncFromTree(e) {
   if (e.from === e.to && e.oldIndex === e.newIndex) { history.pop(); $('#undo').disabled = !history.length; return; }
   const byId = new Map(sections.map(s => [String(s.id), s]));
@@ -705,7 +754,7 @@ function select(sel, { scroll = false, focus = false } = {}) {
   const el = sel.kind === 'plan' ? $('#paper .plan-blk') : document.getElementById(`b-${sel.kind}-${sel.id}`);
   el?.classList.add('selected');
   renderTree();
-  if (view === 'json') $('#tree .sel')?.scrollIntoView({ block: 'nearest' });
+  if (view !== 'structure') $('#tree .sel')?.scrollIntoView({ block: 'nearest' });
   if (scroll) el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   if (focus) el?.querySelector('textarea')?.focus({ preventScroll: true });
 }
@@ -1001,6 +1050,7 @@ $('#tree').addEventListener('click', e => {
   }
   let target;
   if (view === 'structure') target = e.target.closest('button[data-kind]');
+  else if (view === 'markdown') target = e.target.closest('[data-kind]');
   else {
     // Clicking a linked value, or the opening line of a linked object, jumps to its block in the canvas
     const row = e.target.closest('.row');
@@ -1011,8 +1061,8 @@ $('#tree').addEventListener('click', e => {
   select({ kind: target.dataset.kind, id: target.dataset.id && Number(target.dataset.id) }, { scroll: true, focus: true });
 });
 
-// Structure / JSON tabs (arrow keys move between them)
-const VIEWS = ['structure', 'json'];
+// Structure / JSON / PDF review tabs (arrow keys move between them)
+const VIEWS = ['structure', 'json', 'markdown'];
 function setView(v, { focus = false } = {}) {
   view = VIEWS.includes(v) ? v : 'structure';
   try { localStorage.setItem('dmp-view', view); } catch {}
@@ -1023,7 +1073,8 @@ function setView(v, { focus = false } = {}) {
     if (on) $('#tree').setAttribute('aria-labelledby', t.id);
     if (on && focus) t.focus();
   });
-  $('#copy-json').hidden = view !== 'json';
+  $('#copy-view').hidden = view === 'structure';
+  $('#tree-fold-all').hidden = view === 'markdown';
   renderTree();
 }
 $('.tabs').addEventListener('click', e => { const t = e.target.closest('[role="tab"]'); if (t) setView(t.dataset.view); });
@@ -1039,18 +1090,18 @@ function setPanel(closed, { focus = false } = {}) {
   $('#panel-body').hidden = closed;
   const strip = $('#panel-toggle');
   strip.setAttribute('aria-expanded', !closed);
-  strip.title = closed ? 'Show the Structure / JSON panel' : 'Hide this panel';
+  strip.title = closed ? 'Show the side panel' : 'Hide this panel';
   strip.querySelector('.arrow').textContent = closed ? '⇤' : '⇥';
-  strip.querySelector('.vlabel').textContent = closed ? 'Structure · JSON' : 'Hide panel';
+  strip.querySelector('.vlabel').textContent = closed ? 'Structure · JSON · PDF review' : 'Hide panel';
   // The canvas got wider or narrower, so text boxes need a new height
   document.querySelectorAll('#paper textarea').forEach(grow);
   if (focus) strip.focus();
 }
 $('#panel-toggle').addEventListener('click', () => setPanel(!panelClosed, { focus: true }));
-$('#copy-json').addEventListener('click', async () => {
-  await navigator.clipboard.writeText(JSON.stringify(toJson(), null, 2));
-  $('#copy-json').textContent = 'Copied';
-  setTimeout(() => ($('#copy-json').textContent = 'Copy'), 1200);
+$('#copy-view').addEventListener('click', async () => {
+  await navigator.clipboard.writeText(view === 'markdown' ? toMarkdown() : JSON.stringify(toJson(), null, 2));
+  $('#copy-view').textContent = 'Copied';
+  setTimeout(() => ($('#copy-view').textContent = 'Copy'), 1200);
 });
 
 // Delegated: Sortable leaves a copy of the dragged card behind, so don't bind to the card itself
@@ -1149,21 +1200,12 @@ function takePdf(file) {
   }, 1800);
 }
 
-$('#choose-pdf').addEventListener('click', () => $('#pdf-file').click());
-$('#pdf-file').addEventListener('change', e => { takePdf(e.target.files[0]); e.target.value = ''; });
+// Demo: only the sample can be used. Its file isn't read (extraction isn't connected), so this also works
+// when index.html is opened straight from disk. Files dropped on the page are ignored rather than opened.
+$('#use-sample').addEventListener('click', () => takePdf(new File([], 'sample1.pdf', { type: 'application/pdf' })));
 const drop = $('#drop');
-drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('over'); });
-drop.addEventListener('dragleave', e => { if (!drop.contains(e.relatedTarget)) drop.classList.remove('over'); });
-drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); takePdf(e.dataTransfer.files[0]); });
-$('#use-sample').addEventListener('click', async () => {
-  try {
-    const res = await fetch('sample1.pdf');
-    if (!res.ok) throw new Error(res.status);
-    takePdf(new File([await res.blob()], 'sample1.pdf', { type: 'application/pdf' }));
-  } catch {
-    $('#drop-error').textContent = 'Couldn’t open sample1.pdf from here. Choose it with “Choose PDF” instead.';
-  }
-});
+drop.addEventListener('dragover', e => e.preventDefault());
+drop.addEventListener('drop', e => e.preventDefault());
 $('#step-upload').addEventListener('click', () => {
   if (!confirm('Upload a different PDF? Changes to this plan will be lost.')) return;
   closeTypeMenu();
