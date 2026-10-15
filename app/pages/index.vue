@@ -6,18 +6,18 @@ useSeoMeta({ title: "Home" });
 
 const PROTOTYPES = [
   {
-    path: "/d",
-    href: "/d",
-    name: "DMP Bridge",
-    blurb:
-      "Edit the plan on its pages: one fixed style, automatic numbering, drag to reorder and colors for checking the structure. Exports JSON.",
-  },
-  {
     path: "/x",
     href: "/x/index.html",
     name: "DMP import: Review structure",
     blurb:
       "Upload a PDF, review the structure the extraction found, and export JSON.",
+  },
+  {
+    path: "/d",
+    href: "/d",
+    name: "DMP Bridge",
+    blurb:
+      "Edit the plan on its pages: one fixed style, automatic numbering, drag to reorder and colors for checking the structure. Exports JSON.",
   },
 ];
 </script>

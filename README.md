@@ -58,7 +58,7 @@ inside `/x/`. Prettier skips `public/x/`, so the page stays as written.
 
 ```text
 app/
-  pages/index.vue                 home (/): links to /d and /x
+  pages/index.vue                 home (/): links to /x and /d
   pages/d/index.vue               start page (/d)
   pages/d/plans/sample.vue        the editor on the sample plan, global shortcuts
   components/AppBrand.vue         logo, links home
