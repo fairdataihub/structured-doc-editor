@@ -86,17 +86,31 @@
   .panel h2 { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: #68788b; margin: 0 0 10px; }
   .panel p.hint { font-size: 13px; color: #68788b; margin: 0 0 12px; line-height: 1.45; }
 
+  /* One colour per block type, the same in the left panel, the plan and the side panel.
+     "Colors: off" (top bar) uses the page's own white and navy for every type; bold, size and labels tell them apart. */
+  :root {
+    --title-c: #2f5aa0; --title-ink: #1e3a8a; --title-bd: #b9cbea; --title-soft: #dbe7fb;
+    --sec-c: #2f5aa0; --sec-ink: #1e3a8a; --sec-bg: #eef3fb; --sec-bd: #b9cbea; --sec-soft: #dbe7fb;
+    --desc-c: #94a3b8; --desc-ink: #64748b; --desc-bg: #f8fafc; --desc-bd: #e2e8f0; --desc-soft: #f1f5f9;
+    --q-c: #d48a00; --q-ink: #8a5200; --q-bg: #fef6e6; --q-bd: #f5ddb0; --q-soft: #f8dfa8;
+    --a-c: #f0b44c; --a-ink: #8a5200; --a-bg: #fffdf8; --a-bd: #f3dcae; --a-soft: #fcefd2;
+  }
+  :root.no-color {
+    /* Colors off: one calm palette for every type, white cards with the navy of the logo */
+    --title-c: #3665a5; --title-ink: #244f91; --title-bd: #c7d7f0; --title-soft: #e8effa;
+    --sec-c: #3665a5; --sec-ink: #244f91; --sec-bg: #f7f9fc; --sec-bd: #c7d7f0; --sec-soft: #e8effa;
+    --desc-c: #3665a5; --desc-ink: #244f91; --desc-bg: #fff; --desc-bd: #dbe4f2; --desc-soft: #e8effa;
+    --q-c: #3665a5; --q-ink: #244f91; --q-bg: #fff; --q-bd: #c7d7f0; --q-soft: #e8effa;
+    --a-c: #3665a5; --a-ink: #244f91; --a-bg: #fff; --a-bd: #dbe4f2; --a-soft: #e8effa;
+  }
+
   /* Left: add blocks */
   .add { display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left; margin-bottom: 8px; padding: 10px; }
   .add .icon { width: 26px; height: 26px; border-radius: 6px; display: grid; place-items: center; font-weight: 700; font-size: 13px; flex: none; }
   .add strong { display: block; font-size: 14px; }
   .add small { display: block; color: #68788b; font-size: 12px; margin-top: 2px; }
-  .icon.i-sec { background: #dbe7fb; color: #244f91; }
-  .icon.i-q { background: #fdecc8; color: #8a5200; }
-  .icon.i-title { background: #ece4fb; color: #6a3fc4; }
-  .icon.i-desc { background: #e6edf7; color: #3a5a86; }
-  .icon.i-ans { background: #e3f4ec; color: #0d6446; }
-  .t-desc { color: #4a5b70; font-style: italic; font-size: 14px; }
+  .icon.i-sec { background: var(--sec-soft); color: var(--sec-ink); }
+  .icon.i-q { background: var(--q-soft); color: var(--q-ink); }
 
   /* Center: the plan itself */
   .canvas { overflow: auto; padding: 16px 20px; }
@@ -104,44 +118,44 @@
            padding: 28px 28px 48px; box-shadow: 0 1px 3px rgba(32, 48, 68, .06); }
   .paper textarea { display: block; width: 100%; border: 0; background: transparent; resize: none; overflow: hidden;
                     padding: 2px 4px; border-radius: 4px; line-height: 1.55; }
-  .paper textarea:focus { outline: none; background: #f5f8fc; }
+  .paper textarea:focus { outline: none; background: rgba(255, 255, 255, .7); }
   .paper textarea::placeholder { color: #a3aebb; font-style: italic; font-weight: 400; }
   .t-title { font-size: 24px; font-weight: 750; text-align: center; letter-spacing: -.3px; }
   .t-section { font-size: 18px; font-weight: 700; }
+  .t-desc { color: #4a5b70; font-style: italic; font-size: 14px; }
   .t-q { font-weight: 650; }
   .t-a { color: #34465a; }
 
-  /* Each block type has its own colour: title = purple, section = blue, question = amber */
   .blk { position: relative; border-radius: 6px; }
-  .blk:focus-within textarea:focus { background: #fff; }
-  .plan-blk { padding: 22px 6px 6px; margin-bottom: 20px; border: 1px solid #cbbcf0; }
+  .plan-blk { padding: 22px 6px 6px; margin-bottom: 20px; border: 1px solid var(--title-bd); }
   .blk-label { position: absolute; top: 5px; left: 8px; font-size: 11px; letter-spacing: 1.2px; font-weight: 750;
-               text-transform: uppercase; color: #6a3fc4; }
-  .plan-blk:hover { border-color: #a98be6; }
-  .plan-blk.selected { border: 1px solid #7c4ddb; box-shadow: 0 0 0 3px rgba(124, 77, 219, .15); }
-  .sec { padding: 12px 12px 8px; margin-top: 22px; background: #f5f8fd; border: 1px solid #c7d7f0; }
-  .sec:hover { border-color: #9fbbe6; }
-  .sec.selected { border-color: #3665a5; box-shadow: 0 0 0 3px rgba(54, 101, 165, .18); }
-  /* Questions cycle through three colours (1st/4th… amber, 2nd/5th… green, 3rd/6th… pink) */
-  .qc0 { --c: #d48a00; --ink: #8a5200; --bg: #fffaf0; --bd: #f0d9a8; --ring: rgba(212, 138, 0, .18); --soft: #fdecc8; }
-  .qc1 { --c: #179266; --ink: #0d6446; --bg: #f2fbf7; --bd: #b5e3cf; --ring: rgba(23, 146, 102, .18); --soft: #d3f2e4; }
-  /* Section descriptions, and answers with no question above them */
-  .qn { --c: #7b8a9c; --ink: #4a5b70; --bg: #f7f9fb; --bd: #d5dde7; --ring: rgba(123, 138, 156, .2); --soft: #e9eef4; }
-  .qc2 { --c: #c2417a; --ink: #8e2555; --bg: #fdf4f8; --bd: #f1c2d6; --ring: rgba(194, 65, 122, .18); --soft: #f9dcea; }
-  .q { padding: 8px 10px; margin: 10px 0; background: var(--bg); border: 1px solid var(--bd); }
-  /* A question is a shade darker than the answers below it, which share its colour */
-  .q.question { background: color-mix(in srgb, var(--soft) 70%, #fff); }
-  .q:hover { border-color: var(--c); }
-  .q.selected { border-color: var(--c); box-shadow: 0 0 0 3px var(--ring); }
+               text-transform: uppercase; color: var(--title-ink); }
+  .plan-blk:hover { border-color: var(--title-c); }
+  .plan-blk.selected { border-color: var(--title-c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--title-c) 18%, transparent); }
+  .sec { --c: var(--sec-c); --bd: var(--sec-bd); --soft: var(--sec-soft);
+         padding: 12px 12px 8px; margin-top: 22px; background: var(--sec-bg); border: 1px solid var(--sec-bd); }
+  .sec:hover { border-color: color-mix(in srgb, var(--sec-bd) 50%, var(--sec-c)); }
+  .sec.selected { border-color: var(--sec-c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--sec-c) 18%, transparent); }
+  .q { --c: var(--q-c); --bd: var(--q-bd); --soft: var(--q-soft);
+       padding: 8px 10px; margin: 10px 0; background: var(--q-bg); border: 1px solid var(--q-bd); }
+  .q:hover { border-color: var(--q-c); }
+  .q.selected { border-color: var(--q-c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--q-c) 18%, transparent); }
+  /* A section's description sits under its title; a question's answer sits inside its card */
+  .part { margin-top: 6px; padding: 3px 4px 4px; border-radius: 5px; border: 1px solid; }
+  .part-label { display: block; padding: 2px 4px 0; font-size: 10px; letter-spacing: 1.2px; font-weight: 750; text-transform: uppercase; }
+  .desc-part { background: var(--desc-bg); border-color: var(--desc-bd); margin-bottom: 4px; }
+  .desc-part .part-label { color: var(--desc-ink); }
+  .ans-part { background: var(--a-bg); border-color: var(--a-bd); }
+  .ans-part .part-label { color: var(--a-ink); }
   .qlist { min-height: 40px; padding-left: 6px; }
-  .qlist:empty::after { content: 'Nothing here yet. Select this section and add a block from the left, or drag one here.';
+  .qlist:empty::after { content: 'No questions yet. Click “Add Q&A” on the left, or drag it here.';
                         display: block; padding: 12px; border: 1px dashed #c8d0db; border-radius: 6px; color: #8a97a8; font-size: 13px; }
 
   /* Block header: always visible, like the earlier card layout */
   .head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
   .head .kind { font-size: 11px; letter-spacing: 1.2px; font-weight: 750; text-transform: uppercase; }
-  .sec > .head .kind { color: #244f91; }
-  .q > .head .kind { color: var(--ink); }
+  .sec > .head .kind { color: var(--sec-ink); }
+  .q > .head .kind { color: var(--q-ink); }
   .head .meta { font-size: 12px; color: #68788b; }
   .head .spacer { flex: 1; }
   .head button { padding: 2px 8px; font-size: 13px; border-radius: 5px; }
@@ -153,7 +167,6 @@
             background: #fff; color: var(--c); font-size: 16px; line-height: 1; cursor: grab; user-select: none; }
   .handle:hover { background: var(--soft); border-color: var(--c); }
   .handle:active { cursor: grabbing; }
-  .sec-handle { --c: #3665a5; --bd: #b8cbea; --soft: #dbe7fb; }
   /* The type label ("SECTION 1 ▾") opens the Change-type menu */
   .head button.kind { border: 1px solid transparent; background: transparent; padding: 2px 6px; margin-left: -2px;
                       font-size: 11px; border-radius: 5px; }
@@ -182,18 +195,17 @@
                 border: 1px solid #fecdca; border-radius: 9px; padding: 0 7px; line-height: 18px; }
   .missing > .head .warn { display: inline; }
   .head .kind, .head .warn { white-space: nowrap; }
-  .sec.missing > .t-section, .q.question.missing > .t-q { background: #fff7f6; box-shadow: inset 0 0 0 1px #f3a59b; }
+  .sec.missing > .t-section, .q.missing > .t-q { background: #fff7f6; box-shadow: inset 0 0 0 1px #f3a59b; }
   .sec.collapsed > .sec-body { display: none; }
-  .q.collapsed > textarea { display: none; }
+  .q.collapsed > .ans-part { display: none; }
   .sec.collapsed { padding-bottom: 10px; }
   .sortable-ghost { opacity: .35; }
   /* A block card dragged from the left panel, shown as a drop marker */
-  #paper .add { display: block; height: 6px; padding: 0; margin: 6px 0; overflow: hidden; border: 0; border-radius: 3px; background: #3665a5; opacity: 1; }
-  #paper .add:not([data-add="section"]) { background: #d48a00; }
+  #paper .add { display: block; height: 6px; padding: 0; margin: 6px 0; overflow: hidden; border: 0; border-radius: 3px; background: var(--sec-c); opacity: 1; }
+  #paper .add[data-add="question"] { background: var(--q-c); }
   #paper .add * { display: none; }
-  .tree .tree-qs { min-height: 6px; }
   .tree-head { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
-  /* Right panel: Structure / JSON tabs */
+  /* Right panel: Structure / JSON / Preview tabs (read-only; editing happens in the plan) */
   .tabs { display: flex; gap: 2px; margin-right: auto; padding: 2px; border-radius: 7px; background: #eef1f5; }
   .tabs button { border: 0; background: transparent; padding: 4px 12px; border-radius: 5px; font-size: 12px; font-weight: 650;
                  letter-spacing: .4px; color: #5b697a; }
@@ -210,25 +222,27 @@
   .tree .folded > .tree-qs { display: none; }
   .tree .fold-count { flex: none; margin: 3px 4px 0; padding: 0 6px; font-size: 11px; line-height: 18px; border-radius: 9px;
                       background: #edf1f6; color: #5b697a; }
-  .tree button[data-kind="section"], .tree button[data-kind="item"] { cursor: grab; }
 
   /* Right: structure tree */
   .tree ul { list-style: none; margin: 0; padding: 0; }
   .tree .tree-qs { padding-left: 14px; margin-left: 9px; border-left: 1px solid #e3e8ef; }
   .tree button { display: flex; align-items: flex-start; gap: 6px; width: 100%; text-align: left; border: 0; background: transparent;
-                 padding: 3px 6px; border-radius: 4px; font-size: 12px; line-height: 1.4; }
+                 padding: 3px 6px; border-radius: 4px; font-size: 12px; line-height: 1.4; color: #34465a; }
   .tree button:hover { background: #eef3f9; }
   .tree button.selected { background: #e8effa; font-weight: 700; }
-  .tree .dot { flex: none; width: 8px; height: 8px; border-radius: 2px; }
-  .tree [data-kind="section"] { color: #244f91; font-weight: 600; }
-  .tree [data-kind="section"] .dot { background: #3665a5; }
-  .tree [data-kind="item"] { color: #34465a; }
-  .tree [data-kind="item"] .dot { background: var(--c); border-radius: 50%; }
-  .tree .num { flex: none; font-size: 11px; font-weight: 700; color: #68788b; min-width: 26px; }
-  .tree [data-kind="section"] .num { color: #3665a5; }
-  .tree [data-kind="item"] .num { color: var(--ink); min-width: 84px; white-space: nowrap; }
+  .tree .dot { flex: none; width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; }
+  .tree .num { flex: none; font-size: 11px; font-weight: 700; min-width: 26px; }
+  .tree .sub .num { min-width: 30px; white-space: nowrap; }
+  .tree .t-section { color: var(--sec-ink); font-weight: 600; }
+  .tree .t-section .dot { background: var(--sec-c); border-radius: 2px; }
+  .tree .t-section .num { color: var(--sec-c); }
+  .tree .t-description .dot { background: var(--desc-c); }
+  .tree .t-description .num { color: var(--desc-ink); }
+  .tree .t-question .dot { background: var(--q-c); }
+  .tree .t-question .num { color: var(--q-ink); }
+  .tree .t-answer .dot { background: var(--a-c); }
+  .tree .t-answer .num { color: var(--a-ink); }
   .tree .txt { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
-  .tree .dot { margin-top: 5px; }
   .tree .txt.empty { color: #a3aebb; font-style: italic; }
 
   /* Right: live JSON layout */
@@ -248,26 +262,29 @@
   .json .summary { color: #8a97a8; font-style: italic; margin-left: 4px; overflow: hidden; text-overflow: ellipsis; }
   .json .children { margin-left: 6px; padding-left: 6px; border-left: 1px dotted #d5dde7; }
   .json .folded > .children, .json .folded > .close { display: none; }
-  /* Objects that map to a block in the canvas */
+  /* Objects that map to a block in the plan, highlighted in the colour of their type when selected */
   .json .grp[data-kind] > .row:first-child { cursor: pointer; }
   .json .grp[data-kind] > .row:first-child:hover { background: #eef3f9; }
-  .json .grp.sel { background: #e8effa; border-radius: 4px; box-shadow: inset 2px 0 0 #3665a5; }
-  .json .grp.sel.q-grp { background: var(--soft); box-shadow: inset 2px 0 0 var(--c); }
   .json .row.linked { cursor: pointer; }
   .json .row.linked:hover { background: #eef3f9; }
-  .json .row.sel { background: #e8effa; box-shadow: inset 2px 0 0 #3665a5; }
+  .json .sel { background: var(--sel-bg); border-radius: 4px; box-shadow: inset 2px 0 0 var(--sel-c); }
+  .sec-link { --sel-bg: var(--sec-soft); --sel-c: var(--sec-c); }
+  .desc-link { --sel-bg: var(--desc-soft); --sel-c: var(--desc-c); }
+  .q-link { --sel-bg: var(--q-soft); --sel-c: var(--q-c); }
+  .a-link { --sel-bg: var(--a-soft); --sel-c: var(--a-c); }
+  .title-link { --sel-bg: var(--title-soft); --sel-c: var(--title-c); }
 
-  /* Right: PDF review tab (Markdown preview), one fixed style per type */
+  /* Right: Preview tab, one fixed style per type */
   .md { font-size: 13px; line-height: 1.6; color: #203044; }
   .md-doc h1 { font-size: 19px; text-align: center; margin: 4px 0 18px; letter-spacing: -.2px; }
   .md-doc h2 { font-size: 15.5px; margin: 20px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #e3e8ef;
                text-transform: none; letter-spacing: normal; color: inherit; }
   .md-doc h3 { font-size: 13.5px; margin: 14px 0 4px; }
   .md-doc p { margin: 0 0 8px; }
-  .md-doc .md-description { color: #4a5b70; font-style: italic; }
+  .md-doc .desc-link { color: #4a5b70; font-style: italic; }
   .md-doc [data-kind] { cursor: pointer; border-radius: 4px; padding: 1px 6px; margin-left: -6px; margin-right: -6px; }
   .md-doc [data-kind]:hover { background: #f3f6fa; }
-  .md-doc .sel, .md-doc .sel:hover { background: #e8effa; box-shadow: inset 2px 0 0 #3665a5; }
+  .md-doc .sel, .md-doc .sel:hover { background: var(--sel-bg); box-shadow: inset 2px 0 0 var(--sel-c); }
   .md-doc .empty { color: #a3aebb; font-style: italic; font-weight: 400; }
 
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -281,9 +298,10 @@
       <button id="step-upload" title="Upload a different PDF">1 · Upload PDF</button><span id="step-review">2 · Review structure</span><span>3 · Export JSON</span>
     </nav>
     <div class="actions" id="review-actions">
+      <button id="colors" aria-pressed="true" title="Turn block colors on or off">Colors: on</button>
       <button id="fold-all">Collapse all</button>
       <button id="undo" disabled>Undo</button>
-      <button id="reset" title="Go back to the structure as it was imported">Reset</button>
+      <button id="reset" title="Discard all changes and go back to the structure as it was imported">Reset</button>
       <button id="export" class="primary">Export JSON</button>
     </div>
   </header>
@@ -313,25 +331,13 @@
       <h2>Add block</h2>
       <p class="hint">Click to add below the selected item, or drag into the plan.</p>
       <div id="palette">
-      <button class="add no-drag" data-add="title">
-        <span class="icon i-title">T</span>
-        <span><strong>Title</strong><small>The DMP title (one per plan)</small></span>
-      </button>
       <button class="add" data-add="section">
         <span class="icon i-sec">S</span>
-        <span><strong>Section title</strong><small>A new DMP section after the selected one</small></span>
-      </button>
-      <button class="add" data-add="description">
-        <span class="icon i-desc">D</span>
-        <span><strong>Section description</strong><small>Describes the selected section</small></span>
+        <span><strong>Add section</strong><small>A new DMP section (title and description) after the selected one</small></span>
       </button>
       <button class="add" data-add="question">
         <span class="icon i-q">Q</span>
-        <span><strong>Question</strong><small>A question in the selected section</small></span>
-      </button>
-      <button class="add" data-add="answer">
-        <span class="icon i-ans">A</span>
-        <span><strong>Answer</strong><small>The answer to the question above it</small></span>
+        <span><strong>Add Q&amp;A</strong><small>A question and its answer in the selected section</small></span>
       </button>
       </div>
     </aside>
@@ -349,7 +355,7 @@
         <div class="tabs" role="tablist" aria-label="Show the plan as">
           <button role="tab" id="tab-structure" data-view="structure" aria-controls="tree">Structure</button>
           <button role="tab" id="tab-json" data-view="json" aria-controls="tree">JSON</button>
-          <button role="tab" id="tab-markdown" data-view="markdown" aria-controls="tree">PDF review</button>
+          <button role="tab" id="tab-preview" data-view="preview" aria-controls="tree">Preview</button>
         </div>
         <button id="copy-view" class="mini" hidden>Copy</button>
         <button id="tree-fold-all" class="mini">Collapse</button>
@@ -371,9 +377,8 @@ let uid = 0;
 const id = () => ++uid;
 
 // ---------- data ----------
-// Each section holds its blocks in order. A block is a section description, a question or an answer;
-// they are all moved, folded and deleted the same way.
-// sections: [{ id, title, items: [{ id, kind: 'description' | 'question' | 'answer', text, color? }] }]
+// A section has a title and an (optional) description; a question always carries its one answer.
+// sections: [{ id, title, description, questions: [{ id, text, answer }] }]
 const plan = {};
 let sections = [];
 // The extracted JSON and the structure as imported (for Reset)
@@ -388,20 +393,17 @@ function load(data) {
     .map(s => ({
       id: id(),
       title: s.title,
-      items: [
-        ...(s.description ? [{ id: id(), kind: 'description', text: s.description }] : []),
-        ...s.question.slice().sort((a, b) => a.order - b.order).flatMap((q, j) => [
-          { id: id(), kind: 'question', text: q.text, color: j % 3 },
-          { id: id(), kind: 'answer', text: q.answer.json.answer }
-        ])
-      ]
+      description: s.description,
+      questions: s.question.slice().sort((a, b) => a.order - b.order)
+        .map(q => ({ id: id(), text: q.text, answer: q.answer.json.answer }))
     }));
   original = structuredClone({ sections, plan });
 }
 
-// What is selected: { kind: 'plan' } | { kind: 'section', id } | { kind: 'item', id }
+// What is selected: { kind: 'plan' } | { kind: 'section', id } | { kind: 'question', id }, with
+// part: 'description' | 'answer' while the caret is in a section's description or a question's answer
 let selected = { kind: 'plan' };
-// Ids of collapsed sections / blocks (view state, not part of undo)
+// Ids of collapsed sections / questions (view state, not part of undo)
 const collapsed = new Set();
 // Sections folded in the structure tree (separate from the canvas)
 const treeCollapsed = new Set();
@@ -409,12 +411,15 @@ const treeCollapsed = new Set();
 const jsonCollapsed = new Set();
 // "meta" objects start folded; this remembers the ones the user opened
 const metaOpened = new Set();
-// Right panel tab: 'structure' or 'json' (remembered in this browser)
+// Right panel tab (remembered in this browser)
 let view = 'structure';
-try { const v = localStorage.getItem('dmp-view'); if (v === 'json' || v === 'markdown') view = v; } catch {}
+try { const v = localStorage.getItem('dmp-view'); if (v === 'json' || v === 'preview') view = v; } catch {}
 // Right panel folded away (remembered in this browser)
 let panelClosed = false;
 try { panelClosed = localStorage.getItem('dmp-panel') === 'closed'; } catch {}
+// Block colours on or off (remembered in this browser)
+let colorsOn = true;
+try { colorsOn = localStorage.getItem('dmp-colors') !== 'off'; } catch {}
 
 const history = [];
 function checkpoint() { history.push(structuredClone({ sections, plan })); $('#undo').disabled = false; $('#toast').hidden = true; }
@@ -424,15 +429,18 @@ function undo() {
   sections = prev.sections;
   Object.assign(plan, prev.plan);
   $('#undo').disabled = !history.length;
+  $('#toast').hidden = true;
   if (!exists(selected)) selected = { kind: 'plan' };
   render();
   announce('Change undone');
 }
 
-// Back to the imported structure (can be undone)
+// Back to the imported structure. This clears the undo history, so it can't be undone.
 function reset() {
-  if (!confirm('Discard all changes and go back to the imported structure? You can undo this.')) return;
-  checkpoint();
+  if (!confirm('Are you sure you want to reset? All your changes will be lost, and this can’t be undone.')) return;
+  history.length = 0;
+  $('#undo').disabled = true;
+  $('#toast').hidden = true;
   const o = structuredClone(original);
   sections = o.sections;
   Object.assign(plan, o.plan);
@@ -442,13 +450,7 @@ function reset() {
   announce('Reset to the imported structure');
 }
 
-// Blocks back into the JSON shape: section descriptions are joined into section.description, and each
-// question takes the answers below it (an answer with no question above it gets a question with empty text).
-// Also notes which blocks each exported question, answer and description came from, for the JSON tab.
-let exportedQ = [], exportedA = [], exportedD = [];
 function toJson() {
-  const join = parts => parts.filter(t => t.trim()).join('\n\n');
-  exportedQ = []; exportedA = []; exportedD = [];
   return {
     narrative: {
       download_url: source.narrative.download_url ?? '',
@@ -456,30 +458,16 @@ function toJson() {
         title: plan.title,
         description: plan.description,
         version: plan.version,
-        section: sections.map((s, si) => {
-          const qs = [];
-          for (const it of s.items) {
-            if (it.kind === 'question') qs.push({ id: it.id, text: it.text, answers: [], aIds: [] });
-            if (it.kind === 'answer') {
-              if (!qs.length) qs.push({ id: it.id, text: '', answers: [], aIds: [] });
-              qs.at(-1).answers.push(it.text);
-              qs.at(-1).aIds.push(it.id);
-            }
-          }
-          exportedQ[si] = qs.map(q => q.id);
-          exportedA[si] = qs.map(q => q.aIds);
-          exportedD[si] = s.items.filter(it => it.kind === 'description').map(it => it.id);
-          return {
-            title: s.title,
-            description: join(s.items.filter(it => it.kind === 'description').map(it => it.text)),
-            order: si + 1,
-            question: qs.map((q, qi) => ({
-              text: q.text,
-              order: qi + 1,
-              answer: { json: { type: 'textArea', answer: join(q.answers), meta: { schemaVersion: '1.0' } } }
-            }))
-          };
-        })
+        section: sections.map((s, si) => ({
+          title: s.title,
+          description: s.description,
+          order: si + 1,
+          question: s.questions.map((q, qi) => ({
+            text: q.text,
+            order: qi + 1,
+            answer: { json: { type: 'textArea', answer: q.answer, meta: { schemaVersion: '1.0' } } }
+          }))
+        }))
       }
     }
   };
@@ -488,33 +476,23 @@ function toJson() {
 // ---------- helpers ----------
 const $ = sel => document.querySelector(sel);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-function locate(iid) {
+function locate(qid) {
   for (const [si, s] of sections.entries()) {
-    const j = s.items.findIndex(it => it.id == iid);
-    if (j >= 0) return { s, si, j, it: s.items[j] };
+    const j = s.questions.findIndex(q => q.id == qid);
+    if (j >= 0) return { s, si, j, q: s.questions[j] };
   }
 }
 const sectionIndex = sid => sections.findIndex(s => s.id == sid);
 const exists = sel => sel.kind === 'plan' || (sel.kind === 'section' ? sectionIndex(sel.id) >= 0 : !!locate(sel.id));
-// Label, tree label and colour of each block in a section: questions are numbered 1.1, 1.2 …,
-// and an answer takes the number of the question above it
-function itemInfo(s, i) {
-  let n = 0, color = null;
-  return s.items.map(it => {
-    if (it.kind === 'question') { n++; color = it.color; return { label: `Question ${i + 1}.${n}`, num: `${i + 1}.${n} Question`, color }; }
-    if (it.kind === 'answer') return n ? { label: `Answer ${i + 1}.${n}`, num: `${i + 1}.${n} Answer`, color } : { label: 'Answer', num: 'Answer', color: null, orphan: true };
-    return { label: 'Section description', num: 'Description', color: null };
-  });
-}
-const colorClass = c => c == null ? 'qn' : `qc${c}`;
 const isSel = (kind, id) => selected.kind === kind && selected.id == id;
+// Selected, and the caret is in that part (none = the block itself, 'description' or 'answer')
+const isSelPart = (kind, id, part) => kind === 'plan' ? selected.kind === 'plan' : isSel(kind, id) && (selected.part || null) === (part || null);
 const typeButton = label => `<button class="kind" data-act="type" aria-haspopup="menu" aria-expanded="false"
     title="Change type" aria-label="${label}, change type">${label}<span class="caret" aria-hidden="true">▾</span></button>`;
 function announce(msg) { $('#announce').textContent = ''; setTimeout(() => ($('#announce').textContent = msg), 50); }
 function grow(ta) { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
 
 // ---------- render: canvas ----------
-const textClass = { description: 't-desc', question: 't-q', answer: 't-a' };
 function render() {
   const nS = sections.length;
   const toggle = (bid, what) => `<button class="toggle" data-act="toggle" aria-expanded="${!collapsed.has(bid)}"
@@ -522,18 +500,16 @@ function render() {
   $('#paper').innerHTML = `
     <div class="blk plan-blk ${selected.kind === 'plan' ? 'selected' : ''}" data-kind="plan">
       <span class="blk-label">Title</span>
-      <textarea class="t-title" data-field="title" rows="1" aria-label="Plan title">${esc(plan.title)}</textarea>
+      <textarea class="t-title" data-field="title" rows="1" aria-label="DMP title" placeholder="DMP title">${esc(plan.title)}</textarea>
     </div>
-    <div id="sections">${sections.map((s, i) => {
-      const info = itemInfo(s, i), nQ = s.items.filter(it => it.kind === 'question').length;
-      return `
+    <div id="sections">${sections.map((s, i) => `
     <section class="blk sec ${isSel('section', s.id) ? 'selected' : ''} ${collapsed.has(s.id) ? 'collapsed' : ''} ${s.title.trim() ? '' : 'missing'}" data-kind="section" data-id="${s.id}" id="b-section-${s.id}">
       <div class="head">
-        <span class="handle sec-handle" title="Drag to move section" aria-hidden="true">⠿</span>
+        <span class="handle" title="Drag to move section" aria-hidden="true">⠿</span>
         ${toggle(s.id, `section ${i + 1}`)}
         ${typeButton(`Section ${i + 1}`)}
         <span class="warn">Needs a title</span>
-        <span class="meta">${nQ} question${nQ === 1 ? '' : 's'}</span>
+        <span class="meta">${s.questions.length} question${s.questions.length === 1 ? '' : 's'}</span>
         <span class="spacer"></span>
         <button data-act="up" aria-label="Move section ${i + 1} up" ${i === 0 ? 'disabled' : ''}>↑</button>
         <button data-act="down" aria-label="Move section ${i + 1} down" ${i === nS - 1 ? 'disabled' : ''}>↓</button>
@@ -541,90 +517,86 @@ function render() {
       </div>
       <textarea class="t-section" data-field="title" rows="1" aria-label="Section ${i + 1} title" placeholder="Section title">${esc(s.title)}</textarea>
       <div class="sec-body">
-      <div class="qlist" data-sid="${s.id}">${s.items.map((it, j) => {
-        const { label, color, orphan } = info[j], what = label.toLowerCase();
-        const missing = (it.kind === 'question' && !it.text.trim()) || orphan;
-        return `
-        <div class="blk q ${it.kind} ${colorClass(color)} ${isSel('item', it.id) ? 'selected' : ''} ${collapsed.has(it.id) ? 'collapsed' : ''} ${missing ? 'missing' : ''}" data-kind="item" data-id="${it.id}" id="b-item-${it.id}">
+      <div class="part desc-part">
+        <span class="part-label">Section description</span>
+        <textarea class="t-desc" data-field="description" rows="1" aria-label="Section ${i + 1} description" placeholder="Description of this section (optional)">${esc(s.description)}</textarea>
+      </div>
+      <div class="qlist" data-sid="${s.id}">${s.questions.map((q, j) => `
+        <div class="blk q ${isSel('question', q.id) ? 'selected' : ''} ${collapsed.has(q.id) ? 'collapsed' : ''} ${q.text.trim() ? '' : 'missing'}" data-kind="question" data-id="${q.id}" id="b-question-${q.id}">
           <div class="head">
             <span class="handle" title="Drag to move" aria-hidden="true">⠿</span>
-            ${toggle(it.id, what)}
-            ${typeButton(label)}
-            <span class="warn">${it.kind === 'question' ? 'Needs question text' : 'No question above'}</span>
+            ${toggle(q.id, `question ${i + 1}.${j + 1}`)}
+            ${typeButton(`Question ${i + 1}.${j + 1}`)}
+            <span class="warn">Needs question text</span>
             <span class="spacer"></span>
-            <button data-act="up" aria-label="Move ${what} up" ${i === 0 && j === 0 ? 'disabled' : ''}>↑</button>
-            <button data-act="down" aria-label="Move ${what} down" ${i === nS - 1 && j === s.items.length - 1 ? 'disabled' : ''}>↓</button>
-            <button data-act="delete" aria-label="Delete ${what}">✕</button>
+            <button data-act="up" aria-label="Move question ${i + 1}.${j + 1} up" ${i === 0 && j === 0 ? 'disabled' : ''}>↑</button>
+            <button data-act="down" aria-label="Move question ${i + 1}.${j + 1} down" ${i === nS - 1 && j === s.questions.length - 1 ? 'disabled' : ''}>↓</button>
+            <button data-act="delete" aria-label="Delete question ${i + 1}.${j + 1}">✕</button>
           </div>
-          <textarea class="${textClass[it.kind]}" data-field="text" rows="1" aria-label="${label}" placeholder="${typeNames[it.kind]}">${esc(it.text)}</textarea>
-        </div>`;
-      }).join('')}</div>
+          <textarea class="t-q" data-field="text" rows="1" aria-label="Question ${i + 1}.${j + 1}" placeholder="Question">${esc(q.text)}</textarea>
+          <div class="part ans-part">
+            <span class="part-label">Answer</span>
+            <textarea class="t-a" data-field="answer" rows="1" aria-label="Answer to question ${i + 1}.${j + 1}" placeholder="Answer">${esc(q.answer)}</textarea>
+          </div>
+        </div>`).join('')}</div>
       </div>
-    </section>`;
-    }).join('')}</div>`;
+    </section>`).join('')}</div>`;
 
   document.querySelectorAll('#paper textarea').forEach(grow);
   // Sections reorder by their handle, and accept new sections dragged from the left panel
   Sortable.create($('#sections'), {
     group: { name: 'sections', pull: false, put: (to, from, el) => el.dataset.add === 'section' },
-    handle: '.sec-handle',
+    handle: '.sec > .head .handle',
     animation: 150,
     onStart: checkpoint,
     onEnd: syncSectionsFromDom,
     onAdd: e => dropFromPalette('section', e.newIndex)
   });
-  // Block lists accept blocks from any section and new blocks from the left panel
+  // Question lists accept questions from any section and new questions from the left panel
   document.querySelectorAll('.qlist').forEach(list => Sortable.create(list, {
-    group: { name: 'items', put: (to, from, el) => !el.dataset.add || ITEM_KINDS.includes(el.dataset.add) },
+    group: { name: 'questions', put: (to, from, el) => !el.dataset.add || el.dataset.add === 'question' },
     handle: '.handle',
     animation: 150,
     onStart: checkpoint,
     onEnd: syncFromDom,
-    onAdd: e => { if (e.item.dataset.add) dropFromPalette(e.item.dataset.add, e.newIndex, Number(list.dataset.sid)); }
+    onAdd: e => { if (e.item.dataset.add) dropFromPalette('question', e.newIndex, Number(list.dataset.sid)); }
   }));
   renderTree();
   updateButtons();
 }
 
-// ---------- render: right panel ----------
+// ---------- render: right panel (read-only views of the plan; clicking jumps to the block) ----------
 function renderTree() {
-  $('#tree').className = { structure: 'tree', json: 'json', markdown: 'md' }[view];
-  ({ structure: renderStructure, json: renderJson, markdown: renderMarkdown })[view]();
+  $('#tree').className = { structure: 'tree', json: 'json', preview: 'md' }[view];
+  ({ structure: renderStructure, json: renderJson, preview: renderPreview })[view]();
   updateFoldButtons();
 }
+const linkAttrs = (kind, bid, part) => `data-kind="${kind}" ${bid ? `data-id="${bid}"` : ''} ${part ? `data-part="${part}"` : ''}`;
 
 function renderStructure() {
-  const node = (kind, nodeId, num, full, cls = '') => `
-    <button class="${isSel(kind, nodeId) ? 'selected' : ''} ${cls}" data-kind="${kind}" data-id="${nodeId}"
-            title="${esc(full.trim() || 'Untitled')}">
+  // A question row stands for the whole card (question and answer), so it is selected either way
+  const node = (cls, kind, bid, part, num, full, empty) => `
+    <button class="${cls} ${(kind === 'question' ? isSel(kind, bid) : isSelPart(kind, bid, part)) ? 'selected' : ''}" ${linkAttrs(kind, bid, part)}
+            title="${esc(full.trim() || empty)}">
       <span class="dot" aria-hidden="true"></span><span class="num">${num}</span>
-      <span class="txt ${full.trim() ? '' : 'empty'}">${esc(full.trim() || 'Untitled')}</span>
+      <span class="txt ${full.trim() ? '' : 'empty'}">${esc(full.trim() || empty)}</span>
     </button>`;
   $('#tree').innerHTML = `
-      <ul id="tree-sections">${sections.map((s, i) => {
-        const info = itemInfo(s, i);
-        return `
-        <li data-sid="${s.id}" class="${treeCollapsed.has(s.id) ? 'folded' : ''}">
+      <ul>${sections.map((s, i) => `
+        <li class="${treeCollapsed.has(s.id) ? 'folded' : ''}">
           <div class="tree-row">
             <button class="tree-toggle" data-fold="${s.id}" aria-expanded="${!treeCollapsed.has(s.id)}"
                     aria-label="${treeCollapsed.has(s.id) ? 'Expand' : 'Collapse'} section ${i + 1} in tree"><span>▼</span></button>
-            ${node('section', s.id, `S${i + 1}`, s.title)}
-            ${treeCollapsed.has(s.id) ? `<span class="fold-count">${s.items.length}</span>` : ''}
+            ${node('t-section', 'section', s.id, null, `S${i + 1}`, s.title, 'Untitled')}
+            ${treeCollapsed.has(s.id) ? `<span class="fold-count">${s.questions.length}</span>` : ''}
           </div>
-          <ul class="tree-qs" data-sid="${s.id}">${s.items.map((it, j) => `<li data-iid="${it.id}">${node('item', it.id, info[j].num, it.text, colorClass(info[j].color))}</li>`).join('')}</ul>
-        </li>`;
-      }).join('')}
+          <ul class="tree-qs">
+            ${s.description.trim() ? `<li>${node('t-description sub', 'section', s.id, 'description', 'Description', s.description, '')}</li>` : ''}
+            ${s.questions.map((q, j) => `
+            <li>${node('t-question sub', 'question', q.id, null, `${i + 1}.${j + 1}`, q.text, 'Empty')}</li>`).join('')}
+          </ul>
+        </li>`).join('')}
       </ul>`;
-
-  // Drag in the tree: sections reorder, blocks move within or across sections
-  Sortable.create($('#tree-sections'), {
-    group: 'tree-sections', handle: 'button[data-kind="section"]', animation: 150,
-    onStart: checkpoint, onEnd: syncFromTree
-  });
-  document.querySelectorAll('.tree-qs').forEach(ul => Sortable.create(ul, {
-    group: 'tree-items', handle: 'button[data-kind="item"]', animation: 150,
-    onStart: checkpoint, onEnd: syncFromTree
-  }));
 }
 
 // ---------- render: JSON layout ----------
@@ -636,29 +608,23 @@ function jsonKey(p) {
     const s = sections[p[3]];
     if (p.length === 4) return `s:${s.id}`;
     if (p.length === 5) return `qs:${s.id}`;
-    return ({ 6: 'q', 7: 'a', 8: 'aj', 9: 'm' })[p.length] + ':' + exportedQ[p[3]][p[5]];
+    const q = s.questions[p[5]];
+    return ({ 6: 'q', 7: 'a', 8: 'aj', 9: 'm' })[p.length] + ':' + q.id;
   }
   return p.join('.');
 }
-// Which canvas block(s) a JSON value comes from (if any): a section, a question, a question's answer
-// (from the answer blocks below it) or a section's description (from its description blocks)
+// Which block (and part) of the plan a JSON value comes from, if any
 function jsonLink(p) {
-  if (p.length === 2 && p[1] === 'template') return { kind: 'plan' };
-  if (p[2] !== 'section') return null;
-  if (p.length === 4) return { kind: 'section', id: sections[p[3]].id, ids: [sections[p[3]].id] };
-  if (p.length === 5 && p[4] === 'description') {
-    const ids = exportedD[p[3]];
-    return ids.length ? { kind: 'item', id: ids[0], ids, color: null } : null;
-  }
-  if (p.length === 6 || (p.length === 7 && p[6] === 'answer')) {
-    const q = locate(exportedQ[p[3]][p[5]]).it, color = q.kind === 'question' ? q.color : null;
-    if (p.length === 6) return { kind: 'item', id: q.id, ids: [q.id], color };
-    const ids = exportedA[p[3]][p[5]];
-    return ids.length ? { kind: 'item', id: ids[0], ids, color } : null;
-  }
+  if (p.length === 2 && p[1] === 'template') return { kind: 'plan', cls: 'title-link' };
+  if (p[2] !== 'section' || p.length < 4) return null;
+  const s = sections[p[3]];
+  if (p.length === 4) return { kind: 'section', id: s.id, cls: 'sec-link' };
+  if (p.length === 5) return p[4] === 'description' ? { kind: 'section', id: s.id, part: 'description', cls: 'desc-link' } : null;
+  const q = s.questions[p[5]];
+  if (p.length === 6) return { kind: 'question', id: q.id, cls: 'q-link' };
+  if (p.length === 7 && p[6] === 'answer') return { kind: 'question', id: q.id, part: 'answer', cls: 'a-link' };
   return null;
 }
-const linkSelected = link => !!link && link.kind !== 'plan' && link.ids.some(i => isSel(link.kind, i));
 const isFolded = key => key.startsWith('m:') ? !metaOpened.has(key) : jsonCollapsed.has(key);
 
 function renderJson() {
@@ -669,22 +635,21 @@ function renderJson() {
   function walk(key, val, path, comma) {
     const k = key === null ? '' : `<span class="key">${esc(JSON.stringify(key))}</span><span class="punc">:&nbsp;</span>`;
     const c = comma ? '<span class="punc">,</span>' : '';
+    const link = jsonLink(path);
+    const sel = link && link.kind !== 'plan' && isSelPart(link.kind, link.id, link.part);
+    const attrs = link ? linkAttrs(link.kind, link.id, link.part) : '';
     if (val === null || typeof val !== 'object') {
-      const link = jsonLink(path);
-      const attrs = link ? `data-kind="${link.kind}" data-id="${link.id}"` : '';
-      return `<div class="row ${link ? 'linked' : ''} ${linkSelected(link) ? 'sel' : ''}" ${attrs} ${typeof val === 'string' ? `title="${esc(val)}"` : ''}><span class="pad"></span>${k}<span class="val">${prim(val)}${c}</span></div>`;
+      return `<div class="row ${link ? `linked ${link.cls}` : ''} ${sel ? 'sel' : ''}" ${attrs} ${typeof val === 'string' ? `title="${esc(val)}"` : ''}><span class="pad"></span>${k}<span class="val">${prim(val)}${c}</span></div>`;
     }
     const isArr = Array.isArray(val);
     const entries = isArr ? val.map((v, i) => [i, v]) : Object.entries(val);
-    const jk = jsonKey(path), folded = isFolded(jk), link = jsonLink(path);
+    const jk = jsonKey(path), folded = isFolded(jk);
     const [open, close] = isArr ? ['[', ']'] : ['{', '}'];
     const sum = isArr ? `${entries.length} item${entries.length === 1 ? '' : 's'}`
       : val.title !== undefined ? JSON.stringify(preview(val.title))
       : val.text !== undefined ? JSON.stringify(preview(val.text))
       : `${entries.length} key${entries.length === 1 ? '' : 's'}`;
-    const sel = linkSelected(link);
-    const attrs = link ? `data-kind="${link.kind}" ${link.id ? `data-id="${link.id}"` : ''}` : '';
-    return `<div class="grp ${folded ? 'folded' : ''} ${sel ? 'sel' : ''} ${link?.kind === 'item' ? `q-grp ${colorClass(link.color)}` : ''}" ${attrs}>
+    return `<div class="grp ${folded ? 'folded' : ''} ${sel ? 'sel' : ''} ${link?.cls ?? ''}" ${attrs}>
       <div class="row"><button class="fold" data-fold="${jk}" aria-expanded="${!folded}" aria-label="${folded ? 'Expand' : 'Collapse'} ${esc(String(key ?? 'root'))}"><span>▼</span></button>${k}<span class="punc">${open}</span>${folded ? `<span class="punc">&nbsp;…&nbsp;${close}${comma ? ',' : ''}</span><span class="summary">${esc(sum)}</span>` : ''}</div>
       <div class="children">${entries.map(([ck, cv], i) => walk(isArr ? null : ck, cv, [...path, ck], i < entries.length - 1)).join('')}</div>
       <div class="row close"><span class="pad"></span><span class="punc">${close}${c}</span></div>
@@ -694,7 +659,7 @@ function renderJson() {
   $('#tree').innerHTML = walk(null, toJson(), [], false);
 }
 
-// ---------- render: PDF review (Markdown preview) ----------
+// ---------- render: Preview ----------
 // The plan as Markdown: # title, ## sections, ### questions; descriptions and answers are paragraphs.
 // Numbers are left out, so it reads like the final document.
 function toMarkdown() {
@@ -702,67 +667,57 @@ function toMarkdown() {
   if (plan.title.trim()) out.push(`# ${plan.title.trim()}`);
   for (const s of sections) {
     out.push(`## ${s.title.trim() || 'Untitled section'}`);
-    for (const it of s.items) {
-      if (!it.text.trim()) continue;
-      out.push(it.kind === 'question' ? `### ${it.text.trim().replace(/\s*\n\s*/g, ' ')}` : it.text.trim());
+    if (s.description.trim()) out.push(s.description.trim());
+    for (const q of s.questions) {
+      if (q.text.trim()) out.push(`### ${q.text.trim().replace(/\s*\n\s*/g, ' ')}`);
+      if (q.answer.trim()) out.push(q.answer.trim());
     }
   }
   return out.join('\n\n') + '\n';
 }
 
 // The same document rendered, with one fixed style per type. Every part links back to its block.
-function renderMarkdown() {
+function renderPreview() {
   const paras = t => t.trim().split(/\n{2,}/).map(x => `<p>${esc(x).replace(/\n/g, '<br>')}</p>`).join('');
   const text = (t, empty) => esc(t.trim()) || `<span class="empty">${empty}</span>`;
-  const attrs = (kind, bid) => `class="${isSel(kind, bid) || (kind === 'plan' && selected.kind === 'plan') ? 'sel' : ''}" data-kind="${kind}" ${bid ? `data-id="${bid}"` : ''}`;
+  const attrs = (cls, kind, bid, part) => `class="${cls} ${isSelPart(kind, bid, part) ? 'sel' : ''}" ${linkAttrs(kind, bid, part)}`;
   $('#tree').innerHTML = `<article class="md-doc">
-    <h1 ${attrs('plan')}>${text(plan.title, 'Untitled plan')}</h1>
+    <h1 ${attrs('title-link', 'plan')}>${text(plan.title, 'Untitled plan')}</h1>
     ${sections.map(s => `
-      <h2 ${attrs('section', s.id)}>${text(s.title, 'Untitled section')}</h2>
-      ${s.items.filter(it => it.text.trim()).map(it => it.kind === 'question'
-        ? `<h3 ${attrs('item', it.id)}>${esc(it.text.trim())}</h3>`
-        : `<div ${attrs('item', it.id).replace('class="', `class="md-${it.kind} `)}>${paras(it.text)}</div>`).join('')}`).join('')}
+      <h2 ${attrs('sec-link', 'section', s.id)}>${text(s.title, 'Untitled section')}</h2>
+      ${s.description.trim() ? `<div ${attrs('desc-link', 'section', s.id, 'description')}>${paras(s.description)}</div>` : ''}
+      ${s.questions.map(q => `
+        ${q.text.trim() ? `<h3 ${attrs('q-link', 'question', q.id)}>${esc(q.text.trim())}</h3>` : ''}
+        ${q.answer.trim() ? `<div ${attrs('a-link', 'question', q.id, 'answer')}>${paras(q.answer)}</div>` : ''}`).join('')}`).join('')}
   </article>`;
 }
 
-function syncFromTree(e) {
-  if (e.from === e.to && e.oldIndex === e.newIndex) { history.pop(); $('#undo').disabled = !history.length; return; }
-  const byId = new Map(sections.map(s => [String(s.id), s]));
-  const items = new Map(sections.flatMap(s => s.items).map(it => [String(it.id), it]));
-  sections = [...document.querySelectorAll('#tree-sections > li')].map(li => {
-    const s = byId.get(li.dataset.sid);
-    s.items = [...li.querySelectorAll('.tree-qs > li')].map(x => items.get(x.dataset.iid));
-    return s;
-  });
-  const btn = e.item.querySelector('button[data-kind]');
-  selected = { kind: btn.dataset.kind, id: Number(btn.dataset.id) };
-  render();
-  select(selected, { scroll: true });
-  announce(`${btn.dataset.kind === 'section' ? 'Section' : 'Block'} moved`);
-}
-
 function updateButtons() {
-  document.querySelectorAll('#palette .add:not([data-add="title"])').forEach(b => (b.disabled = b.dataset.add !== 'section' && sections.length === 0));
+  document.querySelectorAll('#palette [data-add="question"]').forEach(b => (b.disabled = sections.length === 0));
 }
 
-// Change selection without re-rendering (keeps focus and caret)
+// Change selection without re-rendering (keeps focus and caret).
+// `part` puts the caret in a section's description or a question's answer.
 function select(sel, { scroll = false, focus = false } = {}) {
-  selected = sel;
-  const sid = sel.kind === 'section' ? sel.id : sel.kind === 'item' ? locate(sel.id)?.s.id : null;
-  if (scroll && sel.kind === 'item' && collapsed.has(sid)) { collapsed.delete(sid); render(); }
+  selected = sel.part ? { kind: sel.kind, id: sel.id, part: sel.part } : { kind: sel.kind, id: sel.id };
+  if (scroll) {
+    // Unfold whatever hides the target
+    const sid = sel.kind === 'section' ? sel.id : sel.kind === 'question' ? locate(sel.id)?.s.id : null;
+    const hidden = [sel.kind === 'question' && sid, sel.part === 'answer' && sel.id, sel.part === 'description' && sel.id]
+      .filter(x => x && collapsed.has(x));
+    if (hidden.length) { hidden.forEach(x => collapsed.delete(x)); render(); }
+  }
   document.querySelectorAll('#paper .blk.selected').forEach(el => el.classList.remove('selected'));
   const el = sel.kind === 'plan' ? $('#paper .plan-blk') : document.getElementById(`b-${sel.kind}-${sel.id}`);
   el?.classList.add('selected');
   renderTree();
   if (view !== 'structure') $('#tree .sel')?.scrollIntoView({ block: 'nearest' });
-  if (scroll) el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  if (focus) el?.querySelector('textarea')?.focus({ preventScroll: true });
+  const field = el?.querySelector(sel.part ? `[data-field="${sel.part}"]` : 'textarea');
+  if (scroll) (sel.part ? field : el)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (focus) field?.focus({ preventScroll: true });
 }
 
 // ---------- structure changes ----------
-const ITEM_KINDS = ['description', 'question', 'answer'];
-const typeNames = { section: 'Section', description: 'Section description', question: 'Question', answer: 'Answer' };
-
 function syncSectionsFromDom(e) {
   if (e.oldIndex === e.newIndex) { history.pop(); $('#undo').disabled = !history.length; return; }
   const byId = new Map(sections.map(s => [String(s.id), s]));
@@ -774,28 +729,28 @@ function syncSectionsFromDom(e) {
 
 function syncFromDom(e) {
   if (e.from === e.to && e.oldIndex === e.newIndex) { history.pop(); $('#undo').disabled = !history.length; return; }
-  const all = new Map(sections.flatMap(s => s.items).map(it => [String(it.id), it]));
+  const all = new Map(sections.flatMap(s => s.questions).map(q => [String(q.id), q]));
   document.querySelectorAll('.qlist').forEach(list => {
-    sections[sectionIndex(list.dataset.sid)].items = [...list.querySelectorAll('.q')].map(el => all.get(el.dataset.id));
+    sections[sectionIndex(list.dataset.sid)].questions = [...list.querySelectorAll('.q')].map(el => all.get(el.dataset.id));
   });
-  selected = { kind: 'item', id: Number(e.item.dataset.id) };
+  selected = { kind: 'question', id: Number(e.item.dataset.id) };
   render();
   const at = locate(selected.id);
-  announce(`${typeNames[at.it.kind]} moved to section ${at.si + 1}, position ${at.j + 1}`);
+  announce(`Question moved to section ${at.si + 1}, position ${at.j + 1}`);
 }
 
-function moveItem(iid, dir) {
-  const { s, si, j } = locate(iid);
+function moveQuestion(qid, dir) {
+  const { s, si, j } = locate(qid);
   checkpoint();
-  const [it] = s.items.splice(j, 1);
+  const [q] = s.questions.splice(j, 1);
   const t = j + dir;
-  if (t >= 0 && t <= s.items.length) s.items.splice(t, 0, it);
-  else if (dir < 0 && si > 0) sections[si - 1].items.push(it);
-  else if (dir > 0 && si < sections.length - 1) sections[si + 1].items.unshift(it);
-  else s.items.splice(j, 0, it);
+  if (t >= 0 && t <= s.questions.length) s.questions.splice(t, 0, q);
+  else if (dir < 0 && si > 0) sections[si - 1].questions.push(q);
+  else if (dir > 0 && si < sections.length - 1) sections[si + 1].questions.unshift(q);
+  else s.questions.splice(j, 0, q);
   render();
-  const at = locate(iid);
-  announce(`${typeNames[it.kind]} moved to section ${at.si + 1}, position ${at.j + 1}`);
+  const at = locate(qid);
+  announce(`Question moved to section ${at.si + 1}, position ${at.j + 1}`);
 }
 
 function moveSection(sid, dir) {
@@ -807,29 +762,32 @@ function moveSection(sid, dir) {
   announce(`Section moved to position ${t + 1}`);
 }
 
-// A block card was dropped from the left panel at a position in the canvas
+const newSection = () => ({ id: id(), title: '', description: '', questions: [] });
+const newQuestion = () => ({ id: id(), text: '', answer: '' });
+
+// A card was dropped from the left panel at a position in the canvas
 function dropFromPalette(kind, index, sid) {
   if (kind === 'section') {
-    const s = { id: id(), title: '', items: [] };
+    const s = newSection();
     sections.splice(index, 0, s);
     selected = { kind: 'section', id: s.id };
   } else {
-    const list = sections[sectionIndex(sid)].items;
-    const it = newItem(kind, list, index);
-    list.splice(index, 0, it);
-    selected = { kind: 'item', id: it.id };
+    const q = newQuestion();
+    sections[sectionIndex(sid)].questions.splice(index, 0, q);
+    selected = { kind: 'question', id: q.id };
   }
   render();
   select(selected, { focus: true });
-  announce(`${typeNames[kind]} added`);
+  announce(`${kind === 'section' ? 'Section' : 'Question'} added`);
 }
 
+// A new section (title + description) after the selected one
 function addSection() {
   checkpoint();
-  const s = { id: id(), title: '', items: [] };
+  const s = newSection();
   let at = sections.length;
   if (selected.kind === 'section') at = sectionIndex(selected.id) + 1;
-  if (selected.kind === 'item') at = locate(selected.id).si + 1;
+  if (selected.kind === 'question') at = locate(selected.id).si + 1;
   if (selected.kind === 'plan') at = 0;
   sections.splice(at, 0, s);
   selected = { kind: 'section', id: s.id };
@@ -838,101 +796,80 @@ function addSection() {
   announce(`Section added at position ${at + 1}`);
 }
 
-// A new block for position `at` in `list`. A new question gets a colour different from the questions above and below.
-function newItem(kind, list, at, text = '') {
-  const it = { id: id(), kind, text };
-  if (kind === 'question') {
-    const above = list.slice(0, at).findLast(x => x.kind === 'question');
-    const below = list.slice(at).find(x => x.kind === 'question');
-    const start = above ? above.color + 1 : 0;
-    it.color = [0, 1, 2].map(k => (start + k) % 3).find(c => c !== above?.color && c !== below?.color);
-  }
-  return it;
-}
-
-// Adds a description, question or answer below the selected block (a description goes to the top of a selected section)
-function addItem(kind) {
+// A new question (with an empty answer) below the selected one, or at the end of the selected section
+function addQuestion() {
   if (!sections.length) return;
   checkpoint();
-  let s = sections[sections.length - 1], at = s.items.length;
-  if (selected.kind === 'section') { s = sections[sectionIndex(selected.id)]; at = kind === 'description' ? 0 : s.items.length; }
-  if (selected.kind === 'item') { const l = locate(selected.id); s = l.s; at = l.j + 1; }
-  const it = newItem(kind, s.items, at);
-  s.items.splice(at, 0, it);
+  let s = sections[sections.length - 1], at = s.questions.length;
+  if (selected.kind === 'section') { s = sections[sectionIndex(selected.id)]; at = s.questions.length; }
+  if (selected.kind === 'question') { const l = locate(selected.id); s = l.s; at = l.j + 1; }
+  const q = newQuestion();
+  s.questions.splice(at, 0, q);
   collapsed.delete(s.id);
-  selected = { kind: 'item', id: it.id };
+  selected = { kind: 'question', id: q.id };
   render();
   select(selected, { scroll: true, focus: true });
-  announce(`${typeNames[kind]} added`);
+  announce('Question added');
 }
 
-// The title exists once, so its button just goes there
-const goToTitle = () => select({ kind: 'plan' }, { scroll: true, focus: true });
-
-// Fix a wrong label. The text stays as it is; only its label (and for sections, its place) changes.
-function changeType(from, bid, to) {
-  if (from === to) return;
+// Fix a wrong label. The text stays as it is; only its place in the structure changes.
+function changeType(kind, bid, to) {
+  if (kind === to) return;
   checkpoint();
-  if (from === 'section') {
-    // Section → block: its title becomes the first block of the section,
-    // and the section is left without a title until the user writes one
-    const i = sectionIndex(bid), s = sections[i];
-    const it = newItem(to, s.items, 0, s.title);
-    s.items.unshift(it);
-    s.title = '';
-    collapsed.delete(s.id);
-    selected = { kind: 'item', id: it.id };
-    render();
-    flash(`b-item-${it.id}`);
-    notify(`Section ${i + 1}'s title is now ${itemInfo(s, i)[0].label} · type a new section title`);
-    return select({ kind: 'section', id: s.id }, { scroll: true, focus: true });
-  }
-  const { s, si, j, it } = locate(bid);
-  const before = itemInfo(s, si)[j].label;
-  if (to === 'section') {
-    // Block → Section: its text becomes the title of a new section right after this one,
-    // and the blocks below it move into that section
-    const [, ...below] = s.items.splice(j);
-    const ns = { id: id(), title: it.text, items: below };
+  let focusSel;
+  if (kind === 'question') {
+    // Question → Section: its text becomes the title of a new section right after this one,
+    // and the questions below it move into that section. An answer stays, under an empty question.
+    const { s, si, j } = locate(bid);
+    const [q, ...below] = s.questions.splice(j);
+    const ns = { ...newSection(), title: q.text, questions: [...below] };
+    if (q.answer.trim()) { q.text = ''; ns.questions.unshift(q); }
     sections.splice(si + 1, 0, ns);
-    selected = { kind: 'section', id: ns.id };
+    selected = focusSel = { kind: 'section', id: ns.id };
     render();
     flash(`b-section-${ns.id}`);
-    notify(`${before} is now Section ${si + 2}` +
-      (below.length ? ` · ${below.length} block${below.length === 1 ? '' : 's'} below it moved along` : ''));
-    return select(selected, { scroll: true, focus: true });
+    notify(`Question ${si + 1}.${j + 1} is now Section ${si + 2}` +
+      (below.length ? ` · ${below.length} question${below.length === 1 ? '' : 's'} below it moved along` : ''));
+  } else {
+    // Section → Question: its title becomes the first question of the section,
+    // and the section is left without a title until the user writes one
+    const i = sectionIndex(bid), s = sections[i];
+    const q = { ...newQuestion(), text: s.title };
+    s.questions.unshift(q);
+    s.title = '';
+    collapsed.delete(s.id);
+    selected = { kind: 'question', id: q.id };
+    focusSel = { kind: 'section', id: s.id };
+    render();
+    flash(`b-question-${q.id}`);
+    notify(`Section ${i + 1}'s title is now Question ${i + 1}.1 · type a new section title`);
   }
-  // Between description, question and answer only the label changes
-  Object.assign(it, newItem(to, s.items, j), { id: it.id, text: it.text });
-  if (to !== 'question') delete it.color;
-  selected = { kind: 'item', id: it.id };
-  render();
-  flash(`b-item-${it.id}`);
-  notify(`${before} is now ${itemInfo(s, si)[j].label}`);
-  select(selected, { scroll: true });
+  // Land on the block that needs attention: the new section, or the section that lost its title
+  select(focusSel, { scroll: true, focus: true });
 }
 
 // What a type change will do, in plain words (shown in the menu before the user picks)
-function typeEffect(from, bid, to) {
-  if (from === 'section') {
-    const i = sectionIndex(bid) + 1;
-    return `The section title becomes a ${typeNames[to].toLowerCase()} at the top of this section. Section ${i} will then need a new title.`;
+function typeEffect(kind, bid) {
+  const cut = t => t.trim() ? `“${t.trim().length > 50 ? t.trim().slice(0, 50) + '…' : t.trim()}”` : 'This empty question';
+  if (kind === 'question') {
+    const { s, si, j, q } = locate(bid), n = s.questions.length - j - 1, a = si + 1;
+    const moved = n === 0 ? '' : n === 1 ? ` Question ${a}.${j + 2} moves into it.` : ` Questions ${a}.${j + 2}–${a}.${s.questions.length} move into it.`;
+    return `${cut(q.text)} becomes the title of a new Section ${a + 1}.${moved}` +
+      (q.answer.trim() ? ' Its answer stays, under an empty question for you to fill in.' : '');
   }
-  if (to !== 'section') return 'Only the label changes; the text stays where it is.';
-  const { s, si, j, it } = locate(bid), n = s.items.length - j - 1;
-  const cut = t => t.trim() ? `“${t.trim().length > 50 ? t.trim().slice(0, 50) + '…' : t.trim()}”` : 'This empty block';
-  return `${cut(it.text)} becomes the title of a new Section ${si + 2}.` +
-    (n ? ` The ${n} block${n === 1 ? '' : 's'} below it in this section move${n === 1 ? 's' : ''} into it.` : '');
+  const i = sectionIndex(bid) + 1;
+  return `The section title becomes Question ${i}.1 and the other questions move down. Section ${i} will then need a new title.`;
 }
 
 // ---------- change-type menu ----------
+const typeNames = { section: 'Section', question: 'Question' };
 let menuFor = null;
 function openTypeMenu(btn, kind, bid) {
   closeTypeMenu();
   const menu = $('#type-menu');
-  menu.innerHTML = `<div class="menu-title">Change this ${typeNames[kind].toLowerCase()} to…</div>` + Object.keys(typeNames).map(t => t === kind
+  menu.innerHTML = `<div class="menu-title">Change this ${kind} to…</div>` + Object.keys(typeNames).map(t => t === kind
     ? `<div class="current">${typeNames[t]} (current)</div>`
-    : `<button role="menuitem" data-to="${t}"><strong>${typeNames[t]}</strong><small>${esc(typeEffect(kind, bid, t))}</small></button>`).join('');
+    : `<button role="menuitem" data-to="${t}"><strong>${typeNames[t]}</strong><small>${esc(typeEffect(kind, bid))}</small></button>`).join('');
   menu.hidden = false;
   const r = btn.getBoundingClientRect();
   menu.style.left = Math.max(8, Math.min(r.left, innerWidth - menu.offsetWidth - 8)) + 'px';
@@ -977,51 +914,59 @@ function flash(elId) {
 $('#toast-undo').addEventListener('click', () => { $('#toast').hidden = true; undo(); });
 
 function remove(kind, rid) {
-  let what = 'Section';
   if (kind === 'section') {
     const i = sectionIndex(rid), s = sections[i];
-    if (s.items.length && !confirm(`Delete “${s.title || 'Untitled section'}” and its ${s.items.length} block(s)?`)) return;
+    if (s.questions.length && !confirm(`Delete “${s.title || 'Untitled section'}” and its ${s.questions.length} question(s)?`)) return;
     checkpoint();
     sections.splice(i, 1);
   } else {
+    // A question and its answer go together
     checkpoint();
-    const { s, j, it } = locate(rid);
-    what = typeNames[it.kind];
-    s.items.splice(j, 1);
+    const { s, j } = locate(rid);
+    s.questions.splice(j, 1);
   }
   selected = { kind: 'plan' };
   render();
-  announce(`${what} deleted`);
+  announce(`${kind === 'section' ? 'Section' : 'Question'} deleted`);
 }
 
 // ---------- events ----------
 const paper = $('#paper');
 
-// Typing updates the data; titles also refresh the tree
+// The block a click or focus lands in, and whether it is in a section's description or a question's answer
+function selectionAt(target) {
+  const blk = target.closest('.blk');
+  if (!blk) return null;
+  const kind = blk.dataset.kind, field = target.dataset?.field;
+  const part = (kind === 'section' && field === 'description') || (kind === 'question' && field === 'answer') ? field : undefined;
+  return { kind, id: kind === 'plan' ? undefined : Number(blk.dataset.id), part };
+}
+
+// Typing updates the data and the side panel
 paper.addEventListener('input', e => {
   const field = e.target.dataset.field;
   if (!field) return;
   const blk = e.target.closest('.blk');
   const target = blk.dataset.kind === 'plan' ? plan
     : blk.dataset.kind === 'section' ? sections[sectionIndex(blk.dataset.id)]
-    : locate(blk.dataset.id).it;
+    : locate(blk.dataset.id).q;
   target[field] = e.target.value;
-  if (blk.dataset.kind === 'section' || target.kind === 'question') blk.classList.toggle('missing', !e.target.value.trim());
+  if (blk.dataset.kind !== 'plan' && (field === 'title' || field === 'text')) blk.classList.toggle('missing', !e.target.value.trim());
   grow(e.target);
   renderTree();
 });
 
 // Clicking or tabbing into a block selects it (innermost block wins)
 paper.addEventListener('focusin', e => {
-  const blk = e.target.closest('.blk');
-  if (blk) select({ kind: blk.dataset.kind, id: blk.dataset.id && Number(blk.dataset.id) });
+  const sel = selectionAt(e.target);
+  if (sel) select(sel);
 });
 paper.addEventListener('click', e => {
   const btn = e.target.closest('.head button');
   const blk = e.target.closest('.blk');
   if (!blk) return;
+  if (!btn) return select(selectionAt(e.target));
   const kind = blk.dataset.kind, bid = Number(blk.dataset.id);
-  if (!btn) return select({ kind, id: kind === 'plan' ? undefined : bid });
   const act = btn.dataset.act;
   if (act === 'toggle') {
     collapsed.has(bid) ? collapsed.delete(bid) : collapsed.add(bid);
@@ -1029,11 +974,11 @@ paper.addEventListener('click', e => {
     document.querySelector(`#b-${kind}-${bid} [data-act="toggle"]`)?.focus();
     return;
   }
-  if (act === 'type') return menuFor?.btn === btn ? closeTypeMenu() : openTypeMenu(btn, kind === 'section' ? kind : locate(bid).it.kind, bid);
+  if (act === 'type') return menuFor?.btn === btn ? closeTypeMenu() : openTypeMenu(btn, kind, bid);
   if (act === 'delete') return remove(kind, bid);
   const dir = act === 'up' ? -1 : 1;
   selected = { kind, id: bid };
-  kind === 'section' ? moveSection(bid, dir) : moveItem(bid, dir);
+  kind === 'section' ? moveSection(bid, dir) : moveQuestion(bid, dir);
   document.querySelector(`#b-${kind}-${bid} [data-act="${act}"]:not(:disabled)`)?.focus();
 });
 
@@ -1049,20 +994,19 @@ $('#tree').addEventListener('click', e => {
     return;
   }
   let target;
-  if (view === 'structure') target = e.target.closest('button[data-kind]');
-  else if (view === 'markdown') target = e.target.closest('[data-kind]');
-  else {
-    // Clicking a linked value, or the opening line of a linked object, jumps to its block in the canvas
+  if (view === 'json') {
+    // A linked value, or the opening line of a linked object
     const row = e.target.closest('.row');
     target = row?.dataset.kind ? row : row?.parentElement;
     if (target !== row && target?.firstElementChild !== row) target = null;
-  }
+  } else target = e.target.closest('[data-kind]');
   if (!target?.dataset.kind) return;
-  select({ kind: target.dataset.kind, id: target.dataset.id && Number(target.dataset.id) }, { scroll: true, focus: true });
+  const d = target.dataset;
+  select({ kind: d.kind, id: d.id && Number(d.id), part: d.part }, { scroll: true, focus: true });
 });
 
-// Structure / JSON / PDF review tabs (arrow keys move between them)
-const VIEWS = ['structure', 'json', 'markdown'];
+// Structure / JSON / Preview tabs (arrow keys move between them)
+const VIEWS = ['structure', 'json', 'preview'];
 function setView(v, { focus = false } = {}) {
   view = VIEWS.includes(v) ? v : 'structure';
   try { localStorage.setItem('dmp-view', view); } catch {}
@@ -1074,7 +1018,7 @@ function setView(v, { focus = false } = {}) {
     if (on && focus) t.focus();
   });
   $('#copy-view').hidden = view === 'structure';
-  $('#tree-fold-all').hidden = view === 'markdown';
+  $('#tree-fold-all').hidden = view === 'preview';
   renderTree();
 }
 $('.tabs').addEventListener('click', e => { const t = e.target.closest('[role="tab"]'); if (t) setView(t.dataset.view); });
@@ -1092,29 +1036,39 @@ function setPanel(closed, { focus = false } = {}) {
   strip.setAttribute('aria-expanded', !closed);
   strip.title = closed ? 'Show the side panel' : 'Hide this panel';
   strip.querySelector('.arrow').textContent = closed ? '⇤' : '⇥';
-  strip.querySelector('.vlabel').textContent = closed ? 'Structure · JSON · PDF review' : 'Hide panel';
+  strip.querySelector('.vlabel').textContent = closed ? 'Structure · JSON · Preview' : 'Hide panel';
   // The canvas got wider or narrower, so text boxes need a new height
   document.querySelectorAll('#paper textarea').forEach(grow);
   if (focus) strip.focus();
 }
 $('#panel-toggle').addEventListener('click', () => setPanel(!panelClosed, { focus: true }));
 $('#copy-view').addEventListener('click', async () => {
-  await navigator.clipboard.writeText(view === 'markdown' ? toMarkdown() : JSON.stringify(toJson(), null, 2));
+  await navigator.clipboard.writeText(view === 'preview' ? toMarkdown() : JSON.stringify(toJson(), null, 2));
   $('#copy-view').textContent = 'Copied';
   setTimeout(() => ($('#copy-view').textContent = 'Copy'), 1200);
 });
+
+// Block colours on/off (accessibility). Off: neutral greys; bold and size still show the types.
+function setColors(on) {
+  colorsOn = on;
+  try { localStorage.setItem('dmp-colors', on ? 'on' : 'off'); } catch {}
+  document.documentElement.classList.toggle('no-color', !on);
+  $('#colors').setAttribute('aria-pressed', on);
+  $('#colors').textContent = on ? 'Colors: on' : 'Colors: off';
+}
+$('#colors').addEventListener('click', () => setColors(!colorsOn));
+setColors(colorsOn);
 
 // Delegated: Sortable leaves a copy of the dragged card behind, so don't bind to the card itself
 $('#palette').addEventListener('click', e => {
   const btn = e.target.closest('[data-add]');
   if (!btn || btn.disabled) return;
-  const kind = btn.dataset.add;
-  kind === 'title' ? goToTitle() : kind === 'section' ? addSection() : addItem(kind);
+  btn.dataset.add === 'section' ? addSection() : addQuestion();
 });
 Sortable.create($('#palette'), {
   group: { name: 'palette', pull: 'clone', put: false },
   sort: false,
-  filter: ':disabled, .no-drag',
+  filter: ':disabled',
   preventOnFilter: false,
   onStart: checkpoint,
   onEnd: e => { if (e.to === e.from) { history.pop(); $('#undo').disabled = !history.length; } }
@@ -1132,7 +1086,7 @@ $('#fold-all').addEventListener('click', () => {
   else sections.forEach(s => collapsed.add(s.id));
   render();
 });
-// The panel's Collapse/Expand folds sections in whichever tab is open
+// The panel's Collapse/Expand folds sections in the Structure and JSON tabs
 const panelAllFolded = () => view === 'json'
   ? sections.length > 0 && sections.every(s => jsonCollapsed.has(`s:${s.id}`))
   : allFolded(treeCollapsed);
@@ -1144,10 +1098,8 @@ $('#tree-fold-all').addEventListener('click', () => {
 });
 $('#export').addEventListener('click', () => {
   const noTitle = sections.filter(s => !s.title.trim()).length;
-  const noText = sections.flatMap(s => s.items).filter(it => it.kind === 'question' && !it.text.trim()).length;
-  const orphans = sections.flatMap(itemInfo).filter(x => x.orphan).length;
-  const gaps = [noTitle && `${noTitle} section(s) without a title`, noText && `${noText} question(s) without text`,
-                orphans && `${orphans} answer(s) with no question above`].filter(Boolean);
+  const noText = sections.flatMap(s => s.questions).filter(q => !q.text.trim()).length;
+  const gaps = [noTitle && `${noTitle} section(s) without a title`, noText && `${noText} question(s) without text`].filter(Boolean);
   if (gaps.length && !confirm(`There are ${gaps.join(' and ')}. Export anyway?`)) return;
   const blob = new Blob([JSON.stringify(toJson(), null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
