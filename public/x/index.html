@@ -43,6 +43,9 @@
   .drop .note { font-size: 13px; color: #8a97a8; margin-top: 18px; }
   .drop #choose-pdf { margin-top: 6px; background: #eef1f5; color: #8a97a8; border-color: #dbe1e9; opacity: 1; cursor: not-allowed; }
   .drop #choose-note { margin-top: 4px; font-size: 12px; }
+  .sample-buttons { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 8px 0 4px; }
+  .drop .sample-buttons .primary { width: 240px; }
+  .drop .sample-buttons .primary { margin: 0; }
   .drop .error { color: #b42318; font-weight: 600; min-height: 1.4em; }
   button.linkish { border: 0; background: none; padding: 2px 4px; color: #244f91; text-decoration: underline;
                    text-underline-offset: 3px; font-size: 13px; }
@@ -53,6 +56,55 @@
   @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } }
   .actions { margin-left: auto; display: flex; gap: 8px; }
   .actions button { white-space: nowrap; }
+  .actions .group { display: flex; gap: 8px; }
+  #nav-actions { padding-left: 8px; border-left: 1px solid #dbe1e9; }
+  #review-actions[hidden] + #nav-actions { padding-left: 0; border-left: 0; }
+
+  /* Steps 3 and 4: a single page with a card in the middle */
+  .page { flex: 1; overflow: auto; padding: 24px 20px; }
+  .page-card { max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid #d5dde7; border-radius: 8px;
+               padding: 24px 28px 28px; box-shadow: 0 1px 3px rgba(32, 48, 68, .06); }
+  .page-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .page-head h1 { font-size: 20px; margin: 0 auto 0 0; letter-spacing: -.2px; }
+  .page .hint { color: #5b697a; font-size: 14px; margin: 6px 0 18px; line-height: 1.5; }
+  .page .placeholder { padding: 28px; border: 1px dashed #c8d0db; border-radius: 8px; color: #8a97a8; text-align: center; }
+  /* Step 3: one collapsible card per dataset */
+  .req { color: #b42318; }
+  .meta-card { border: 1px solid #c7d7f0; border-radius: 8px; margin-bottom: 14px; background: #fff; }
+  .meta-head { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 0;
+               border-radius: 8px 8px 0 0; background: #eef3fb; padding: 10px 14px; }
+  .meta-head:hover { background: #e3ebf8; }
+  .meta-card.collapsed .meta-head { border-radius: 8px; }
+  .meta-head .chev { font-size: 11px; color: #5b697a; transition: transform .15s; }
+  .meta-card.collapsed .chev { transform: rotate(-90deg); }
+  .meta-kind { font-size: 11px; letter-spacing: 1.2px; font-weight: 750; text-transform: uppercase; color: #1e3a8a; white-space: nowrap; }
+  .meta-title { flex: 1; min-width: 0; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .meta-card.collapsed .meta-body { display: none; }
+  .meta-body { padding: 16px; }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+  @media (max-width: 700px) { .meta-grid { grid-template-columns: 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 600; color: #5b697a; }
+  .field.full { grid-column: 1 / -1; }
+  .field input, .field select, .field textarea { font: inherit; font-size: 14px; font-weight: 400; color: #203044;
+                                                 border: 1px solid #c8d0db; border-radius: 6px; padding: 7px 10px; background: #fff; }
+  .field textarea { resize: vertical; line-height: 1.5; }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: #2f5aa0;
+                                                                   box-shadow: 0 0 0 3px rgba(47, 90, 160, .15); }
+  .field input::placeholder, .field textarea::placeholder { color: #a3aebb; font-style: italic; }
+  /* Dataset creators: one box per person */
+  .demo-note { font-size: 12px; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px;
+               padding: 6px 10px; margin: 0 0 14px; }
+  .sub-title { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 750; color: #1e3a8a; margin: 0 0 8px; }
+  .person + .sub-title { margin-top: 18px; }
+  .meta-grid + .sub-title { margin-top: 20px; padding-top: 14px; border-top: 1px solid #e3e8ef; }
+  .person { border: 1px solid #e3e8ef; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; background: #fafbfd; }
+  .person-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+                 font-size: 13px; font-weight: 650; color: #34465a; }
+  .person-head button { padding: 2px 8px; font-size: 12px; }
+  .add-person { font-size: 13px; padding: 6px 12px; border-style: dashed; color: #244f91; }
+  .json-out { margin: 0; padding: 14px 16px; max-height: calc(100vh - 260px); overflow: auto; background: #f7f9fc;
+              border: 1px solid #dbe1e9; border-radius: 6px; font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+              color: #34465a; white-space: pre; }
 
   /* Three panels */
   .workspace { flex: 1; min-height: 0; display: grid; grid-template-columns: 190px minmax(0, 1fr) minmax(400px, 36%); }
@@ -295,14 +347,19 @@
   <header>
     <div class="brand">DMP <span>Bridge</span></div>
     <nav class="steps" aria-label="Import steps">
-      <button id="step-upload" title="Upload a different PDF">1 · Upload PDF</button><span id="step-review">2 · Review structure</span><span>3 · Export JSON</span>
+      <button id="step-upload" data-step="upload" title="Upload a different PDF">1 · Upload PDF</button><span data-step="review">2 · Review structure</span><span data-step="metadata">3 · Review metadata</span><span data-step="export">4 · Export JSON</span>
     </nav>
-    <div class="actions" id="review-actions">
+    <div class="actions">
+    <div class="group" id="review-actions">
       <button id="colors" aria-pressed="true" title="Turn block colors on or off">Colors: on</button>
       <button id="fold-all">Collapse all</button>
       <button id="undo" disabled>Undo</button>
       <button id="reset" title="Discard all changes and go back to the structure as it was imported">Reset</button>
-      <button id="export" class="primary">Export JSON</button>
+    </div>
+    <div class="group" id="nav-actions" hidden>
+      <button id="back">← Back</button>
+      <button id="next" class="primary">Next →</button>
+    </div>
     </div>
   </header>
 
@@ -311,7 +368,10 @@
       <div id="drop-pick">
         <div class="drop-icon" aria-hidden="true">PDF</div>
         <h1>Upload your Data Management Plan</h1>
-        <button class="primary" id="use-sample">Try with sample PDF</button>
+        <div class="sample-buttons">
+          <button class="primary" data-sample="nih">Try with NIH DMP sample</button>
+          <button class="primary" data-sample="nsf">Try with NSF DMP sample</button>
+        </div>
         <p><button id="choose-pdf" disabled aria-describedby="choose-note">Choose PDF</button></p>
         <p class="note" id="choose-note">Uploading your own PDF isn't available in this demo yet.</p>
         <p class="error" id="drop-error" role="alert"></p>
@@ -364,6 +424,25 @@
       </div>
     </aside>
   </div>
+
+  <main class="page" id="metadata-view" aria-label="Review metadata" hidden>
+    <div class="page-card">
+      <div class="page-head" style="margin-bottom: 18px"><h1>Review metadata</h1></div>
+      <div id="meta-cards"></div>
+    </div>
+  </main>
+
+  <main class="page" id="export-view" aria-label="Export JSON" hidden>
+    <div class="page-card">
+      <div class="page-head">
+        <h1>Export JSON</h1>
+        <button id="copy-export">Copy</button>
+        <button id="download-export" class="primary">Download JSON</button>
+      </div>
+      <p class="hint">The full DMP as JSON: the narrative from step 2 and the metadata (RDA) from step 3.</p>
+      <pre class="json-out" id="export-json"></pre>
+    </div>
+  </main>
 </div>
 
 <div id="type-menu" class="type-menu" role="menu" hidden></div>
@@ -372,6 +451,14 @@
 
 <script>
 const SAMPLE = {"narrative": {"download_url": "", "template": {"title": "DATA MANAGEMENT AND SHARING PLAN", "description": "", "version": "v1", "section": [{"title": "Element 1: Data Type:", "description": "", "order": 1, "question": [{"text": "A. Types and amount of scientific data expected to be generated in the project:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "This secondary data analysis project will analyze deidentified data from 48,218 participants from eight studies and the publicly available NHANES cohorts (wrist NHANES 2011-2014; hip/counts-NHANES 2003-2006). The studies include (i) the RISE Study, (ii) the SOL-VIDA Study, (iii) the iWATCH Study, (iv) the MOCA Study, (v) the PHASE Study, (vi) the AusDiab Study, (vii) the ACT Study, and (viii) the WHISH accelerometer sub- study.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "B. Scientific data that will be preserved and shared, and the rationale for doing so:", "order": 2, "answer": {"json": {"type": "textArea", "answer": "As this is a secondary data analysis project, we will only be able to publicly share in the UC San Diego Library Repository sitting behavior metrics or analysis that were created in this project from the following UCSD- based study datasets: (i) The RISE study (ii) The iWATCH study (iii) NHANES cohorts Sufficient data from those datasets will be preserved to enable sharing to validate and replicate research findings described in the Aims with those datasets only. Please see Element 5 for data access information about other studies.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "C. Metadata, other relevant data, and associated documentation:", "order": 3, "answer": {"json": {"type": "textArea", "answer": "In addition to the data described above, code and models will be included in the repository and in on our project’s GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled “Deep Postures”.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 2: Related Tools, Software and/or Code:", "description": "", "order": 2, "question": [{"text": "Element 2: Related Tools, Software and/or Code:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "Data will be analyzed with custom code by our statistical and computer science team. ActiGraph data will be processed and analyzed using ActiLife software which requires a paid license. All custom code and models will also be shared in the data repository and on our project’s GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled “Deep Postures”.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 3: Standards:", "description": "", "order": 3, "question": [{"text": "Element 3: Standards:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "The following data will be created as a result of this project: Objective sedentary behavior metrics – no existing standards", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 4: Data Preservation, Access, and Associated Timelines:", "description": "", "order": 4, "question": [{"text": "A. Repository where scientific data and metadata will be archived:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "De-identified data will be uploaded to the University of California San Diego Library repository.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "B. How scientific data will be findable and identifiable:", "order": 2, "answer": {"json": {"type": "textArea", "answer": "Data will be findable via publications and on our project’s GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled “Deep Postures”.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "C. When and how long the scientific data will be made available:", "order": 3, "answer": {"json": {"type": "textArea", "answer": "The research community will have access to data when the main outcome manuscript has been published. $2,500 in years 2-5 of the project has been budgeted for preparing the data that is able to be stored in the repository (the RISE study, the iWATCH study, and NHANES) and for data storage on the University of California San Diego Library repository. We anticipate data being available for the foreseeable future (minimum of at least 5 years) after the study has been completed. The University of California San Diego Library repository does not currently have a limit on how long data can be stored.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 5: Access, Distribution, or Reuse Considerations:", "description": "", "order": 5, "question": [{"text": "A. Factors affecting subsequent access, distribution, or reuse of scientific data:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "The following studies have independent data use agreement & approved paper proposal processes for use of their data that are specific to each institution that collected the data: (i) the SOL-VIDA Study, (ii) the MOCA Study, (iii) the PHASE Study, (iv) the AusDiab Study, (v) the ACT Study, and (vi) the WHISH accelerometer sub-study such as data use agreements or approved publication proposals. We will be securing the appropriate approvals from each institution to use their data for purposes of this study including publications, but are unable to publicly share their data in our study data repository Researchers who wish to use data from those studies will need to follow those studies data use protocols to inquire: about using their data (i) the SOL-VIDA Study – Data requests may be made by following instructions on the Hispanic Community Health Study/ of Latinos dbGap page. (ii) the MOCA Study – Data requests may be made by following MOCA Study policies (iii) the PHASE Study – Data requests may be made by following PHASE Study policies (iv) the AusDiab Study – Data may be requested by following AusDiab policies available from the AusDiab study website, hosted by the Baker Heart & Diabetes Institute. (v) the ACT Study - Data are managed and stored in the ACT Data Repository and sharing requests may be made according to the policies and procedures available on the “Work With Us” page of the Adult Changes in Thought Study website. (vi) the WHISH accelerometer sub-study – Data are managed by the Women’s Health Initiative Coordinating Center. Requests may be made according to policies and procedures available on the “Working with WHI Data” page on the WHI study website.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "B. Whether access to scientific data will be controlled:", "order": 2, "answer": {"json": {"type": "textArea", "answer": "The final dataset of data from the RISE study, the iWATCH study, and NHANES cohorts will be de-identified. It will be deposited into the UC San Diego Library Data repository along with study protocols, code, and models for public use. De-identified data will be available after the main outcome papers are published.", "meta": {"schemaVersion": "1.0"}}}}, {"text": "Protections for privacy, rights, and confidentiality of human research participants:", "order": 3, "answer": {"json": {"type": "textArea", "answer": "All data used in this study was de-identified prior to use.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Element 6: Oversight of Data Management and Sharing:", "description": "", "order": 6, "question": [{"text": "Element 6: Oversight of Data Management and Sharing:", "order": 1, "answer": {"json": {"type": "textArea", "answer": "The PI and Trial & IRB Coordinator will provide updates and changes to the plan in the annual RPPR. The PI, Trial & IRB Coordinator, and Statistician/Data Manager will meet monthly in all years of the project to ensure that the datasets, protocols, and codes are being prepared for sharing into the data repository once the main outcome manuscript has been published. The Statistician/Data Manager will work closely with the University of California San Diego Library repository manager to ensure that the datasets, protocols, and code are correctly stored and available for sharing.", "meta": {"schemaVersion": "1.0"}}}}]}]}}};
+// The demo DMPs. Each has the narrative (step 2) and the RDA metadata (step 3) extracted from the same PDF.
+const SAMPLE3 = {"narrative": {"download_url": "", "template": {"title": "CPS 2015", "description": "", "version": "v1", "section": [{"title": "Roles and responsibilities", "description": "The Data Management Plan should clearly articulate how the PI and co-PIs plan to manage and disseminate data generated by the project. The plan should outline the rights and obligations of all parties as to their roles and responsibilities in the management and retention of research data, and consider changes that would occur should a PI or co-PI leave the institution or project. Any costs should be explained in the Budget Justification pages.", "order": 1, "question": [{"text": "Roles and responsibilities", "order": 1, "answer": {"json": {"type": "textArea", "answer": "Data will be generated at each of our institutional sites. The PI at each institution will be responsible for following the data management guidelines described below, and for saving the data to the RIC servers. This process of transferring all data to a central location will be facilitated by our research project coordinator. Our data management guidelines will be reviewed at the kickoff meeting for the project, and revisited briefly at each of our quarterly meetings with the PIs.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Types of data", "description": "The Data Management Plan should describe the types of data, samples, physical collections, software, curriculum materials, or other materials to be produced in the course of the project. It should then describe the expected types of data to be retained and shared, and the plans for doing so. The DMP should cover how data are to be managed and maintained during the project.", "order": 2, "question": [{"text": "Types of data", "order": 1, "answer": {"json": {"type": "textArea", "answer": "We will manage all scientific and technical content generated from this proposal. Our products will include 3 broad types of data. First, we will have data related to each of our proposed experiments. These will include the detailed protocols used for each experiment, the raw data collected from each experiment, and the experimental code used to collect those data. The relevant code will include both the data acquisition code, and the code for the controllers used in the experiment. Together, this information will be sufficient for recreating the circumstances of each data collection session. Our second type of data will be the code and results for all analyses completed on experimental data. Specifically, we store all code necessary to recreate figures, tables, and other results reported in all published manuscripts. The proposed foundational developments will produce substantial simulation code for controller development and testing. These and the outputs relevant to all key findings will also be managed.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Policies for access and sharing and appropriate protection and privacy", "description": "The Data Management Plan should describe the period of time the data will be retained and shared; factors that limit the ability to manage and share data, e.g., legal and ethical restrictions on access to human subjects data; and provisions for appropriate protection of privacy, confidentiality, security, and intellectual property.", "order": 3, "question": [{"text": "Policies for access and sharing and appropriate protection and privacy", "order": 1, "answer": {"json": {"type": "textArea", "answer": "Data will be made available upon request, after the conclusion of each of study. The availability of data (raw and analyzed) will be advertised on the project’s website. Access will be free, but the original data collector/creator/principal investigator retains the right to use the data for analysis before making it publicly available. No patient identifying information will be included in any of the available data files. Select videos of the experiments will be distributed, with subject faces blurred so as to be unidentifiable. Experimental analyses results will be made available through peer-reviewed journal publications and conference presentations. The code needed to generate all published results will be documented clearly. Software generated under the project will be released under the GNU Public License, and available for free download on the labs’ websites. This includes code for each of our 3 experimental systems. We commit to speaking with any qualified scientist who wishes to discuss our results or the technology employed to obtain our results. There will be no copyright or licensing required for any of the data generated in this project. Research records will be archived for a minimum of seven years after final reporting or publication of a project. If any questions regarding the research, including but not limited to research integrity allegations, are raised during the seven- year retention period, the PI will keep the records until such questions are fully resolved.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Data storage and preservation of access", "description": "The Data Management Plan should describe the mechanisms and formats for storing data and making them accessible to others, which may include third party facilities and repositories; and other types of information that would be maintained and shared regarding data, e.g. the means by which it was generated, detailed analytical and procedural information required to reproduce experimental results, and other metadata.", "order": 4, "question": [{"text": "Data storage and preservation of access", "order": 1, "answer": {"json": {"type": "textArea", "answer": "The servers at the Rehabilitation Institute of Chicago will serve as the central repository for all collected data. Raw data files will be saved in either Matlab or comma-separated value (CSV) format. Code for converting between these formats will also be provided to ensure easy access. The contents of each data file, including the experimental conditions or the analysis procedures used during generation will be documented. All raw data will be de-identified to ensure subject anonynimity. Upon request, data will be made available through the project's website, hosted on an archived server run by the RIC IT Team.", "meta": {"schemaVersion": "1.0"}}}}]}, {"title": "Additional possible data management requirements", "description": "", "order": 5, "question": [{"text": "Additional possible data management requirements", "order": 1, "answer": {"json": {"type": "textArea", "answer": "", "meta": {"schemaVersion": "1.0"}}}}]}]}}};
+const RDA_SAMPLE1 = {"dmp": {"title": "DATA MANAGEMENT AND SHARING PLAN", "description": null, "dmp_id": {"identifier": null, "type": null}, "created": null, "modified": null, "ethical_issues_exist": null, "ethical_issues_description": null, "ethical_issues_report": null, "language": null, "contact": {"name": null, "mbox": null, "affiliation": [{"name": null, "affiliation_id": {"identifier": null, "type": null}}], "contact_id": [{"identifier": null, "type": null}]}, "contributor": [{"name": null, "contributor_id": [{"identifier": null, "type": null}], "affiliation": [{"name": null, "affiliation_id": {"identifier": null, "type": null}}], "role": [null]}], "dataset": [{"title": "Objective sedentary behavior metrics", "type": null, "description": "As this is a secondary data analysis project, we will only be able to publicly share in the UC San Diego Library Repository sitting behavior metrics or analysis that were created in this project from the following UCSD-based study datasets: (i) The RISE study (ii) The iWATCH study (iii) NHANES cohorts", "dataset_id": {"identifier": null, "type": null}, "personal_data": null, "sensitive_data": null, "issued": null, "metadata": [{"description": null, "language": null, "metadata_standard_id": [{"identifier": null, "type": null}]}], "distribution": [{"title": null, "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": null, "start_date": null}], "host": {"title": "University of California San Diego Library repository", "url": null, "host_id": [{"identifier": null, "type": null}]}}]}, {"title": "custom code and models", "type": null, "description": "All custom code and models will also be shared in the data repository and on our project's GitHub website, hosted as part of the UCSD Advance Data Analytics Lab GitHub and titled \"Deep Postures\".", "dataset_id": {"identifier": null, "type": null}, "personal_data": null, "sensitive_data": null, "issued": null, "metadata": [{"description": null, "language": null, "metadata_standard_id": [{"identifier": null, "type": null}]}], "distribution": [{"title": null, "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": null, "start_date": null}], "host": {"title": "University of California San Diego Library repository", "url": null, "host_id": [{"identifier": null, "type": null}]}}, {"title": "Deep Postures", "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": null, "start_date": null}], "host": {"title": "UCSD Advance Data Analytics Lab GitHub", "url": null, "host_id": [{"identifier": null, "type": null}]}}]}, {"title": "study protocols", "type": null, "description": "It will be deposited into the UC San Diego Library Data repository along with study protocols, code, and models for public use.", "dataset_id": {"identifier": null, "type": null}, "personal_data": null, "sensitive_data": null, "issued": null, "metadata": [{"description": null, "language": null, "metadata_standard_id": [{"identifier": null, "type": null}]}], "distribution": [{"title": null, "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": null, "start_date": null}], "host": {"title": "UC San Diego Library Data repository", "url": null, "host_id": [{"identifier": null, "type": null}]}}]}], "related_identifier": [{"identifier": null, "relation_type": null, "resource_type": null, "type": null}], "alternate_identifier": [{"identifier": null, "type": null}], "project": [{"title": null, "description": null, "project_id": [{"identifier": null, "type": null}], "start": null, "end": null, "funding": [{"name": null, "funding_status": null, "funder_id": {"identifier": null, "type": null}, "grant_id": [{"identifier": null, "type": null}]}]}]}, "rda_schema_version": null, "provenance": null, "status": null, "privacy": null, "featured": null, "registered": null, "research_domain": {"name": null, "research_domain_identifier": {"identifier": null, "type": null}}, "research_facility": [{"name": null, "type": null, "research_facility_identifier": {"identifier": null, "type": null}}], "funding_opportunity": [{"project_id": {"identifier": null, "type": null}, "funder_id": {"identifier": null, "type": null}, "opportunity_identifier": {"identifier": null, "type": null}}], "funding_project": [{"project_id": {"identifier": null, "type": null}, "funder_id": {"identifier": null, "type": null}, "project_identifier": {"identifier": null, "type": null}}], "version": [{"access_url": null, "version": null}]};
+const RDA_SAMPLE3 = {"dmp": {"title": "CPS 2015", "description": "We will manage all scientific and technical content generated from this proposal. Our products will include 3 broad types of data.", "dmp_id": {"identifier": null, "type": null}, "created": null, "modified": null, "ethical_issues_exist": null, "ethical_issues_description": null, "ethical_issues_report": null, "language": null, "contact": {"name": null, "mbox": null, "affiliation": [{"name": null, "affiliation_id": {"identifier": null, "type": null}}], "contact_id": [{"identifier": null, "type": null}]}, "contributor": [{"name": null, "contributor_id": [{"identifier": null, "type": null}], "affiliation": [{"name": null, "affiliation_id": {"identifier": null, "type": null}}], "role": [null]}], "dataset": [{"title": "data related to each of our proposed experiments", "type": null, "description": "First, we will have data related to each of our proposed experiments. These will include the detailed protocols used for each experiment, the raw data collected from each experiment, and the experimental code used to collect those data. The relevant code will include both the data acquisition code, and the code for the controllers used in the experiment. Together, this information will be sufficient for recreating the circumstances of each data collection session.", "dataset_id": {"identifier": null, "type": null}, "personal_data": "no", "sensitive_data": "no", "issued": null, "metadata": [{"description": "", "language": null, "metadata_standard_id": [{"identifier": null, "type": null}]}], "distribution": [{"title": null, "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": null, "start_date": null}], "host": {"title": "servers at the Rehabilitation Institute of Chicago", "url": null, "host_id": [{"identifier": null, "type": null}]}}, {"title": null, "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": null, "start_date": null}], "host": {"title": "null", "url": null, "host_id": [{"identifier": null, "type": null}]}}]}, {"title": "code and results for all analyses completed on experimental data", "type": null, "description": "Our second type of data will be the code and results for all analyses completed on experimental data. Specifically, we store all code necessary to recreate figures, tables, and other results reported in all published manuscripts.", "dataset_id": {"identifier": null, "type": null}, "personal_data": "no", "sensitive_data": "no", "issued": null, "metadata": [{"description": "The contents of each data file, including the experimental conditions or the analysis procedures used during generation will be documented.", "language": "eng", "metadata_standard_id": [{"identifier": null, "type": null}]}, {"description": "The code needed to generate all published results will be documented clearly.", "language": null, "metadata_standard_id": [{"identifier": null, "type": null}]}], "distribution": [{"title": null, "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": null, "start_date": null}], "host": {"title": "null", "url": null, "host_id": [{"identifier": null, "type": null}]}}]}, {"title": "simulation code for controller development and testing", "type": null, "description": "The proposed foundational developments will produce substantial simulation code for controller development and testing. These and the outputs relevant to all key findings will also be managed.", "dataset_id": {"identifier": null, "type": null}, "personal_data": "no", "sensitive_data": "no", "issued": null, "metadata": [{"description": null, "language": "eng", "metadata_standard_id": [{"identifier": null, "type": null}]}], "distribution": [{"title": null, "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": "GNU Public License", "start_date": null}], "host": {"title": "null", "url": null, "host_id": [{"identifier": null, "type": null}]}}]}, {"title": "videos of the experiments", "type": null, "description": "Select videos of the experiments will be distributed, with subject faces blurred so as to be unidentifiable.", "dataset_id": {"identifier": null, "type": null}, "personal_data": "no", "sensitive_data": "no", "issued": null, "metadata": [{"description": null, "language": "eng", "metadata_standard_id": [{"identifier": null, "type": null}]}], "distribution": [{"title": null, "byte_size": null, "issued": null, "data_access": null, "license": [{"license_ref": null, "start_date": null}], "host": {"title": null, "url": null, "host_id": [{"identifier": null, "type": null}]}}]}], "related_identifier": [{"identifier": null, "relation_type": null, "resource_type": null, "type": null}], "alternate_identifier": [{"identifier": null, "type": null}], "project": [{"title": null, "description": null, "project_id": [{"identifier": null, "type": null}], "start": null, "end": null, "funding": [{"name": null, "funding_status": null, "funder_id": {"identifier": null, "type": null}, "grant_id": [{"identifier": null, "type": null}]}]}]}, "rda_schema_version": null, "provenance": null, "status": null, "privacy": null, "featured": null, "registered": null, "research_domain": {"name": null, "research_domain_identifier": {"identifier": null, "type": null}}, "research_facility": [{"name": null, "type": null, "research_facility_identifier": {"identifier": null, "type": null}}], "funding_opportunity": [{"project_id": {"identifier": null, "type": null}, "funder_id": {"identifier": null, "type": null}, "opportunity_identifier": {"identifier": null, "type": null}}], "funding_project": [{"project_id": {"identifier": null, "type": null}, "funder_id": {"identifier": null, "type": null}, "project_identifier": {"identifier": null, "type": null}}], "version": [{"access_url": null, "version": null}]};
+const SAMPLES = {
+  nih: { label: 'NIH', file: 'sample1.pdf', narrative: SAMPLE, rda: RDA_SAMPLE1 },
+  nsf: { label: 'NSF', file: 'sample3.pdf', narrative: SAMPLE3, rda: RDA_SAMPLE3 }
+};
 
 let uid = 0;
 const id = () => ++uid;
@@ -1096,50 +1183,223 @@ $('#tree-fold-all').addEventListener('click', () => {
   else sections.forEach(s => set.add(view === 'json' ? `s:${s.id}` : s.id));
   renderTree();
 });
-$('#export').addEventListener('click', () => {
+// ---------- steps 2–4: Back / Next ----------
+// Leaving step 2 checks for sections without a title and questions without text first
+function structureGaps() {
   const noTitle = sections.filter(s => !s.title.trim()).length;
   const noText = sections.flatMap(s => s.questions).filter(q => !q.text.trim()).length;
-  const gaps = [noTitle && `${noTitle} section(s) without a title`, noText && `${noText} question(s) without text`].filter(Boolean);
-  if (gaps.length && !confirm(`There are ${gaps.join(' and ')}. Export anyway?`)) return;
-  const blob = new Blob([JSON.stringify(toJson(), null, 2)], { type: 'application/json' });
+  return [noTitle && `${noTitle} section(s) without a title`, noText && `${noText} question(s) without text`].filter(Boolean);
+}
+$('#next').addEventListener('click', () => {
+  if (step === 'review') {
+    const gaps = structureGaps();
+    if (gaps.length && !confirm(`There are ${gaps.join(' and ')}. Continue anyway?`)) return;
+    showStep('metadata');
+  } else if (step === 'metadata') showStep('export');
+});
+$('#back').addEventListener('click', () => {
+  if (step === 'review') leaveForUpload();
+  else if (step === 'metadata') showStep('review');
+  else if (step === 'export') showStep('metadata');
+});
+
+// ---------- step 3: review metadata (RDA) ----------
+// The RDA part of the DMP, edited in place; step 4 exports it next to the narrative
+let rda = null;
+// Open cards: 'ds-0', 'ds-1', … (the first dataset starts open)
+const metaOpen = new Set(['ds-0']);
+// The extraction sometimes writes the text "null"; both show as empty
+const blank = v => v == null || v === 'null' ? '' : String(v);
+const orNull = v => v.trim() ? v : null;
+const firstDist = d => ((d.distribution ??= [{}])[0] ??= {});
+const firstMeta = d => ((d.metadata ??= [{}])[0] ??= {});
+
+// The fields on a dataset card, where each lives in the RDA JSON, and which ones RDA requires
+const DATASET_FIELDS = [
+  { id: 'title', label: 'Title', req: true, full: true, get: d => d.title, set: (d, v) => (d.title = v) },
+  { id: 'description', label: 'Description', full: true, area: true, get: d => d.description, set: (d, v) => (d.description = v) },
+  { id: 'type', label: 'Type', options: ['Dataset', 'Software', 'Text', 'Image', 'Audiovisual', 'Model', 'Other'],
+    get: d => d.type, set: (d, v) => (d.type = v) },
+  { id: 'doi', label: 'Dataset ID (DOI)', req: true, example: '10.5281/zenodo.1234567',
+    get: d => d.dataset_id?.identifier, set: (d, v) => (d.dataset_id = { identifier: v, type: v ? 'doi' : null }) },
+  { id: 'personal', label: 'Personal data', req: true, options: ['yes', 'no', 'unknown'],
+    get: d => d.personal_data, set: (d, v) => (d.personal_data = v) },
+  { id: 'sensitive', label: 'Sensitive data', req: true, options: ['yes', 'no', 'unknown'],
+    get: d => d.sensitive_data, set: (d, v) => (d.sensitive_data = v) },
+  { id: 'language', label: 'Metadata language', req: true, example: 'eng',
+    get: d => d.metadata?.[0]?.language, set: (d, v) => (firstMeta(d).language = v) },
+  { id: 'access', label: 'Data access', req: true, options: ['open', 'shared', 'closed'],
+    get: d => d.distribution?.[0]?.data_access, set: (d, v) => (firstDist(d).data_access = v) },
+  { id: 'license', label: 'License', get: d => d.distribution?.[0]?.license?.[0]?.license_ref,
+    set: (d, v) => { const dist = firstDist(d); ((dist.license ??= [{}])[0] ??= {}).license_ref = v; } },
+  { id: 'host', label: 'Host name', get: d => d.distribution?.[0]?.host?.title, set: (d, v) => ((firstDist(d).host ??= {}).title = v) },
+  { id: 'hostUrl', label: 'Host URL', req: true, example: 'https://zenodo.org',
+    get: d => d.distribution?.[0]?.host?.url, set: (d, v) => ((firstDist(d).host ??= {}).url = v) }
+];
+
+// Dataset creators, one small card per person (name, affiliation, ID), as agreed in the meeting.
+// RDA has no creator on a dataset, so they are kept in a `creator` list on each dataset.
+const CREATOR_FIELDS = [
+  { id: 'name', label: 'Name', example: 'Jane Doe', get: p => p.name, set: (p, v) => (p.name = v) },
+  { id: 'affiliation', label: 'Affiliation', example: 'CALMI2',
+    get: p => p.affiliation?.[0]?.name, set: (p, v) => (((p.affiliation ??= [{}])[0] ??= {}).name = v) },
+  { id: 'orcid', label: 'ID (ORCID)', example: '0000-0002-1825-0097',
+    get: p => p.creator_id?.identifier, set: (p, v) => (p.creator_id = { identifier: v, type: v ? 'orcid' : null }) }
+];
+const newCreator = () => ({ name: null, affiliation: [{ name: null }], creator_id: { identifier: null, type: null } });
+
+// The samples name nobody; for the demo, give each dataset a placeholder creator
+function fillDemoCreators() {
+  (rda.dmp.dataset ?? []).forEach(d => {
+    if ((d.creator ?? []).some(p => blank(p.name).trim())) return;
+    d.creator = [{ name: 'Jane Doe', affiliation: [{ name: 'CALMI2' }],
+                   creator_id: { identifier: '0000-0002-1825-0097', type: 'orcid' } }];
+  });
+}
+
+const FIELDS = { dataset: DATASET_FIELDS, creator: CREATOR_FIELDS };
+// The RDA object a field belongs to: dataset i, or creator "i.j" (creator j of dataset i)
+function fieldOwner(kind, key) {
+  if (kind === 'dataset') return rda.dmp.dataset[Number(key)];
+  const [i, j] = String(key).split('.').map(Number);
+  return rda.dmp.dataset[i].creator[j];
+}
+
+function metaField(f, obj, kind, key) {
+  const v = blank(f.get(obj)), fid = `${kind}${key}-${f.id}`.replace('.', '-');
+  const attrs = `id="${fid}" data-kind="${kind}" data-i="${key}" data-f="${f.id}"`;
+  const hint = f.example ? `e.g. ${f.example}` : '';
+  const control = f.options
+    ? `<select ${attrs}><option value="">Not set</option>${f.options.map(o =>
+        `<option value="${o}" ${o === v ? 'selected' : ''}>${o[0].toUpperCase() + o.slice(1)}</option>`).join('')}</select>`
+    : f.area ? `<textarea ${attrs} rows="3" placeholder="${hint}">${esc(v)}</textarea>`
+    : `<input ${attrs} value="${esc(v)}" placeholder="${hint}">`;
+  return `<label class="field ${f.full ? 'full' : ''}" for="${fid}"><span>${f.label}</span>${control}</label>`;
+}
+
+// A collapsible card: header with kind and title
+function metaCard(key, kind, title, body) {
+  const open = metaOpen.has(key);
+  return `
+    <section class="meta-card ${open ? '' : 'collapsed'}" data-card="${key}">
+      <button class="meta-head" aria-expanded="${open}" aria-controls="meta-body-${key}">
+        <span class="chev" aria-hidden="true">▼</span>
+        <span class="meta-kind">${kind}</span>
+        <span class="meta-title">${esc(title)}</span>
+      </button>
+      <div class="meta-body" id="meta-body-${key}">${body}</div>
+    </section>`;
+}
+
+function renderMeta() {
+  const grid = (fields, obj, kind, key) => `<div class="meta-grid">${fields.map(f => metaField(f, obj, kind, key)).join('')}</div>`;
+  const creators = (d, i) => `
+    <h3 class="sub-title">Dataset creators</h3>
+    ${(d.creator ?? []).map((p, j) => `
+    <div class="person">
+      <div class="person-head"><span>Creator ${j + 1}</span>
+        <button data-act="remove-creator" data-i="${i}.${j}" aria-label="Remove creator ${j + 1}">✕ Remove</button></div>
+      ${grid(CREATOR_FIELDS, p, 'creator', `${i}.${j}`)}
+    </div>`).join('')}
+    <button class="add-person" data-act="add-creator" data-i="${i}">+ Add creator</button>`;
+  $('#meta-cards').innerHTML = `
+    ${(rda.dmp.dataset ?? []).map((d, i) => metaCard(`ds-${i}`, `Dataset ${i + 1}`, blank(d.title).trim() || 'Untitled dataset',
+      grid(DATASET_FIELDS, d, 'dataset', i) + creators(d, i))).join('')}`;
+  document.querySelectorAll('#meta-cards textarea').forEach(grow);
+}
+
+// Typing or picking updates the RDA JSON
+$('#meta-cards').addEventListener('input', e => {
+  const c = e.target;
+  if (!c.dataset.f) return;
+  const kind = c.dataset.kind, f = FIELDS[kind].find(x => x.id === c.dataset.f);
+  f.set(fieldOwner(kind, c.dataset.i), orNull(c.value));
+  if (c.tagName === 'TEXTAREA') grow(c);
+  const card = c.closest('.meta-card');
+  if (kind === 'dataset' && f.id === 'title') card.querySelector('.meta-title').textContent = c.value.trim() || 'Untitled dataset';
+});
+$('#meta-cards').addEventListener('click', e => {
+  const act = e.target.closest('[data-act]');
+  if (act?.dataset.act === 'add-creator') {
+    const i = Number(act.dataset.i);
+    (rda.dmp.dataset[i].creator ??= []).push(newCreator());
+    renderMeta();
+    document.querySelector(`#meta-cards [data-card="ds-${i}"] .person:last-of-type [data-f="name"]`)?.focus();
+    return;
+  }
+  if (act?.dataset.act === 'remove-creator') {
+    const [i, j] = act.dataset.i.split('.').map(Number), p = rda.dmp.dataset[i].creator[j];
+    if (blank(p.name).trim() && !confirm(`Remove creator “${p.name}”?`)) return;
+    rda.dmp.dataset[i].creator.splice(j, 1);
+    renderMeta();
+    return;
+  }
+  const head = e.target.closest('.meta-head');
+  if (!head) return;
+  const card = head.parentElement, key = card.dataset.card;
+  metaOpen.has(key) ? metaOpen.delete(key) : metaOpen.add(key);
+  card.classList.toggle('collapsed', !metaOpen.has(key));
+  head.setAttribute('aria-expanded', metaOpen.has(key));
+  if (metaOpen.has(key)) card.querySelectorAll('textarea').forEach(grow);
+});
+
+// ---------- step 4: export ----------
+const exportText = () => JSON.stringify({ ...toJson(), ...rda }, null, 2);
+$('#copy-export').addEventListener('click', async () => {
+  await navigator.clipboard.writeText(exportText());
+  $('#copy-export').textContent = 'Copied';
+  setTimeout(() => ($('#copy-export').textContent = 'Copy'), 1200);
+});
+$('#download-export').addEventListener('click', () => {
+  const blob = new Blob([exportText()], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'dmp-structure.json';
+  a.download = 'dmp.json';
   a.click();
   URL.revokeObjectURL(a.href);
 });
 window.addEventListener('resize', () => document.querySelectorAll('#paper textarea').forEach(grow));
 
 // ---------- step 1: upload ----------
-function showStep(step) {
-  const review = step === 'review';
-  $('#upload-view').hidden = review;
-  $('#review-view').hidden = !review;
-  $('#review-actions').hidden = !review;
-  $('#step-upload').disabled = !review;
-  for (const [el, on] of [[$('#step-upload'), !review], [$('#step-review'), review]]) {
-    on ? el.setAttribute('aria-current', 'step') : el.removeAttribute('aria-current');
-  }
-  if (!review) {
+// The four steps: upload → review (structure) → metadata → export
+let step = 'upload';
+function showStep(s) {
+  step = s;
+  closeTypeMenu();
+  $('#toast').hidden = true;
+  $('#upload-view').hidden = s !== 'upload';
+  $('#review-view').hidden = s !== 'review';
+  $('#metadata-view').hidden = s !== 'metadata';
+  $('#export-view').hidden = s !== 'export';
+  $('#review-actions').hidden = s !== 'review';
+  $('#nav-actions').hidden = s === 'upload';
+  $('#next').hidden = s === 'export';
+  $('#step-upload').disabled = s === 'upload';
+  document.querySelectorAll('.steps [data-step]').forEach(el =>
+    el.dataset.step === s ? el.setAttribute('aria-current', 'step') : el.removeAttribute('aria-current'));
+  if (s === 'upload') {
     $('#drop-pick').hidden = false;
     $('#drop-busy').hidden = true;
     $('#drop-error').textContent = '';
   }
+  if (s === 'metadata') renderMeta();
+  if (s === 'export') $('#export-json').textContent = exportText();
+  scrollTo(0, 0);
 }
 
-function takePdf(file) {
-  if (!file) return;
-  if (file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)) {
-    $('#drop-error').textContent = `“${file.name}” isn't a PDF. Please choose a .pdf file.`;
-    return;
-  }
+// Demo: extraction isn't connected yet, so a sample DMP is loaded as if it had just been extracted
+function loadSample(key) {
+  const sample = SAMPLES[key];
   $('#drop-error').textContent = '';
   $('#drop-pick').hidden = true;
   $('#drop-busy').hidden = false;
-  $('#busy-name').textContent = file.name;
-  // Demo: no extraction service yet, so every PDF loads the bundled sample plan
+  $('#busy-name').textContent = `${sample.label} DMP sample (${sample.file})`;
   setTimeout(() => {
-    load(SAMPLE);
+    load(sample.narrative);
+    rda = structuredClone(sample.rda);
+    fillDemoCreators();
+    metaOpen.clear();
+    metaOpen.add('ds-0');
     history.length = 0;
     $('#undo').disabled = true;
     selected = { kind: 'plan' };
@@ -1148,22 +1408,22 @@ function takePdf(file) {
     render();
     setView(view);
     setPanel(panelClosed);
-    announce(`Extracted ${sections.length} sections from ${file.name}. Check them and fix anything that's wrong.`);
+    announce(`Extracted ${sections.length} sections from the ${sample.label} sample. Check them and fix anything that's wrong.`);
   }, 1800);
 }
 
-// Demo: only the sample can be used. Its file isn't read (extraction isn't connected), so this also works
-// when index.html is opened straight from disk. Files dropped on the page are ignored rather than opened.
-$('#use-sample').addEventListener('click', () => takePdf(new File([], 'sample1.pdf', { type: 'application/pdf' })));
+// Demo: only the two samples can be used. Their data is inlined, so this also works when index.html is
+// opened straight from disk. Files dropped on the page are ignored rather than opened.
+document.querySelectorAll('[data-sample]').forEach(b => b.addEventListener('click', () => loadSample(b.dataset.sample)));
 const drop = $('#drop');
 drop.addEventListener('dragover', e => e.preventDefault());
 drop.addEventListener('drop', e => e.preventDefault());
-$('#step-upload').addEventListener('click', () => {
+// Back to step 1 discards the plan, so ask first
+function leaveForUpload() {
   if (!confirm('Upload a different PDF? Changes to this plan will be lost.')) return;
-  closeTypeMenu();
-  $('#toast').hidden = true;
   showStep('upload');
-});
+}
+$('#step-upload').addEventListener('click', leaveForUpload);
 
 showStep('upload');
 </script>
