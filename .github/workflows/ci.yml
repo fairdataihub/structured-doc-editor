@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm lint:prettier
+
+      # Only the /import flow for now: the /d prototype has lint errors of its own.
+      - name: Lint the /import flow
+        run: >-
+          pnpm exec eslint
+          app/components/import
+          app/composables/useDmpImport.ts
+          app/layouts/import.vue
+          app/middleware/import-plan.ts
+          app/pages/import
+          app/utils/dmpMetadata.ts
+          app/utils/dmpNarrative.ts
+          shared/types/dmpImport.ts
+
+      - name: Build
+        run: pnpm build

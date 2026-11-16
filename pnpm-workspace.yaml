@@ -10,3 +10,7 @@ allowBuilds:
   vue-demi: true
   workerd: true
   "@parcel/watcher": true
+
+# typescript-eslint (used by pnpm lint) does not support TS 7 yet.
+overrides:
+  typescript: 5.9.3
