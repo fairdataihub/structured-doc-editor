@@ -1,21 +1,15 @@
 <script setup lang="ts">
-// Home: one deployment shows two DMP prototypes side by side. /d is this editor (a Nuxt page);
-// /x is a teammate's single static page in public/x/, so it's linked with a full page load.
+// Home: links to the current DMP Bridge. The earlier prototypes stay online at /x and /d, without a
+// link here.
 
 useSeoMeta({ title: "Home" });
 
 const PROTOTYPES = [
   {
-    path: "/x",
-    href: "/x/index.html",
-    name: "DMP Bridge Idea #1",
-    blurb: "Block-wise design",
-  },
-  {
-    path: "/d",
-    href: "/d",
-    name: "DMP Bridge Idea #2",
-    blurb: "Document editing-style design",
+    path: "/import",
+    href: "/import",
+    name: "DMP Bridge",
+    blurb: "Idea #1 rebuilt with Nuxt UI, in progress",
   },
 ];
 </script>
@@ -31,22 +25,17 @@ const PROTOTYPES = [
     </header>
 
     <main class="start-main">
-      <h1 class="start-title">Two DMP prototypes</h1>
+      <h1 class="start-title">DMP prototype</h1>
 
-      <p class="start-lead">
-        Both start from the same extracted Data Management Plan. Pick one to
-        try.
-      </p>
+      <p class="start-lead">Start from an extracted Data Management Plan.</p>
 
-      <nav class="home-list" aria-label="Prototypes">
+      <nav class="home-list" aria-label="Prototype">
         <a
           v-for="p in PROTOTYPES"
           :key="p.path"
           :href="p.href"
           class="home-card"
         >
-          <span class="home-path">{{ p.path }}</span>
-
           <span class="home-body">
             <span class="home-card-name">{{ p.name }}</span>
 
