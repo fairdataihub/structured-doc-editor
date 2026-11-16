@@ -1,0 +1,113 @@
+/* The /import flow: Nuxt UI does the components; this file only holds what it has no prop for.
+   Set on <body> while the flow is open, so menus and dialogs (rendered at the end of body) get it too. */
+.import-flow {
+  /* The navy of the logo instead of the app's indigo. */
+  --ui-primary: #244f91;
+
+  /* Muted text and placeholders stay readable on the tinted block backgrounds (WCAG AA, 4.5:1). */
+  --ui-text-muted: #56657a;
+  --ui-text-dimmed: #64748b;
+
+  /* A deeper red: warning badges and danger buttons need 4.5:1 too. */
+  --ui-error: #b42318;
+
+  /* One colour per block type, the same in the left panel, the plan and the side panel. */
+  --title-c: #2f5aa0;
+  --title-ink: #1e3a8a;
+  --title-bd: #b9cbea;
+  --title-soft: #dbe7fb;
+  --sec-c: #2f5aa0;
+  --sec-ink: #1e3a8a;
+  --sec-bg: #eef3fb;
+  --sec-bd: #b9cbea;
+  --sec-soft: #dbe7fb;
+  --desc-c: #64748b;
+  --desc-ink: #475569;
+  --desc-bg: #f8fafc;
+  --desc-bd: #e2e8f0;
+  --desc-soft: #f1f5f9;
+  --q-c: #d48a00;
+  --q-ink: #7a4800;
+  --q-bg: #fef6e6;
+  --q-bd: #f5ddb0;
+  --q-soft: #f8dfa8;
+  --a-c: #f0b44c;
+  --a-ink: #7a4800;
+  --a-bg: #fffdf8;
+  --a-bd: #f3dcae;
+  --a-soft: #fcefd2;
+}
+
+/* Colors off: one calm palette for every type. Bold, size and labels still tell them apart. */
+.import-flow.import-no-color {
+  --title-c: #3665a5;
+  --title-ink: #244f91;
+  --title-bd: #c7d7f0;
+  --title-soft: #e8effa;
+  --sec-c: #3665a5;
+  --sec-ink: #244f91;
+  --sec-bg: #f7f9fc;
+  --sec-bd: #c7d7f0;
+  --sec-soft: #e8effa;
+  --desc-c: #3665a5;
+  --desc-ink: #244f91;
+  --desc-bg: #fff;
+  --desc-bd: #dbe4f2;
+  --desc-soft: #e8effa;
+  --q-c: #3665a5;
+  --q-ink: #244f91;
+  --q-bg: #fff;
+  --q-bd: #c7d7f0;
+  --q-soft: #e8effa;
+  --a-c: #3665a5;
+  --a-ink: #244f91;
+  --a-bg: #fff;
+  --a-bd: #dbe4f2;
+  --a-soft: #e8effa;
+}
+
+/* A card dragged from the left panel shows as a thin drop marker in the plan. */
+.import-canvas [data-add] {
+  display: block;
+  height: 6px;
+  width: 100%;
+  min-height: 0;
+  margin: 6px 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--sec-c);
+}
+
+.import-canvas [data-add="question"] {
+  background: var(--q-c);
+}
+
+.import-canvas [data-add] * {
+  display: none;
+}
+
+.import-drag-ghost {
+  opacity: 0.35;
+}
+
+/* Briefly marks the blocks a type change created or moved. */
+@keyframes import-flash {
+  from {
+    box-shadow: 0 0 0 4px rgb(255 190 0 / 0.6);
+  }
+  to {
+    box-shadow: 0 0 0 4px rgb(255 190 0 / 0);
+  }
+}
+
+.import-flash {
+  animation: import-flash 1.8s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .import-flash {
+    animation: none;
+    outline: 3px solid rgb(255 190 0);
+  }
+}
