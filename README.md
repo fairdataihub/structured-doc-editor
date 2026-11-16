@@ -5,7 +5,8 @@ question, answer) on real pages, with one fixed style, automatic numbering and d
 Imports and exports JSON. Built on the
 [FAIR Data Innovations Hub Nuxt starter](https://github.com/fairdataihub/nuxt-starter).
 
-One deployment hosts two prototypes, linked from the home page.
+One deployment hosts three prototypes. The home page links to `/import`; `/x` and `/d` stay online
+without a link there.
 
 ## What it uses
 
@@ -47,6 +48,18 @@ pnpm dev           # http://localhost:3000
   (on by default) colors each block by type, and a welcome panel explains how to work.
 - **Export** is JSON in the extraction's shape (`toExtractionJson()`): section descriptions go to
   `section.description`, answers to their question. Edits are saved in the browser.
+
+### `/import`: DMP Bridge in Nuxt
+
+The `/x` prototype rebuilt with [Nuxt UI](https://ui.nuxt.com/docs/components), one route per step:
+`/import` (upload), `/import/structure`, `/import/metadata` and `/import/export`. Upload isn't
+connected yet, so the NIH and NSF samples in `public/samples/import/` open instead. The plan is saved
+as a draft in this browser only, so a refresh keeps it; undo history is not saved.
+
+- **State**: `app/composables/useDmpImport.ts`; JSON in and out: `app/utils/dmpNarrative.ts`; metadata
+  fields: `app/utils/dmpMetadata.ts`.
+- **Components**: `app/components/import/`. Block colors are the only custom styles
+  (`app/assets/css/import.css`).
 
 ### `/x`: Component editor
 
