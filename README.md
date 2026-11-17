@@ -1,103 +1,45 @@
-# Structured Document Editor
+# DMP Bridge
 
-Edit a Data Management Plan (DMP) as structured blocks (title, section, section description,
-question, answer) on real pages, with one fixed style, automatic numbering and drag-to-reorder.
-Imports and exports JSON. Built on the
-[FAIR Data Innovations Hub Nuxt starter](https://github.com/fairdataihub/nuxt-starter).
-
-One deployment hosts three prototypes. The home page links to `/import`; `/x` and `/d` stay online
-without a link there.
-
-## What it uses
-
-| Part                  | Tool                                                                                                                                | Licence     | Where                                       |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------- |
-| Framework             | [Nuxt 4](https://nuxt.com) + [Nuxt UI 4](https://ui.nuxt.com)                                                                       | MIT         | whole app                                   |
-| Block text editing    | [Tiptap 3](https://tiptap.dev/docs/editor/getting-started/install/nuxt) (one small editor per block)                                | MIT         | `app/components/editor/EditorBlockText.vue` |
-| Outline drag and drop | [SortableJS](https://github.com/SortableJS/Sortable) via [vue-draggable-plus](https://github.com/Alfred-Skyblue/vue-draggable-plus) | MIT         | `app/components/editor/EditorOutline.vue`   |
-| Paper font            | [Arimo](https://github.com/googlefonts/Arimo) (Arial metrics), regular and bold                                                     | SIL OFL 1.1 | `public/fonts/`                             |
-| JSON validation       | [zod](https://zod.dev)                                                                                                              | MIT         | `app/utils/importExtraction.ts`             |
+Review a Data Management Plan (DMP) extracted from a PDF, fix its structure and metadata, and export
+it as JSON. Built with [Nuxt](https://nuxt.com) and [Nuxt UI](https://ui.nuxt.com).
 
 ## Quick start
 
-You need Node 22+ and pnpm 12. The exact pnpm version is pinned in `package.json`
-(`packageManager`); with Corepack enabled (`corepack enable`), `pnpm` uses it automatically.
+You need Node 22 and pnpm 12 (versions are pinned in `mise.toml` and `package.json`).
 
 ```bash
 pnpm install
-cp .env.example .env
 pnpm dev           # http://localhost:3000
 ```
 
 ## How it works
 
-### `/d`: Document editor
+The app opens on the upload step and has one page per step:
 
-- **Start page** (`/d`): the PDF upload drop zone, marked "coming soon", and a button that opens the
-  sample plan (`/d/plans/sample`, from `public/samples/sample1.json`). There is no upload yet.
-- **Import** (`app/utils/importExtraction.ts`): the LLM's extraction JSON becomes a flat list of
-  blocks. Markdown is removed (`app/utils/markdown.ts`), "A." or "1." prefixes become generated
-  numbers, and a question that only repeats its section's title is dropped.
-- **Blocks** are a title, sections, section descriptions, questions and answers. A section owns
-  everything up to the next section and a question owns its answer, so moving one moves its
-  contents. Numbers ("Element 4:", "1.", "2.") come from position, never typing.
-- **One fixed style** (`shared/utils/paperStyle.ts`, `app/assets/css/paper.css`): no bold, italic
-  or underline, and pasted text arrives plain. Blocks are measured and placed on Letter pages; a
-  heading never ends a page.
-- **Checking the structure** is up to the user; there are no automatic checks. The Structure view
-  (on by default) colors each block by type, and a welcome panel explains how to work.
-- **Export** is JSON in the extraction's shape (`toExtractionJson()`): section descriptions go to
-  `section.description`, answers to their question. Edits are saved in the browser.
+1. `/import`: upload a PDF. Upload isn't connected to the backend yet, so the NIH and NSF samples in
+   `public/samples/import/` open instead.
+2. `/import/structure`: review the title, sections, questions and answers.
+3. `/import/metadata`: review the dataset metadata (RDA).
+4. `/import/export`: copy or download the full DMP as JSON.
 
-### `/import`: DMP Bridge in Nuxt
-
-The `/x` prototype rebuilt with [Nuxt UI](https://ui.nuxt.com/docs/components), one route per step:
-`/import` (upload), `/import/structure`, `/import/metadata` and `/import/export`. Upload isn't
-connected yet, so the NIH and NSF samples in `public/samples/import/` open instead. The plan is saved
-as a draft in this browser only, so a refresh keeps it; undo history is not saved.
-
-- **State**: `app/composables/useDmpImport.ts`; JSON in and out: `app/utils/dmpNarrative.ts`; metadata
-  fields: `app/utils/dmpMetadata.ts`.
-- **Components**: `app/components/import/`. Block colors are the only custom styles
-  (`app/assets/css/import.css`).
-
-### `/x`: Component editor
-
-A single static page, `public/x/index.html` (a temporary copy until the final version), with the
-`sample1.pdf` its sample button loads. `/x` opens `/x/index.html` so its relative links resolve
-inside `/x/`. Prettier skips `public/x/`, so the page stays as written.
+The plan is saved as a draft in the browser while you edit, so a refresh keeps your work.
 
 ## Project layout
 
 ```text
 app/
-  pages/index.vue                 home (/): links to /x and /d
-  pages/d/index.vue               start page (/d)
-  pages/d/plans/sample.vue        the editor on the sample plan, global shortcuts
-  components/AppBrand.vue         logo, links home
-  components/editor/              top bar, outline, toolbar, canvas, block, welcome panel, side panel, export
-  composables/usePlan.ts          the store: blocks, undo, numbering, moves, splits
-  composables/useBlockMenus.ts    Style / Move to / More / Add menus
-  utils/                          import and export, markdown cleanup, numbering, structure
-  assets/css/main.css             editor chrome (imports paper.css)
-  assets/css/paper.css            the plan's pages: the one fixed style
-shared/
-  types/dmp.ts                    plan and extraction JSON types
-  utils/paperStyle.ts             the one style: paper, margins, font, each block type's look
-  utils/paperHtml.ts              block markup for page measuring and the Styles panel
-public/
-  fonts/                          Arimo WOFF2 files + licence
-  samples/sample1.json            the sample plan the editor loads
-  x/                              the teammate's prototype (index.html, sample1.pdf)
+  pages/import/                  the four steps
+  components/import/             the components of each step
+  composables/useDmpImport.ts    the store: plan, undo, draft
+  utils/dmpNarrative.ts          narrative JSON in and out
+  utils/dmpMetadata.ts           metadata fields
+shared/types/dmpImport.ts        types
+public/samples/import/           sample extraction JSON
 ```
 
-## Settings
+## Checks
 
-| Variable                        | Default | What it does                                             |
-| ------------------------------- | ------- | -------------------------------------------------------- |
-| `NUXT_PUBLIC_SHOW_STYLES_PANEL` | `true`  | Set to `false` to hide the Styles panel from researchers |
-
-## License
-
-MIT, see [LICENSE](LICENSE). The Arimo font files in `public/fonts/` are under the SIL Open Font
-License 1.1 ([LICENSE-arimo.txt](public/fonts/LICENSE-arimo.txt)).
+```bash
+pnpm lint
+pnpm build
+```

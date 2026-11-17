@@ -17,11 +17,6 @@
     "reset": "rimraf node_modules && rimraf .nuxt && rimraf .output && rimraf dist && pnpm install"
   },
   "dependencies": {
-    "@tiptap/core": "3.31.4",
-    "@tiptap/extensions": "3.31.4",
-    "@tiptap/pm": "3.31.4",
-    "@tiptap/starter-kit": "3.31.4",
-    "@tiptap/vue-3": "3.31.4",
     "@vueuse/core": "15.0.0",
     "vue-draggable-plus": "0.6.1"
   },

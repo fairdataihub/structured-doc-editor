@@ -26,18 +26,8 @@ jobs:
       - name: Check formatting
         run: pnpm lint:prettier
 
-      # Only the /import flow for now: the /d prototype has lint errors of its own.
-      - name: Lint the /import flow
-        run: >-
-          pnpm exec eslint
-          app/components/import
-          app/composables/useDmpImport.ts
-          app/layouts/import.vue
-          app/middleware/import-plan.ts
-          app/pages/import
-          app/utils/dmpMetadata.ts
-          app/utils/dmpNarrative.ts
-          shared/types/dmpImport.ts
+      - name: Lint
+        run: pnpm lint:js
 
       - name: Build
         run: pnpm build

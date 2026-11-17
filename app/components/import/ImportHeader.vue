@@ -79,7 +79,7 @@ async function goToStep(index: number) {
     class="border-default bg-default flex flex-wrap items-center gap-x-6 gap-y-2 border-b px-5 py-2 min-[1100px]:grid min-[1100px]:grid-cols-[minmax(max-content,1fr)_minmax(0,56rem)_minmax(31rem,1fr)]"
   >
     <NuxtLink
-      to="/"
+      to="/import"
       class="text-xl font-bold tracking-tight"
       aria-label="DMP Bridge, home"
     >

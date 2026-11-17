@@ -31,6 +31,34 @@ export interface ImportSelection {
   part?: ImportBlockPart;
 }
 
+/** The narrative extraction JSON: what the pipeline returns and what the export writes. */
+export interface ExtractionJson {
+  narrative: {
+    download_url?: string;
+    template: {
+      title: string;
+      description?: string;
+      version?: string;
+      section: {
+        title: string;
+        description?: string;
+        order: number;
+        question: {
+          text: string;
+          order: number;
+          answer: {
+            json: {
+              type: string;
+              answer: string;
+              meta?: Record<string, unknown>;
+            };
+          };
+        }[];
+      }[];
+    };
+  };
+}
+
 export interface RdaCreator {
   name?: string | null;
   affiliation?: { name?: string | null }[];
