@@ -3,25 +3,15 @@ export default defineNuxtConfig({
   compatibilityDate: "2025-01-16",
   css: ["~/assets/css/main.css"],
   devtools: { enabled: true },
-  // The editor (Tiptap) is browser-only, so the app renders on the client.
+  // The app runs in the browser only: drafts are kept in the browser's storage.
   ssr: false,
-  // One deployment, two prototypes: this editor at /d and a teammate's static page at /x
-  // (public/x/index.html); the home page (/) links to both. /x and /x/ go to /x/index.html so the
-  // page's relative links (sample1.pdf, …) resolve inside /x/. Redirecting /x to /x/ would loop:
-  // route rules match /x and /x/ alike.
+  // There is no start page: the app opens on the upload step.
   routeRules: {
-    "/x": { redirect: "/x/index.html" },
+    "/": { redirect: "/import" },
   },
 
   modules: ["@nuxt/ui", "@nuxt/eslint"],
-  runtimeConfig: {
-    public: {
-      // The Styles panel is for demos and admins. NUXT_PUBLIC_SHOW_STYLES_PANEL=false hides it from researchers.
-      showStylesPanel: true,
-    },
-  },
   // UI fonts are self-hosted by Nuxt Fonts (bundled with Nuxt UI).
-  // The plan's paper font is NOT loaded this way: see public/fonts and app/assets/css/paper.css.
   fonts: {
     families: [
       {

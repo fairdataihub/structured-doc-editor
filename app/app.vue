@@ -20,7 +20,7 @@ useHead({
 useSeoMeta({
   titleTemplate: "%s - DMP Bridge",
   description:
-    "Prototype editor for reviewing and editing an extracted Data Management Plan on its PDF pages.",
+    "Review and correct a Data Management Plan extracted from a PDF, then export it as JSON.",
 });
 </script>
 
